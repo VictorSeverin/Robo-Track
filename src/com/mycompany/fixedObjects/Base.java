@@ -31,11 +31,16 @@ public class Base extends FixedObject {
 	@Override
 	public void draw(Graphics g, Point p) {
 		g.setColor(ColorUtil.CYAN);
-		int[] xCoordinates = { (int) this.getLocationX() - 50, (int) this.getLocationX(),
-				(int) this.getLocationX() + 50 };
-		int[] yCoordinates = { (int) this.getLocationY() - 50, (int) this.getLocationY(),
-				(int) this.getLocationY() - 50 };
+		int[] xCoordinates = { (int) p.getX() + (int) this.getLocationX() - 50,
+				(int) p.getX() + (int) this.getLocationX(),
+				(int) p.getX() + (int) this.getLocationX() + 50 };
+		int[] yCoordinates = { (int) p.getY() + (int) this.getLocationY() - 50,
+				(int) p.getY() + (int) this.getLocationY(),
+				(int) p.getY() + (int) this.getLocationY() - 50 };
 		g.fillPolygon(xCoordinates, yCoordinates, 3);
+		g.setColor(ColorUtil.BLACK);
+		g.drawString(Integer.toString(this.getSequenceNumber()), (int) p.getX() + (int) this.getLocationX() - 10,
+				(int) p.getY() + (int) this.getLocationY() - 50);
 	}
 
 	@Override

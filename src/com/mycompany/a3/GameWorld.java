@@ -19,6 +19,8 @@ public class GameWorld extends Observable {
 	private int clockTime;
 	private int remainingLives;
 	private boolean sound;
+	private int height;
+	private int width;
 	public Random rand = new Random();
 
 	public GameWorld() {
@@ -26,6 +28,11 @@ public class GameWorld extends Observable {
 		this.clockTime = 0;
 		this.remainingLives = 3;
 		this.sound = false;
+	}
+
+	public void setHeightWidth(int height, int width) {
+		this.height = height;
+		this.width = width;
 	}
 
 	public void changeStrategy() {
@@ -344,17 +351,24 @@ public class GameWorld extends Observable {
 	}
 
 	public void init() {
+		System.out.println(this.height + " " + this.width);
 		objects.add(new Base(100, 250, 300, 1));
-		objects.add(new Base(100, 500, 500, 2));
-		objects.add(new Base(100, 800, 100, 3));
-		objects.add(new Base(100, 100, 800, 4));
-		objects.add(new Drone(80, rand.nextInt(1024), rand.nextInt(768), rand.nextInt(359), 5 + rand.nextInt(10)));
-		objects.add(new Drone(80, rand.nextInt(1024), rand.nextInt(768), rand.nextInt(359), 5 + rand.nextInt(10)));
-		objects.add(new EnergyStation(rand.nextInt(150), rand.nextInt(1024), rand.nextInt(768)));
-		objects.add(new EnergyStation(rand.nextInt(150), rand.nextInt(1024), rand.nextInt(768)));
-		objects.add(new Robot(80, 250, 300 + 80));
-		objects.add(new NonPlayerRobot(90, 250 + 80, 300 + 160, 1));
-		objects.add(new NonPlayerRobot(90, 250 - 40, 300 + 80, 1));
-		objects.add(new NonPlayerRobot(90, 250 + 40, 300 - 80, 2));
+		objects.add(new Base(100, 300, 1000, 2));
+		objects.add(new Base(100, 1100, 100, 3));
+		objects.add(new Base(100, 1100, 800, 4));
+		// objects.add(new Drone(80, rand.nextInt(this.height),
+		// rand.nextInt(this.width), rand.nextInt(359),
+		// 5 + rand.nextInt(10)));
+		// objects.add(new Drone(80, rand.nextInt(this.height),
+		// rand.nextInt(this.width), rand.nextInt(359),
+		// 5 + rand.nextInt(10)));
+		objects.add(new EnergyStation(rand.nextInt(100 - 50) + 50, rand.nextInt(1100 - 350) + 350,
+				rand.nextInt(1300 - 150) + 150));
+		objects.add(new EnergyStation(rand.nextInt(100 - 50) + 50, rand.nextInt(1100 - 350) + 350,
+				rand.nextInt(1300 - 150) + 150));
+		objects.add(new Robot(80, 270, 50));
+		objects.add(new NonPlayerRobot(80, 30, 50, 1));
+		objects.add(new NonPlayerRobot(80, 150, 50, 1));
+		objects.add(new NonPlayerRobot(80, 390, 50, 2));
 	}
 }

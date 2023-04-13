@@ -53,6 +53,7 @@ public class Game extends Form {
 		gw = new GameWorld();
 		mv = new MapView();
 		sv = new ScoreView();
+		gw.setHeightWidth(mv.getHeight(), mv.getWidth());
 		gw.addObserver(mv);
 		gw.addObserver(sv);
 		Accelerate acc = new Accelerate(gw);

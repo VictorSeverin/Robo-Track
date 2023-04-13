@@ -38,7 +38,8 @@ public class Robot extends MovableObject implements iSteerable {
 	@Override
 	public void draw(Graphics g, Point p) {
 		g.setColor(ColorUtil.YELLOW);
-		g.fillRect(800, 800, this.getSize(), this.getSize());
+		g.fillRect((int) (p.getX() + this.getLocationX()), (int) (p.getY() + this.getLocationY()), this.getSize(),
+				this.getSize());
 
 	}
 

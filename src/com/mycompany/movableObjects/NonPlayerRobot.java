@@ -21,7 +21,7 @@ public class NonPlayerRobot extends Robot implements IStrategy {
     private int maxDamageLevel;
     private int strategy;
 
-    public NonPlayerRobot(int size, double locationY, double locationX, int initialStrategy) {
+    public NonPlayerRobot(int size, double locationX, double locationY, int initialStrategy) {
         super(size, locationX, locationY);
         super.setSpeed(15);
         this.maximumSpeed = 50;
@@ -37,7 +37,7 @@ public class NonPlayerRobot extends Robot implements IStrategy {
     @Override
     public void draw(Graphics g, Point p) {
         g.setColor(ColorUtil.BLACK);
-        g.drawRect((int) (p.getX() + this.getLocationX()), (int) (p.getX() + this.getLocationY()), this.getSize(),
+        g.drawRect((int) (p.getX() + this.getLocationX()), (int) (p.getY() + this.getLocationY()), this.getSize(),
                 this.getSize());
     }
 

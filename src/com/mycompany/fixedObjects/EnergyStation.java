@@ -16,13 +16,13 @@ public class EnergyStation extends FixedObject {
 	 * @param color     - color of the object
 	 **/
 	public EnergyStation(int size, double locationX, double locationY) {
-		super(size, locationX, locationY, ColorUtil.YELLOW);
+		super(size, locationX, locationY, ColorUtil.GREEN);
 		this.capacity = size;
 	}
 
 	@Override
 	public void draw(Graphics g, Point p) {
-		g.setColor(ColorUtil.BLACK);
+		g.setColor(ColorUtil.GREEN);
 		// g.drawRect((int) (p.getX() + this.getLocationX()), (int) (p.getY() +
 		// this.getLocationY()), this.getSize(),
 		// this.getSize());

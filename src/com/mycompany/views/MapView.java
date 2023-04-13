@@ -39,7 +39,7 @@ public class MapView extends Container implements Observer {
     public void paint(Graphics g) {
         super.paint(g);
         IIterator iter = gw.getObjects().getIterator();
-        Point p = new Point(getParent().getX(), getParent().getY());
+        Point p = new Point(getX(), getY());
         while (iter.hasNext()) {
             GameObject obj = iter.getNext();
             obj.draw(g, p);
