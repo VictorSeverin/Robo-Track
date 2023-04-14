@@ -86,15 +86,6 @@ public class GameWorld extends Observable {
 		}
 	}
 
-	public void showMap() {
-		tickClock();
-		IIterator iter = objects.getIterator();
-		while (iter.hasNext()) {
-			GameObject obj = iter.getNext();
-			System.out.println(obj.getClass().getSimpleName() + ": " + obj);
-		}
-	}
-
 	public void exitGame() {
 		System.exit(0);
 	}
@@ -191,8 +182,11 @@ public class GameWorld extends Observable {
 						System.out.println("Game Over, you failed!");
 						exitGame();
 					} else {
-						objects.remove(robot); // remove the robot from the array
-						objects.add(new Robot(150, 250, 300)); // add robot with fresh proporties
+						double oldLocationX = robot.getLocationX();
+						double oldLocationY = robot.getLocationY();
+						int oldSize = robot.getSize();
+						objects.remove(robot);
+						objects.add(new Robot(oldSize, oldLocationX, oldLocationY));
 					}
 
 				} else {
@@ -243,8 +237,11 @@ public class GameWorld extends Observable {
 						System.out.println("Game Over, you failed!");
 						exitGame();
 					} else {
-						objects.remove(robot); // remove the robot from the array
-						objects.add(new Robot(150, 250, 300)); // add robot with fresh proporties
+						double oldLocationX = robot.getLocationX();
+						double oldLocationY = robot.getLocationY();
+						int oldSize = robot.getSize();
+						objects.remove(robot);
+						objects.add(new Robot(oldSize, oldLocationX, oldLocationY));
 					}
 
 				} else {
@@ -301,17 +298,21 @@ public class GameWorld extends Observable {
 				MovableObject movObj = (MovableObject) obj;
 				movObj.move();
 				// check if robot ran out of energy
-			} else if (obj instanceof Robot && !(obj instanceof NonPlayerRobot)) {
+			}
+			if (obj instanceof Robot && !(obj instanceof NonPlayerRobot)) {
 				Robot robot = (Robot) obj;
 				if (robot.getEnergyLevel() <= 0) {
-					System.out.println("Game over, you ran out of energy!");
+					System.out.println("Game over, you ran out of energy + tick!");
 					if (this.remainingLives - 1 < 0) {
 						System.out.println("Game over, you ran out of lives!");
 						exitGame();
 					}
 					this.remainingLives--;
+					double oldLocationX = robot.getLocationX();
+					double oldLocationY = robot.getLocationY();
+					int oldSize = robot.getSize();
 					objects.remove(robot);
-					objects.add(new Robot(40, 250, 300 + 80));
+					objects.add(new Robot(oldSize, oldLocationX, oldLocationY));
 				}
 
 			}
@@ -356,12 +357,10 @@ public class GameWorld extends Observable {
 		objects.add(new Base(100, 300, 1000, 2));
 		objects.add(new Base(100, 1100, 100, 3));
 		objects.add(new Base(100, 1100, 800, 4));
-		// objects.add(new Drone(80, rand.nextInt(this.height),
-		// rand.nextInt(this.width), rand.nextInt(359),
-		// 5 + rand.nextInt(10)));
-		// objects.add(new Drone(80, rand.nextInt(this.height),
-		// rand.nextInt(this.width), rand.nextInt(359),
-		// 5 + rand.nextInt(10)));
+		objects.add(new Drone(80, rand.nextInt(1092), rand.nextInt(768), rand.nextInt(359),
+				5 + rand.nextInt(10)));
+		objects.add(new Drone(80, rand.nextInt(1092), rand.nextInt(768), rand.nextInt(359),
+				5 + rand.nextInt(10)));
 		objects.add(new EnergyStation(rand.nextInt(100 - 50) + 50, rand.nextInt(1100 - 350) + 350,
 				rand.nextInt(1300 - 150) + 150));
 		objects.add(new EnergyStation(rand.nextInt(100 - 50) + 50, rand.nextInt(1100 - 350) + 350,

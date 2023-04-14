@@ -85,12 +85,12 @@ public class Game extends Form {
 			Button tickButtoon = new Button("Tick");
 			Button helpButton = new Button("Help");
 			// key Bindings
-			this.addKeyListener('w', acc);
-			this.addKeyListener('s', brake);
-			this.addKeyListener('a', leftTurn);
-			this.addKeyListener('d', rightTurn);
-			this.addKeyListener('q', collideEs);
-			this.addKeyListener('e', collideDrone);
+			this.addKeyListener('a', acc);
+			this.addKeyListener('b', brake);
+			this.addKeyListener('l', leftTurn);
+			this.addKeyListener('r', rightTurn);
+			this.addKeyListener('e', collideEs);
+			this.addKeyListener('g', collideDrone);
 			this.addKeyListener('t', tick);
 
 			// Styles

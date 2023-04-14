@@ -14,7 +14,6 @@ import com.mycompany.a3.GameWorld;
 import com.mycompany.interfaces.IIterator;
 
 public class MapView extends Container implements Observer {
-
     GameWorld gw = new GameWorld();
     int width;
     int heigth;

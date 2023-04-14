@@ -25,13 +25,13 @@ public class Robot extends MovableObject implements iSteerable {
 	 * 
 	 **/
 	public Robot(int size, double locationX, double locationY) {
-		super(size, locationX, locationY, ColorUtil.rgb(255, 0, 0), 90, 0);
+		super(size, locationX, locationY, ColorUtil.rgb(255, 0, 0), 0, 0);
 		this.maximumSpeed = 50;
 		this.energyLevel = 100;
 		this.damageLevel = 0;
 		this.energyConsumptionRate = 5;
 		this.lastBaseReached = 1;
-		this.steeringDirection = 90;
+		this.steeringDirection = 0;
 		this.maxDamageLevel = 50;
 	}
 
@@ -53,8 +53,9 @@ public class Robot extends MovableObject implements iSteerable {
 
 	public void move() {
 		if (this.energyLevel > 0 && this.damageLevel < this.maxDamageLevel && this.getSpeed() > 0) {
-			super.setHeading(this.getHeading() + this.steeringDirection);
+			super.setHeading(this.steeringDirection);
 		}
+		System.out.println("1Heading: " + this.getHeading() + " 1Direction: " + this.getSteeringDirection());
 		this.energyLevel -= this.energyConsumptionRate;
 		super.move();
 	}
@@ -63,7 +64,7 @@ public class Robot extends MovableObject implements iSteerable {
 	 * @param degrees - number of degrees to turn left/right
 	 */
 	public void turn(int degrees) {
-		this.steeringDirection += degrees;
+		this.steeringDirection = degrees;
 	}
 
 	public void setMaximumSpeed(int speed) {
