@@ -12,6 +12,7 @@ import com.mycompany.interfaces.IIterator;
 import com.mycompany.movableObjects.Drone;
 import com.mycompany.movableObjects.NonPlayerRobot;
 import com.mycompany.movableObjects.Robot;
+import com.mycompany.movableObjects.PlayerRobot;
 import com.codename1.ui.Command;
 
 public class GameWorld extends Observable {
@@ -48,16 +49,16 @@ public class GameWorld extends Observable {
 		System.out.println(npr);
 	}
 
-	public Robot getRobot() {
+	public PlayerRobot getRobot() {
 		IIterator iter = objects.getIterator();
-		Robot robot = null;
+		PlayerRobot pr = null;
 		while (iter.hasNext()) {
 			GameObject obj = iter.getNext();
-			if (obj instanceof Robot && !(obj instanceof NonPlayerRobot)) {
-				robot = ((Robot) obj);
+			if (obj instanceof PlayerRobot) {
+				pr = ((PlayerRobot) obj);
 			}
 		}
-		return robot;
+		return pr;
 	}
 
 	public GameCollection getObjects() {
@@ -96,8 +97,8 @@ public class GameWorld extends Observable {
 		IIterator iter = objects.getIterator();
 		while (iter.hasNext()) {
 			GameObject obj = iter.getNext();
-			if (obj instanceof Robot && !(obj instanceof NonPlayerRobot)) {
-				Robot robot = (Robot) obj;
+			if (obj instanceof PlayerRobot) {
+				PlayerRobot robot = (PlayerRobot) obj;
 				if (robot.getSpeed() + 5 > robot.getMaximumSpeed()) {
 					robot.setSpeed(robot.getMaximumSpeed());
 				} else { // otherwise increment speed by 5
@@ -114,8 +115,8 @@ public class GameWorld extends Observable {
 		IIterator iter = objects.getIterator();
 		while (iter.hasNext()) {
 			GameObject obj = iter.getNext();
-			if (obj instanceof Robot && !(obj instanceof NonPlayerRobot)) {
-				Robot robot = (Robot) obj;
+			if (obj instanceof PlayerRobot) {
+				PlayerRobot robot = (PlayerRobot) obj;
 				if (robot.getSpeed() - 5 < 0) {
 					robot.setSpeed(0);
 				} else {
@@ -133,8 +134,8 @@ public class GameWorld extends Observable {
 		IIterator iter = objects.getIterator();
 		while (iter.hasNext()) {
 			GameObject obj = iter.getNext();
-			if (obj instanceof Robot && !(obj instanceof NonPlayerRobot)) {
-				Robot robot = (Robot) obj;
+			if (obj instanceof PlayerRobot) {
+				PlayerRobot robot = (PlayerRobot) obj;
 				if (robot.getSteeringDirection() - 5 < -40) { // check if steering left will lead to less than -40
 					robot.turn(-40);
 				} else { // otherwise decrease steering direction by 5
@@ -153,8 +154,8 @@ public class GameWorld extends Observable {
 		IIterator iter = objects.getIterator();
 		while (iter.hasNext()) {
 			GameObject obj = iter.getNext();
-			if (obj instanceof Robot && !(obj instanceof NonPlayerRobot)) {
-				Robot robot = (Robot) obj;
+			if (obj instanceof PlayerRobot) {
+				PlayerRobot robot = (PlayerRobot) obj;
 				if (robot.getSteeringDirection() + 5 > 40) { // check if steering right will lead to more than 40
 					// degrees
 					robot.turn(40);
@@ -173,26 +174,27 @@ public class GameWorld extends Observable {
 		IIterator iter = objects.getIterator();
 		while (iter.hasNext()) {
 			GameObject obj = iter.getNext();
-			if (obj instanceof Robot && !(obj instanceof NonPlayerRobot)) {
-				Robot robot = (Robot) obj;
-				if (robot.getDamageLevel() + 5 > robot.getMaxDamageLevel()) {
+			if (obj instanceof PlayerRobot) {
+				PlayerRobot pr = (PlayerRobot) obj;
+				if (pr.getDamageLevel() + 5 > pr.getMaxDamageLevel()) {
 					this.remainingLives -= 1;
 					System.out.println("The player took max damage level.Game Over");
 					if (this.remainingLives < 0) {
 						System.out.println("Game Over, you failed!");
 						exitGame();
 					} else {
-						double oldLocationX = robot.getLocationX();
-						double oldLocationY = robot.getLocationY();
-						int oldSize = robot.getSize();
-						objects.remove(robot);
-						objects.add(new Robot(oldSize, oldLocationX, oldLocationY));
+						double oldLocationX = pr.getLocationX();
+						double oldLocationY = pr.getLocationY();
+						int oldSize = pr.getSize();
+						objects.remove(pr);
+						pr = PlayerRobot.getPlayerRobot(oldSize, oldLocationX, oldLocationY);
+						objects.add(pr);
 					}
 
 				} else {
-					robot.setDamageLevel(robot.getDamageLevel() + 5);
-					robot.setColor(robot.getColor() + 30); // Make Color Brighter
-					robot.setMaximumSpeed(robot.getMaximumSpeed() - 5);
+					pr.setDamageLevel(pr.getDamageLevel() + 5);
+					pr.setColor(pr.getColor() + 30); // Make Color Brighter
+					pr.setMaximumSpeed(pr.getMaximumSpeed() - 5);
 				}
 			}
 
@@ -228,27 +230,27 @@ public class GameWorld extends Observable {
 		IIterator iter = objects.getIterator();
 		while (iter.hasNext()) {
 			GameObject obj = iter.getNext();
-			if (obj instanceof Robot && !(obj instanceof NonPlayerRobot)) {
-				Robot robot = (Robot) obj;
-				if (robot.getDamageLevel() + 2 > robot.getMaxDamageLevel()) {
+			if (obj instanceof PlayerRobot) {
+				PlayerRobot pr = (PlayerRobot) obj;
+				if (pr.getDamageLevel() + 2 > pr.getMaxDamageLevel()) {
 					this.remainingLives -= 1;
 					System.out.println("The player took max damage level.Game Over");
 					if (this.remainingLives < 0) {
 						System.out.println("Game Over, you failed!");
 						exitGame();
 					} else {
-						double oldLocationX = robot.getLocationX();
-						double oldLocationY = robot.getLocationY();
-						int oldSize = robot.getSize();
-						objects.remove(robot);
-						objects.add(new Robot(oldSize, oldLocationX, oldLocationY));
+						double oldLocationX = pr.getLocationX();
+						double oldLocationY = pr.getLocationY();
+						int oldSize = pr.getSize();
+						objects.remove(pr);
+						pr = PlayerRobot.getPlayerRobot(oldSize, oldLocationX, oldLocationY);
+						objects.add(pr);
 					}
 
 				} else {
-					robot.setDamageLevel(robot.getDamageLevel() + 2);
-					robot.setColor(robot.getColor() + 30); // Make Color Brighter
-					robot.setMaximumSpeed(robot.getMaximumSpeed() - 5);
-					System.out.println(robot);
+					pr.setDamageLevel(pr.getDamageLevel() + 2);
+					pr.setColor(pr.getColor() + 30); // Make Color Brighter
+					pr.setMaximumSpeed(pr.getMaximumSpeed() - 5);
 				}
 			}
 		}
@@ -260,29 +262,28 @@ public class GameWorld extends Observable {
 
 		System.out.println("Collided with Energy Station");
 		IIterator iter = objects.getIterator();
-		Robot robot = null;
+		PlayerRobot pr = null;
 		EnergyStation es = null;
 		ArrayList<EnergyStation> esStations = new ArrayList<EnergyStation>();
 		while (iter.hasNext()) {
 			GameObject obj = iter.getNext();
-			if (obj instanceof Robot && !(obj instanceof NonPlayerRobot)) {
-				robot = (Robot) obj;
+			if (obj instanceof PlayerRobot) {
+				pr = (PlayerRobot) obj;
 			} else if (obj instanceof EnergyStation) {
 				esStations.add((EnergyStation) obj);
 			}
 		}
 		// Chooose random es for the robot to collide with
 		es = esStations.get(rand.nextInt(esStations.size()));
-		System.out.println("robot: " + robot.getEnergyLevel() + " ES: " + es.getCapacity());
-		if (robot.getEnergyLevel() + es.getCapacity() > 100) {
-			robot.setEnergyLevel(100);
+		if (pr.getEnergyLevel() + es.getCapacity() > 100) {
+			pr.setEnergyLevel(100);
 		} else {
-			robot.setEnergyLevel(robot.getEnergyLevel() + es.getCapacity()); // recharghe energy level
+			pr.setEnergyLevel(pr.getEnergyLevel() + es.getCapacity()); // recharghe energy level
 		}
 		es.drain(); // set energy station capacity to 0;
 		es.setColor(es.getColor() + 30); // faint color
 		objects.add(new EnergyStation(rand.nextInt(50), rand.nextDouble(), rand.nextDouble()));
-		robot.setMaximumSpeed(50); // set maximum speed back to normal
+		pr.setMaximumSpeed(50); // set maximum speed back to normal
 
 		setChanged();
 		notifyObservers(this);
@@ -299,20 +300,21 @@ public class GameWorld extends Observable {
 				movObj.move();
 				// check if robot ran out of energy
 			}
-			if (obj instanceof Robot && !(obj instanceof NonPlayerRobot)) {
-				Robot robot = (Robot) obj;
-				if (robot.getEnergyLevel() <= 0) {
+			if (obj instanceof PlayerRobot) {
+				PlayerRobot pr = (PlayerRobot) obj;
+				if (pr.getEnergyLevel() <= 0) {
 					System.out.println("Game over, you ran out of energy + tick!");
 					if (this.remainingLives - 1 < 0) {
 						System.out.println("Game over, you ran out of lives!");
 						exitGame();
 					}
 					this.remainingLives--;
-					double oldLocationX = robot.getLocationX();
-					double oldLocationY = robot.getLocationY();
-					int oldSize = robot.getSize();
-					objects.remove(robot);
-					objects.add(new Robot(oldSize, oldLocationX, oldLocationY));
+					double oldLocationX = pr.getLocationX();
+					double oldLocationY = pr.getLocationY();
+					int oldSize = pr.getSize();
+					objects.remove(pr);
+					pr = PlayerRobot.getPlayerRobot(oldSize, oldLocationX, oldLocationY);
+					objects.add(pr);
 				}
 
 			}
@@ -335,7 +337,7 @@ public class GameWorld extends Observable {
 		IIterator iter = objects.getIterator();
 		while (iter.hasNext()) {
 			GameObject obj = iter.getNext();
-			if (obj instanceof Robot && !(obj instanceof NonPlayerRobot)) {
+			if (obj instanceof Robot) {
 				Robot robot = (Robot) obj;
 				if (robot.getLastBaseReached() + 1 == baseNumber) { // check if base# is one more than the last base
 					// reached
@@ -353,6 +355,7 @@ public class GameWorld extends Observable {
 
 	public void init() {
 		System.out.println(this.height + " " + this.width);
+		PlayerRobot playerRobot = PlayerRobot.getPlayerRobot(80, 270, 50);
 		objects.add(new Base(100, 250, 300, 1));
 		objects.add(new Base(100, 300, 1000, 2));
 		objects.add(new Base(100, 1100, 100, 3));
@@ -365,7 +368,7 @@ public class GameWorld extends Observable {
 				rand.nextInt(1300 - 150) + 150));
 		objects.add(new EnergyStation(rand.nextInt(100 - 50) + 50, rand.nextInt(1100 - 350) + 350,
 				rand.nextInt(1300 - 150) + 150));
-		objects.add(new Robot(80, 270, 50));
+		objects.add(playerRobot);
 		objects.add(new NonPlayerRobot(80, 30, 50, 1));
 		objects.add(new NonPlayerRobot(80, 150, 50, 1));
 		objects.add(new NonPlayerRobot(80, 390, 50, 2));

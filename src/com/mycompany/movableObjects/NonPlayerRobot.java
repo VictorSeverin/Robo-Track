@@ -46,7 +46,7 @@ public class NonPlayerRobot extends Robot implements IStrategy {
             this.energyLevel = 250;
         }
         if (this.energyLevel > 0 && this.damageLevel < this.maxDamageLevel && this.getSpeed() > 0) {
-            super.setHeading(this.getHeading() + this.steeringDirection);
+            super.setHeading(this.steeringDirection);
         }
         this.energyLevel -= this.energyConsumptionRate;
         super.move();
@@ -80,7 +80,7 @@ public class NonPlayerRobot extends Robot implements IStrategy {
                 }
             }
             super.move();
-        } // attach the player robot
+        } // attack the player robot
         else if (strategy == 2) {
             IIterator iter = objects.getIterator();
             while (iter.hasNext()) {

@@ -27,9 +27,9 @@ public class Robot extends MovableObject implements iSteerable {
 	public Robot(int size, double locationX, double locationY) {
 		super(size, locationX, locationY, ColorUtil.rgb(255, 0, 0), 0, 0);
 		this.maximumSpeed = 50;
-		this.energyLevel = 100;
+		this.energyLevel = 1000;
 		this.damageLevel = 0;
-		this.energyConsumptionRate = 5;
+		this.energyConsumptionRate = 2;
 		this.lastBaseReached = 1;
 		this.steeringDirection = 0;
 		this.maxDamageLevel = 50;
