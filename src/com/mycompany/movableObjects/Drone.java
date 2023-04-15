@@ -38,13 +38,13 @@ public class Drone extends MovableObject {
 				this.getLocationY()), 10, 10, 0, 360);
 	}
 
-	public void move(int width, int height) {
+	public void move(int height, int width) {
 		super.setHeading(this.getHeading() + 5);
 		if (this.getLocationX() == 0 || this.getLocationX() == 1024 || this.getLocationY() == 0
 				|| this.getLocationY() == 768) {
 			this.setHeading(this.getHeading() + 90); // turn the drone the other way
 		}
-		super.move(width, height);
+		super.move(height, width);
 	}
 
 	@Override

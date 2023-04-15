@@ -1,10 +1,10 @@
 package com.mycompany.interfaces;
 
 import com.mycompany.a3.GameWorld;
+import com.mycompany.movableObjects.NonPlayerRobot;
 
 public interface IStrategy {
+    public String getName();
 
-    public void setStrategy();
-
-    public void invokeStrategy(GameWorld gw);
+    public void apply(GameWorld gw, NonPlayerRobot npr);
 }

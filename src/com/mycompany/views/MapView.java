@@ -30,7 +30,6 @@ public class MapView extends Container implements Observer {
     public void update(Observable o, Object data) {
         gw = (GameWorld) data;
         this.repaint();
-        System.out.println(getHeight() + " " + getWidth());
     }
 
     @Override

@@ -13,6 +13,7 @@ public abstract class MovableObject extends GameObject {
 		super(size, locationX, locationY, color);
 		this.heading = heading;
 		this.speed = speed;
+		// System.out.println(this.getClass() + " " + this.getHeading());
 	}
 
 	public void move(int height, int width) {

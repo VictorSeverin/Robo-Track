@@ -14,7 +14,6 @@ public class Robot extends MovableObject implements iSteerable {
 	private int damageLevel;
 	private int lastBaseReached;
 	private int maxDamageLevel;
-	private static Robot theRobot;
 
 	/**
 	 * @param size      - the size of the object
@@ -25,7 +24,7 @@ public class Robot extends MovableObject implements iSteerable {
 	 * 
 	 **/
 	public Robot(int size, double locationX, double locationY) {
-		super(size, locationX, locationY, ColorUtil.rgb(255, 0, 0), 0, 0);
+		super(size, locationX, locationY, ColorUtil.BLUE, 0, 0);
 		this.maximumSpeed = 50;
 		this.energyLevel = 1000;
 		this.damageLevel = 0;
@@ -33,6 +32,7 @@ public class Robot extends MovableObject implements iSteerable {
 		this.lastBaseReached = 1;
 		this.steeringDirection = 0;
 		this.maxDamageLevel = 50;
+		// System.out.println(this.getClass() + " " + this);
 	}
 
 	public void move(int width, int height) {
@@ -41,6 +41,17 @@ public class Robot extends MovableObject implements iSteerable {
 		}
 		this.energyLevel -= this.energyConsumptionRate;
 		super.move(width, height);
+	}
+
+	@Override
+	public void draw(Graphics g, Point p) {
+		g.setColor(ColorUtil.YELLOW);
+		g.fillRect((int) (p.getX() + this.getLocationX() + (this.getSize() / 2)),
+				(int) (p.getY() + this.getLocationY() + (this.getSize() / 2)), this.getSize(),
+				this.getSize());
+		// g.setColor(ColorUtil.rgb(255, 0, 0));
+		// g.fillArc((int) (p.getX() + this.getLocationX()), (int) (p.getY() +
+		// this.getLocationY()), 10, 10, 0, 360);
 	}
 
 	/**
@@ -56,6 +67,10 @@ public class Robot extends MovableObject implements iSteerable {
 
 	public void setBase(int i) {
 		this.lastBaseReached = i;
+	}
+
+	public void setSteeringDirection(int direction) {
+		this.steeringDirection = direction;
 	}
 
 	public int getSteeringDirection() {

@@ -12,6 +12,8 @@ import com.mycompany.interfaces.IIterator;
 import com.mycompany.movableObjects.Drone;
 import com.mycompany.movableObjects.NonPlayerRobot;
 import com.mycompany.movableObjects.Robot;
+import com.mycompany.strategies.ChaseRobot;
+import com.mycompany.strategies.NextBase;
 import com.mycompany.movableObjects.PlayerRobot;
 import com.codename1.ui.Command;
 
@@ -46,10 +48,16 @@ public class GameWorld extends Observable {
 			GameObject obj = iter.getNext();
 			if (obj instanceof NonPlayerRobot) {
 				npr = (NonPlayerRobot) obj;
-				npr.setStrategy();
+				if (npr.getStrategy() == "ChaseRobot") {
+					npr.setStrategy(new NextBase());
+					npr.invokeStrategy(this, npr);
+				} else {
+					npr.setStrategy(new ChaseRobot());
+					npr.invokeStrategy(this, npr);
+				}
+				System.out.println(npr);
 			}
 		}
-		System.out.println(npr);
 	}
 
 	public PlayerRobot getRobot() {
@@ -298,10 +306,13 @@ public class GameWorld extends Observable {
 		IIterator iter = objects.getIterator();
 		while (iter.hasNext()) {
 			GameObject obj = iter.getNext();
-			if (obj instanceof MovableObject) {
+			if (obj instanceof MovableObject && !(obj instanceof NonPlayerRobot)) {
 				MovableObject movObj = (MovableObject) obj;
 				movObj.move(height, width);
-				// check if robot ran out of energy
+			}
+			if (obj instanceof NonPlayerRobot) {
+				NonPlayerRobot npr = (NonPlayerRobot) obj;
+				npr.invokeStrategy(this, npr);
 			}
 			if (obj instanceof PlayerRobot) {
 				PlayerRobot pr = (PlayerRobot) obj;
@@ -321,6 +332,7 @@ public class GameWorld extends Observable {
 				}
 
 			}
+
 		}
 		setChanged();
 		notifyObservers(this);
@@ -357,7 +369,6 @@ public class GameWorld extends Observable {
 	}
 
 	public void init() {
-		System.out.println("gw " + this.width + " " + this.height);
 		PlayerRobot playerRobot = PlayerRobot.getPlayerRobot(80, 270, 50);
 		objects.add(new Base(100, 250, 300, 1));
 		objects.add(new Base(100, 300, 1000, 2));
@@ -372,8 +383,8 @@ public class GameWorld extends Observable {
 		objects.add(new EnergyStation(rand.nextInt(100 - 50) + 50, rand.nextInt(1100 - 350) + 350,
 				rand.nextInt(1300 - 150) + 150));
 		objects.add(playerRobot);
-		objects.add(new NonPlayerRobot(80, 30, 50, 1));
-		objects.add(new NonPlayerRobot(80, 150, 50, 1));
-		objects.add(new NonPlayerRobot(80, 390, 50, 2));
+		objects.add(new NonPlayerRobot(80, 30, 50, new ChaseRobot()));
+		objects.add(new NonPlayerRobot(80, 150, 50, new NextBase()));
+		objects.add(new NonPlayerRobot(80, 390, 50, new NextBase()));
 	}
 }
