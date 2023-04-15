@@ -20,6 +20,8 @@ public class NonPlayerRobot extends Robot implements IStrategy {
     private int lastBaseReached;
     private int maxDamageLevel;
     private int strategy;
+    private int width;
+    private int height;
 
     public NonPlayerRobot(int size, double locationX, double locationY, int initialStrategy) {
         super(size, locationX, locationY);
@@ -37,11 +39,27 @@ public class NonPlayerRobot extends Robot implements IStrategy {
     @Override
     public void draw(Graphics g, Point p) {
         g.setColor(ColorUtil.BLACK);
-        g.drawRect((int) (p.getX() + this.getLocationX()), (int) (p.getY() + this.getLocationY()), this.getSize(),
+        g.drawRect((int) (p.getX() + this.getLocationX() + (this.getSize() / 2)),
+                (int) (p.getY() + this.getLocationY() + (this.getSize() / 2)), this.getSize(),
                 this.getSize());
     }
 
-    public void move() {
+    public void move(int width, int height) {
+        this.width = width;
+        this.height = height;
+        if (this.getLocationX() > 1024) {
+            this.steeringDirection = 270;
+        }
+        if (this.getLocationX() < 1) {
+            this.setHeading(90);
+        }
+        if (this.getLocationY() > 768) {
+            super.setHeading(180);
+            System.out.println("hit");
+        }
+        if (this.getLocationY() < 1) {
+            this.setHeading(0);
+        }
         if (this.energyLevel <= 0) {
             this.energyLevel = 250;
         }
@@ -49,7 +67,7 @@ public class NonPlayerRobot extends Robot implements IStrategy {
             super.setHeading(this.steeringDirection);
         }
         this.energyLevel -= this.energyConsumptionRate;
-        super.move();
+        super.move(width, height);
     }
 
     public void setStrategy() {
@@ -79,7 +97,7 @@ public class NonPlayerRobot extends Robot implements IStrategy {
                     }
                 }
             }
-            super.move();
+            super.move(this.width, this.height);
         } // attack the player robot
         else if (strategy == 2) {
             IIterator iter = objects.getIterator();

@@ -31,8 +31,11 @@ public class GameWorld extends Observable {
 		this.sound = false;
 	}
 
-	public void setHeightWidth(int height, int width) {
+	public void setHeight(int height) {
 		this.height = height;
+	}
+
+	public void setWidth(int width) {
 		this.width = width;
 	}
 
@@ -291,19 +294,19 @@ public class GameWorld extends Observable {
 
 	public void tickClock() {
 		this.clockTime++;
-		System.out.println("Tick");
+		System.out.println(this.height + this.width);
 		IIterator iter = objects.getIterator();
 		while (iter.hasNext()) {
 			GameObject obj = iter.getNext();
 			if (obj instanceof MovableObject) {
 				MovableObject movObj = (MovableObject) obj;
-				movObj.move();
+				movObj.move(height, width);
 				// check if robot ran out of energy
 			}
 			if (obj instanceof PlayerRobot) {
 				PlayerRobot pr = (PlayerRobot) obj;
 				if (pr.getEnergyLevel() <= 0) {
-					System.out.println("Game over, you ran out of energy + tick!");
+					System.out.println("Game over, you ran out of energy!");
 					if (this.remainingLives - 1 < 0) {
 						System.out.println("Game over, you ran out of lives!");
 						exitGame();
@@ -354,7 +357,7 @@ public class GameWorld extends Observable {
 	}
 
 	public void init() {
-		System.out.println(this.height + " " + this.width);
+		System.out.println("gw " + this.width + " " + this.height);
 		PlayerRobot playerRobot = PlayerRobot.getPlayerRobot(80, 270, 50);
 		objects.add(new Base(100, 250, 300, 1));
 		objects.add(new Base(100, 300, 1000, 2));

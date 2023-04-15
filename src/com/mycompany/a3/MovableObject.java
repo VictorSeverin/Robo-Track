@@ -15,12 +15,13 @@ public abstract class MovableObject extends GameObject {
 		this.speed = speed;
 	}
 
-	public void move() {
+	public void move(int height, int width) {
 		double deltaX = Math.cos(Math.toRadians(90 - heading)) * speed;
 		double deltaY = Math.sin(Math.toRadians(90 - heading)) * speed;
 
 		super.setLocationX(super.getLocationX() + deltaX);
 		super.setLocationY(super.getLocationY() + deltaY);
+
 	}
 
 	public void setSpeed(int speed) {

@@ -33,15 +33,18 @@ public class Drone extends MovableObject {
 				(int) p.getY() + (int) this.getLocationY(),
 				(int) p.getY() + (int) this.getLocationY() - 50 };
 		g.drawPolygon(xCoordinates, yCoordinates, 3);
+		g.setColor(ColorUtil.rgb(255, 0, 0));
+		g.fillArc((int) (p.getX() + this.getLocationX()), (int) (p.getY() +
+				this.getLocationY()), 10, 10, 0, 360);
 	}
 
-	public void move() {
+	public void move(int width, int height) {
 		super.setHeading(this.getHeading() + 5);
 		if (this.getLocationX() == 0 || this.getLocationX() == 1024 || this.getLocationY() == 0
 				|| this.getLocationY() == 768) {
 			this.setHeading(this.getHeading() + 90); // turn the drone the other way
 		}
-		super.move();
+		super.move(width, height);
 	}
 
 	@Override

@@ -15,23 +15,22 @@ import com.mycompany.interfaces.IIterator;
 
 public class MapView extends Container implements Observer {
     GameWorld gw = new GameWorld();
-    int width;
-    int heigth;
+    // int width;
+    // int height;
 
     public MapView() {
-        this.width = getWidth();
-        this.heigth = getHeight();
         this.getStyle().setBorder(Border.createLineBorder(3, ColorUtil.rgb(255, 0, 0)));
     }
 
-    public Dimension calcPreferredSize() {
-        return new Dimension(this.width, this.heigth);
-    }
+    // @Override
+    // public Dimension calcPreferredSize() {
+    // return new Dimension(this.width, this.height);
+    // }
 
     public void update(Observable o, Object data) {
         gw = (GameWorld) data;
-        // System.out.println("Hello");
         this.repaint();
+        System.out.println(getHeight() + " " + getWidth());
     }
 
     @Override

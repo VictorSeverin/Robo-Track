@@ -35,29 +35,12 @@ public class Robot extends MovableObject implements iSteerable {
 		this.maxDamageLevel = 50;
 	}
 
-	@Override
-	public void draw(Graphics g, Point p) {
-		g.setColor(ColorUtil.YELLOW);
-		g.fillRect((int) (p.getX() + this.getLocationX()), (int) (p.getY() + this.getLocationY()), this.getSize(),
-				this.getSize());
-
-	}
-
-	// singleton pattern
-	public static Robot getRobot() {
-		if (theRobot == null) {
-			theRobot = new Robot(0, 0, 0);
-		}
-		return theRobot;
-	}
-
-	public void move() {
+	public void move(int width, int height) {
 		if (this.energyLevel > 0 && this.damageLevel < this.maxDamageLevel && this.getSpeed() > 0) {
 			super.setHeading(this.steeringDirection);
 		}
-		System.out.println("1Heading: " + this.getHeading() + " 1Direction: " + this.getSteeringDirection());
 		this.energyLevel -= this.energyConsumptionRate;
-		super.move();
+		super.move(width, height);
 	}
 
 	/**
