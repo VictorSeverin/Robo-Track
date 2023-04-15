@@ -14,12 +14,10 @@ public class PlayerRobot extends Robot {
     @Override
     public void draw(Graphics g, Point p) {
         g.setColor(ColorUtil.YELLOW);
-        g.fillRect((int) (p.getX() + this.getLocationX() + (this.getSize() / 2)),
-                (int) (p.getY() + this.getLocationY() + (this.getSize() / 2)), this.getSize(),
+        g.fillRect((int) (p.getX() + this.getLocationX() - (this.getSize() / 2)),
+                (int) (p.getY() + this.getLocationY() - (this.getSize() / 2)), this.getSize(),
                 this.getSize());
-        // g.setColor(ColorUtil.rgb(255, 0, 0));
-        // g.fillArc((int) (p.getX() + this.getLocationX()), (int) (p.getY() +
-        // this.getLocationY()), 10, 10, 0, 360);
+
     }
 
     public static PlayerRobot getPlayerRobot(int size, double locationX, double locationY) {

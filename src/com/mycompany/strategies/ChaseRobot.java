@@ -7,7 +7,6 @@ import com.mycompany.movableObjects.NonPlayerRobot;
 import com.mycompany.movableObjects.PlayerRobot;
 import com.mycompany.interfaces.IIterator;
 import com.mycompany.a3.GameObject;
-import com.mycompany.fixedObjects.Base;
 import com.codename1.util.MathUtil;
 
 public class ChaseRobot implements IStrategy {

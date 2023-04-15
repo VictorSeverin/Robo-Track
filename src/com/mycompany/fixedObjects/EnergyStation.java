@@ -17,20 +17,20 @@ public class EnergyStation extends FixedObject {
 	 **/
 	public EnergyStation(int size, double locationX, double locationY) {
 		super(size, locationX, locationY, ColorUtil.GREEN);
-		this.capacity = size;
+		this.capacity = size / 2;
 	}
 
 	@Override
 	public void draw(Graphics g, Point p) {
 		g.setColor(ColorUtil.GREEN);
-		// g.drawRect((int) (p.getX() + this.getLocationX()), (int) (p.getY() +
-		// this.getLocationY()), this.getSize(),
-		// this.getSize());
-		// g.fillArc((int) (p.getX() + this.getLocationX()), (int) (p.getY() +
-		// this.getLocationY()),
-		// 100, 100, 0, 360);
+		g.fillArc((int) (p.getX() + this.getLocationX()) - (this.getSize() / 2), (int) (p.getY() +
+				this.getLocationY()) - (this.getSize() / 2), this.getSize(), this.getSize(), 0, 360);
+		g.setColor(ColorUtil.rgb(255, 0, 0));
 		g.fillArc((int) (p.getX() + this.getLocationX()), (int) (p.getY() +
-				this.getLocationY()), this.getSize(), this.getSize(), 0, 360);
+				this.getLocationY()), 10, 10, 0, 360);
+		g.drawString(Integer.toString(this.getCapacity()),
+				(int) p.getX() + (int) this.getLocationX() - 10,
+				(int) p.getY() + (int) this.getLocationY() - 10);
 	}
 
 	/**

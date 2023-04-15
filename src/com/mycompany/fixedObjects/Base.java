@@ -31,16 +31,19 @@ public class Base extends FixedObject {
 	@Override
 	public void draw(Graphics g, Point p) {
 		g.setColor(ColorUtil.CYAN);
-		int[] xCoordinates = { (int) p.getX() + (int) this.getLocationX() - 50,
+		int[] xCoordinates = {
+				(int) p.getX() + (int) this.getLocationX() - (this.getSize() / 2),
 				(int) p.getX() + (int) this.getLocationX(),
-				(int) p.getX() + (int) this.getLocationX() + 50 };
-		int[] yCoordinates = { (int) p.getY() + (int) this.getLocationY() - 50,
-				(int) p.getY() + (int) this.getLocationY(),
-				(int) p.getY() + (int) this.getLocationY() - 50 };
+				(int) p.getX() + (int) this.getLocationX() + (this.getSize() / 2) };
+		int[] yCoordinates = {
+				(int) p.getY() + (int) this.getLocationY() - (this.getSize() / 2),
+				(int) p.getY() + (int) this.getLocationY() + (this.getSize() / 2),
+				(int) p.getY() + (int) this.getLocationY() - (this.getSize() / 2) };
 		g.fillPolygon(xCoordinates, yCoordinates, 3);
 		g.setColor(ColorUtil.BLACK);
-		g.drawString(Integer.toString(this.getSequenceNumber()), (int) p.getX() + (int) this.getLocationX() - 10,
-				(int) p.getY() + (int) this.getLocationY() - 50);
+		g.drawString(Integer.toString(this.getSequenceNumber()),
+				(int) p.getX() + (int) this.getLocationX() - 10,
+				(int) p.getY() + (int) this.getLocationY() - 20);
 	}
 
 	@Override

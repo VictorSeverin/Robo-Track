@@ -7,7 +7,6 @@ import com.mycompany.movableObjects.NonPlayerRobot;
 import com.mycompany.interfaces.IIterator;
 import com.mycompany.a3.GameObject;
 import com.mycompany.fixedObjects.Base;
-import com.mycompany.fixedObjects.EnergyStation;
 import com.codename1.util.MathUtil;
 
 public class NextBase implements IStrategy {

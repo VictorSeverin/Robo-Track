@@ -16,7 +16,7 @@ public abstract class MovableObject extends GameObject {
 		// System.out.println(this.getClass() + " " + this.getHeading());
 	}
 
-	public void move(int height, int width) {
+	public void move(int width, int height) {
 		double deltaX = Math.cos(Math.toRadians(90 - heading)) * speed;
 		double deltaY = Math.sin(Math.toRadians(90 - heading)) * speed;
 

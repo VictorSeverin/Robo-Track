@@ -302,13 +302,12 @@ public class GameWorld extends Observable {
 
 	public void tickClock() {
 		this.clockTime++;
-		System.out.println(this.height + this.width);
 		IIterator iter = objects.getIterator();
 		while (iter.hasNext()) {
 			GameObject obj = iter.getNext();
 			if (obj instanceof MovableObject && !(obj instanceof NonPlayerRobot)) {
 				MovableObject movObj = (MovableObject) obj;
-				movObj.move(height, width);
+				movObj.move(width, height);
 			}
 			if (obj instanceof NonPlayerRobot) {
 				NonPlayerRobot npr = (NonPlayerRobot) obj;
@@ -369,22 +368,22 @@ public class GameWorld extends Observable {
 	}
 
 	public void init() {
-		PlayerRobot playerRobot = PlayerRobot.getPlayerRobot(80, 270, 50);
+		PlayerRobot playerRobot = PlayerRobot.getPlayerRobot(80, 270, 80);
 		objects.add(new Base(100, 250, 300, 1));
 		objects.add(new Base(100, 300, 1000, 2));
 		objects.add(new Base(100, 1100, 100, 3));
 		objects.add(new Base(100, 1100, 800, 4));
-		objects.add(new Drone(80, rand.nextInt(1092), rand.nextInt(768), rand.nextInt(359),
+		objects.add(new Drone(80, rand.nextInt(this.width - 100), rand.nextInt(this.height - 100), rand.nextInt(359),
 				5 + rand.nextInt(10)));
-		objects.add(new Drone(80, rand.nextInt(1092), rand.nextInt(768), rand.nextInt(359),
+		objects.add(new Drone(80, rand.nextInt(this.width), rand.nextInt(height), rand.nextInt(359),
 				5 + rand.nextInt(10)));
-		objects.add(new EnergyStation(rand.nextInt(100 - 50) + 50, rand.nextInt(1100 - 350) + 350,
-				rand.nextInt(1300 - 150) + 150));
-		objects.add(new EnergyStation(rand.nextInt(100 - 50) + 50, rand.nextInt(1100 - 350) + 350,
-				rand.nextInt(1300 - 150) + 150));
+		objects.add(new EnergyStation(rand.nextInt(200 - 50) + 50, rand.nextInt(this.width - 200),
+				rand.nextInt(this.height - 200)));
+		objects.add(new EnergyStation(rand.nextInt(200 - 50) + 50, rand.nextInt(this.width - 200),
+				rand.nextInt(this.height - 200)));
 		objects.add(playerRobot);
-		objects.add(new NonPlayerRobot(80, 30, 50, new ChaseRobot()));
-		objects.add(new NonPlayerRobot(80, 150, 50, new NextBase()));
-		objects.add(new NonPlayerRobot(80, 390, 50, new NextBase()));
+		objects.add(new NonPlayerRobot(80, 30, 80, new ChaseRobot()));
+		objects.add(new NonPlayerRobot(80, 150, 80, new NextBase()));
+		objects.add(new NonPlayerRobot(80, 390, 80, new NextBase()));
 	}
 }

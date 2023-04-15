@@ -26,25 +26,25 @@ public class Drone extends MovableObject {
 	@Override
 	public void draw(Graphics g, Point p) {
 		g.setColor(ColorUtil.BLUE);
-		int[] xCoordinates = { (int) p.getX() + (int) this.getLocationX() - 50,
+		int[] xCoordinates = {
+				(int) p.getX() + (int) this.getLocationX() - (this.getSize() / 2),
 				(int) p.getX() + (int) this.getLocationX(),
-				(int) p.getX() + (int) this.getLocationX() + 50 };
-		int[] yCoordinates = { (int) p.getY() + (int) this.getLocationY() - 50,
-				(int) p.getY() + (int) this.getLocationY(),
-				(int) p.getY() + (int) this.getLocationY() - 50 };
+				(int) p.getX() + (int) this.getLocationX() + (this.getSize() / 2) };
+		int[] yCoordinates = {
+				(int) p.getY() + (int) this.getLocationY() - (this.getSize() / 2),
+				(int) p.getY() + (int) this.getLocationY() + (this.getSize() / 2),
+				(int) p.getY() + (int) this.getLocationY() - (this.getSize() / 2) };
 		g.drawPolygon(xCoordinates, yCoordinates, 3);
-		g.setColor(ColorUtil.rgb(255, 0, 0));
-		g.fillArc((int) (p.getX() + this.getLocationX()), (int) (p.getY() +
-				this.getLocationY()), 10, 10, 0, 360);
 	}
 
 	public void move(int height, int width) {
-		super.setHeading(this.getHeading() + 5);
-		if (this.getLocationX() == 0 || this.getLocationX() == 1024 || this.getLocationY() == 0
-				|| this.getLocationY() == 768) {
-			this.setHeading(this.getHeading() + 90); // turn the drone the other way
+		super.setHeading(this.getHeading() + 1);
+		if (this.getLocationX() > width || this.getLocationX() < 1 || this.getLocationY() > height
+				|| this.getLocationY() < 1) {
+			this.setHeading(this.getHeading() + 180);
 		}
-		super.move(height, width);
+		super.move(width, height);
+		System.out.println("X:" + this.getLocationX() + " Y: " + this.getLocationY() + "W: " + width + " H: " + height);
 	}
 
 	@Override
