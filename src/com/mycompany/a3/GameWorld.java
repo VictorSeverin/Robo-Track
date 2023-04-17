@@ -111,10 +111,10 @@ public class GameWorld extends Observable {
 			GameObject obj = iter.getNext();
 			if (obj instanceof PlayerRobot) {
 				PlayerRobot robot = (PlayerRobot) obj;
-				if (robot.getSpeed() + 5 > robot.getMaximumSpeed()) {
+				if (robot.getSpeed() + 3 > robot.getMaximumSpeed()) {
 					robot.setSpeed(robot.getMaximumSpeed());
 				} else { // otherwise increment speed by 5
-					robot.setSpeed(robot.getSpeed() + 5);
+					robot.setSpeed(robot.getSpeed() + 3);
 				}
 			}
 		}
@@ -148,11 +148,12 @@ public class GameWorld extends Observable {
 			GameObject obj = iter.getNext();
 			if (obj instanceof PlayerRobot) {
 				PlayerRobot robot = (PlayerRobot) obj;
-				if (robot.getSteeringDirection() - 5 < -40) { // check if steering left will lead to less than -40
+				if (robot.getSteeringDirection() - 1 < -40) { // check if steering left will lead to less than -40
 					robot.turn(-40);
 				} else { // otherwise decrease steering direction by 5
-					robot.turn(robot.getSteeringDirection() - 5);
+					robot.turn(robot.getSteeringDirection() - 1);
 				}
+				System.out.println("Steering Direction: " + robot.getSteeringDirection());
 			}
 		}
 		setChanged();
@@ -168,11 +169,11 @@ public class GameWorld extends Observable {
 			GameObject obj = iter.getNext();
 			if (obj instanceof PlayerRobot) {
 				PlayerRobot robot = (PlayerRobot) obj;
-				if (robot.getSteeringDirection() + 5 > 40) { // check if steering right will lead to more than 40
+				if (robot.getSteeringDirection() + 1 > 40) { // check if steering right will lead to more than 40
 					// degrees
 					robot.turn(40);
 				} else { // otherwise decrease steering direction by 5
-					robot.turn(robot.getSteeringDirection() + 5);
+					robot.turn(robot.getSteeringDirection() + 1);
 				}
 			}
 		}
@@ -312,7 +313,8 @@ public class GameWorld extends Observable {
 			}
 			if (obj instanceof NonPlayerRobot) {
 				NonPlayerRobot npr = (NonPlayerRobot) obj;
-				npr.invokeStrategy(this, npr, 20);
+				npr.move(this, npr, width, height, 20);
+				// npr.invokeStrategy(this, npr, 20);
 			}
 			if (obj instanceof PlayerRobot) {
 				PlayerRobot pr = (PlayerRobot) obj;

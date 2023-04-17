@@ -12,28 +12,14 @@ import com.mycompany.interfaces.IIterator;
 import com.mycompany.interfaces.IStrategy;
 
 public class NonPlayerRobot extends Robot {
-    private int steeringDirection;
-    private int maximumSpeed;
-    private int energyLevel;
-    private int energyConsumptionRate;
-    private int damageLevel;
-    private int lastBaseReached;
-    private int maxDamageLevel;
     private int width;
     private int height;
     private IStrategy currIStrategy;
 
     public NonPlayerRobot(int size, double locationX, double locationY, IStrategy initialStrategy) {
         super(size, locationX, locationY, 3);
-        this.maximumSpeed = 20;
-        this.energyLevel = 2000;
-        this.damageLevel = 0;
-        this.energyConsumptionRate = 5;
-        this.lastBaseReached = 1;
-        this.steeringDirection = 90;
-        this.maxDamageLevel = 100;
         this.currIStrategy = initialStrategy;
-        // System.out.println("New Npr: " + this);
+        System.out.println(this.getEnergyLevel() + " " + this.getEnergyConsumptionRate());
     }
 
     @Override
@@ -47,6 +33,12 @@ public class NonPlayerRobot extends Robot {
         g.drawArc((int) (p.getX() + this.getLocationX()) - radius, (int) (p.getY() +
                 this.getLocationY()) - radius, radius * 2, radius * 2, 0, 360);
 
+    }
+
+    public void move(GameWorld gw, NonPlayerRobot npr, int width, int height, int elapsedTime) {
+        invokeStrategy(gw, npr, elapsedTime);
+        super.setHeading(this.getSteeringDirection());
+        super.move(width, height, elapsedTime);
     }
 
     public String getStrategy() {

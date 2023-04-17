@@ -11,6 +11,11 @@ public class PlayerRobot extends Robot {
         super(size, locationX, locationY, 0);
     }
 
+    public void move(int width, int height, int elapsedTime) {
+        super.setHeading(this.getHeading() + this.getSteeringDirection());
+        super.move(width, height, elapsedTime);
+    }
+
     @Override
     public void draw(Graphics g, Point p) {
         g.setColor(ColorUtil.rgb(255, 0, 0));

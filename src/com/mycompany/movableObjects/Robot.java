@@ -28,16 +28,14 @@ public class Robot extends MovableObject implements iSteerable {
 		this.maximumSpeed = 10;
 		this.energyLevel = 1000;
 		this.damageLevel = 0;
-		this.energyConsumptionRate = 2;
+		this.energyConsumptionRate = 1;
 		this.lastBaseReached = 1;
 		this.steeringDirection = 0;
 		this.maxDamageLevel = 50;
-		// System.out.println(this.getClass() + " " + this);
 	}
 
 	public void move(int width, int height, int elapsedTime) {
 		if (this.energyLevel > 0 && this.damageLevel < this.maxDamageLevel && this.getSpeed() > 0) {
-			super.setHeading(this.steeringDirection);
 			this.energyLevel -= this.energyConsumptionRate;
 			super.move(width, height, elapsedTime);
 		}

@@ -52,7 +52,8 @@ public class Drone extends MovableObject {
 			this.setHeading(this.getHeading() + 180);
 		}
 		super.move(width, height, elapsedTime);
-		System.out.println("X:" + this.getLocationX() + " Y: " + this.getLocationY() + "W: " + width + " H: " + height);
+		// System.out.println("X:" + this.getLocationX() + " Y: " + this.getLocationY()
+		// + "W: " + width + " H: " + height);
 	}
 
 	@Override
