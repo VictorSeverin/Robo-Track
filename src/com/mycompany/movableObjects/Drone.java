@@ -27,23 +27,31 @@ public class Drone extends MovableObject {
 	public void draw(Graphics g, Point p) {
 		g.setColor(ColorUtil.BLUE);
 		int[] xCoordinates = {
-				(int) p.getX() + (int) this.getLocationX() - (this.getSize() / 2),
-				(int) p.getX() + (int) this.getLocationX(),
-				(int) p.getX() + (int) this.getLocationX() + (this.getSize() / 2) };
+				(int) p.getX() + (int) this.getLocationX() - (this.getSize()),
+				((int) p.getX() + (int) this.getLocationX()),
+				((int) p.getX() + (int) this.getLocationX()) + (this.getSize()) };
 		int[] yCoordinates = {
-				(int) p.getY() + (int) this.getLocationY() - (this.getSize() / 2),
-				(int) p.getY() + (int) this.getLocationY() + (this.getSize() / 2),
-				(int) p.getY() + (int) this.getLocationY() - (this.getSize() / 2) };
+				((int) p.getY() + (int) this.getLocationY()) - (this.getSize()),
+				((int) p.getY() + (int) this.getLocationY()) + (this.getSize()),
+				((int) p.getY() + (int) this.getLocationY()) - (this.getSize()) };
 		g.drawPolygon(xCoordinates, yCoordinates, 3);
+		g.setColor(ColorUtil.rgb(255, 0, 0));
+		int radius = (int) Math.sqrt((this.getSize() * this.getSize()) + ((this.getSize()) * (this.getSize())));
+		g.drawArc((int) (p.getX() + this.getLocationX()) - radius, (int) (p.getY() +
+				this.getLocationY()) - radius, radius * 2, radius * 2, 0, 360);
+
+		g.fillRect((int) (p.getX() + this.getLocationX()),
+				(int) (p.getY() + this.getLocationY()), 10,
+				10);
 	}
 
-	public void move(int height, int width) {
+	public void move(int height, int width, int elapsedTime) {
 		super.setHeading(this.getHeading() + 1);
 		if (this.getLocationX() > width || this.getLocationX() < 1 || this.getLocationY() > height
 				|| this.getLocationY() < 1) {
 			this.setHeading(this.getHeading() + 180);
 		}
-		super.move(width, height);
+		super.move(width, height, elapsedTime);
 		System.out.println("X:" + this.getLocationX() + " Y: " + this.getLocationY() + "W: " + width + " H: " + height);
 	}
 

@@ -24,10 +24,9 @@ public class NonPlayerRobot extends Robot {
     private IStrategy currIStrategy;
 
     public NonPlayerRobot(int size, double locationX, double locationY, IStrategy initialStrategy) {
-        super(size, locationX, locationY);
-        super.setSpeed(15);
-        this.maximumSpeed = 50;
-        this.energyLevel = 250;
+        super(size, locationX, locationY, 3);
+        this.maximumSpeed = 20;
+        this.energyLevel = 2000;
         this.damageLevel = 0;
         this.energyConsumptionRate = 5;
         this.lastBaseReached = 1;
@@ -42,6 +41,11 @@ public class NonPlayerRobot extends Robot {
         g.setColor(ColorUtil.BLACK);
         g.drawRect((int) (p.getX() + this.getLocationX() - (this.getSize() / 2)),
                 (int) (p.getY() + this.getLocationY() - (this.getSize() / 2)), this.getSize(), this.getSize());
+        g.setColor(ColorUtil.rgb(255, 0, 0));
+        int radius = (int) Math
+                .sqrt((this.getSize() / 2 * this.getSize() / 2) + ((this.getSize() / 2) * (this.getSize() / 2)));
+        g.drawArc((int) (p.getX() + this.getLocationX()) - radius, (int) (p.getY() +
+                this.getLocationY()) - radius, radius * 2, radius * 2, 0, 360);
 
     }
 
@@ -53,9 +57,9 @@ public class NonPlayerRobot extends Robot {
         this.currIStrategy = strategy;
     }
 
-    public void invokeStrategy(GameWorld gw, NonPlayerRobot npr) {
+    public void invokeStrategy(GameWorld gw, NonPlayerRobot npr, int elapsedTime) {
         this.currIStrategy.apply(gw, npr);
-        super.move(width, height);
+        super.move(width, height, elapsedTime);
     }
 
     @Override

@@ -23,9 +23,9 @@ public class Robot extends MovableObject implements iSteerable {
 	 * @param speed     - speed of the object
 	 * 
 	 **/
-	public Robot(int size, double locationX, double locationY) {
-		super(size, locationX, locationY, ColorUtil.BLUE, 0, 0);
-		this.maximumSpeed = 50;
+	public Robot(int size, double locationX, double locationY, int speed) {
+		super(size, locationX, locationY, ColorUtil.BLUE, 0, speed);
+		this.maximumSpeed = 10;
 		this.energyLevel = 1000;
 		this.damageLevel = 0;
 		this.energyConsumptionRate = 2;
@@ -35,12 +35,12 @@ public class Robot extends MovableObject implements iSteerable {
 		// System.out.println(this.getClass() + " " + this);
 	}
 
-	public void move(int width, int height) {
+	public void move(int width, int height, int elapsedTime) {
 		if (this.energyLevel > 0 && this.damageLevel < this.maxDamageLevel && this.getSpeed() > 0) {
 			super.setHeading(this.steeringDirection);
+			this.energyLevel -= this.energyConsumptionRate;
+			super.move(width, height, elapsedTime);
 		}
-		this.energyLevel -= this.energyConsumptionRate;
-		super.move(width, height);
 	}
 
 	@Override
@@ -49,9 +49,9 @@ public class Robot extends MovableObject implements iSteerable {
 		g.fillRect((int) (p.getX() + this.getLocationX() + (this.getSize() / 2)),
 				(int) (p.getY() + this.getLocationY() + (this.getSize() / 2)), this.getSize(),
 				this.getSize());
-		// g.setColor(ColorUtil.rgb(255, 0, 0));
-		// g.fillArc((int) (p.getX() + this.getLocationX()), (int) (p.getY() +
-		// this.getLocationY()), 10, 10, 0, 360);
+		g.setColor(ColorUtil.rgb(255, 0, 0));
+		g.drawArc((int) (p.getX() + this.getLocationX()) - (this.getSize() / 2), (int) (p.getY() +
+				this.getLocationY()) - (this.getSize() / 2), this.getSize(), this.getSize(), 0, 360);
 	}
 
 	/**

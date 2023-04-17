@@ -3,6 +3,7 @@ package com.mycompany.a3;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Timer;
 
 import com.codename1.ui.Form;
 import com.codename1.ui.events.ActionListener;
@@ -13,6 +14,7 @@ import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.Label;
 import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.plaf.Border;
+import com.codename1.ui.util.UITimer;
 import com.mycompany.commands.About;
 import com.mycompany.commands.Accelerate;
 import com.mycompany.commands.Brake;
@@ -44,10 +46,16 @@ import com.codename1.ui.Dialog;
 import java.io.IOException;
 import java.lang.String;
 
-public class Game extends Form {
+public class Game extends Form implements Runnable {
 	private GameWorld gw;
 	private MapView mv;
 	private ScoreView sv;
+	UITimer timer = new UITimer(this);
+
+	@Override
+	public void run() {
+		// gw.tickClock(timer);
+	}
 
 	public Game() {
 		gw = new GameWorld();
@@ -55,7 +63,7 @@ public class Game extends Form {
 		sv = new ScoreView();
 		gw.addObserver(mv);
 		gw.addObserver(sv);
-		System.out.println("Game: " + mv.getWidth() + " " + mv.getHeight());
+		timer.schedule(20, true, this);
 
 		Accelerate acc = new Accelerate(gw);
 		Brake brake = new Brake(gw);
@@ -69,7 +77,7 @@ public class Game extends Form {
 		Help help = new Help(gw);
 		LeftTurn leftTurn = new LeftTurn(gw);
 		RightTurn rightTurn = new RightTurn(gw);
-		Tick tick = new Tick(gw);
+		Tick tick = new Tick(gw, timer);
 		ToggleSound sound = new ToggleSound(gw);
 
 		setLayout(new BorderLayout());

@@ -32,14 +32,18 @@ public class Base extends FixedObject {
 	public void draw(Graphics g, Point p) {
 		g.setColor(ColorUtil.CYAN);
 		int[] xCoordinates = {
-				(int) p.getX() + (int) this.getLocationX() - (this.getSize() / 2),
-				(int) p.getX() + (int) this.getLocationX(),
-				(int) p.getX() + (int) this.getLocationX() + (this.getSize() / 2) };
+				(int) p.getX() + (int) this.getLocationX() - (this.getSize()),
+				((int) p.getX() + (int) this.getLocationX()),
+				((int) p.getX() + (int) this.getLocationX()) + (this.getSize()) };
 		int[] yCoordinates = {
-				(int) p.getY() + (int) this.getLocationY() - (this.getSize() / 2),
-				(int) p.getY() + (int) this.getLocationY() + (this.getSize() / 2),
-				(int) p.getY() + (int) this.getLocationY() - (this.getSize() / 2) };
-		g.fillPolygon(xCoordinates, yCoordinates, 3);
+				((int) p.getY() + (int) this.getLocationY()) - (this.getSize()),
+				((int) p.getY() + (int) this.getLocationY()) + (this.getSize()),
+				((int) p.getY() + (int) this.getLocationY()) - (this.getSize()) };
+		g.drawPolygon(xCoordinates, yCoordinates, 3);
+		g.setColor(ColorUtil.rgb(255, 0, 0));
+		int radius = (int) Math.sqrt((this.getSize() * this.getSize()) + ((this.getSize()) * (this.getSize())));
+		g.drawArc((int) (p.getX() + this.getLocationX()) - radius, (int) (p.getY() +
+				this.getLocationY()) - radius, radius * 2, radius * 2, 0, 360);
 		g.setColor(ColorUtil.BLACK);
 		g.drawString(Integer.toString(this.getSequenceNumber()),
 				(int) p.getX() + (int) this.getLocationX() - 10,

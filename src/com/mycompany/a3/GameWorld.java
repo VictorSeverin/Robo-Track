@@ -6,6 +6,7 @@ import java.util.Random;
 import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.TextField;
+import com.codename1.ui.util.UITimer;
 import com.mycompany.fixedObjects.Base;
 import com.mycompany.fixedObjects.EnergyStation;
 import com.mycompany.interfaces.IIterator;
@@ -50,10 +51,10 @@ public class GameWorld extends Observable {
 				npr = (NonPlayerRobot) obj;
 				if (npr.getStrategy() == "ChaseRobot") {
 					npr.setStrategy(new NextBase());
-					npr.invokeStrategy(this, npr);
+					npr.invokeStrategy(this, npr, 10);
 				} else {
 					npr.setStrategy(new ChaseRobot());
-					npr.invokeStrategy(this, npr);
+					npr.invokeStrategy(this, npr, 10);
 				}
 				System.out.println(npr);
 			}
@@ -300,26 +301,27 @@ public class GameWorld extends Observable {
 		notifyObservers(this);
 	}
 
-	public void tickClock() {
+	public void tickClock(UITimer timer) {
 		this.clockTime++;
 		IIterator iter = objects.getIterator();
 		while (iter.hasNext()) {
 			GameObject obj = iter.getNext();
 			if (obj instanceof MovableObject && !(obj instanceof NonPlayerRobot)) {
 				MovableObject movObj = (MovableObject) obj;
-				movObj.move(width, height);
+				movObj.move(width, height, 10);
 			}
 			if (obj instanceof NonPlayerRobot) {
 				NonPlayerRobot npr = (NonPlayerRobot) obj;
-				npr.invokeStrategy(this, npr);
+				npr.invokeStrategy(this, npr, 20);
 			}
 			if (obj instanceof PlayerRobot) {
 				PlayerRobot pr = (PlayerRobot) obj;
 				if (pr.getEnergyLevel() <= 0) {
-					System.out.println("Game over, you ran out of energy!");
+					System.out.println("Game over, you ran out of energy! Line319");
 					if (this.remainingLives - 1 < 0) {
-						System.out.println("Game over, you ran out of lives!");
-						exitGame();
+						System.out.println("Game over, you ran out of lives! Line 321");
+						timer.cancel();
+						// exitGame();
 					}
 					this.remainingLives--;
 					double oldLocationX = pr.getLocationX();
@@ -369,14 +371,14 @@ public class GameWorld extends Observable {
 
 	public void init() {
 		PlayerRobot playerRobot = PlayerRobot.getPlayerRobot(80, 270, 80);
-		objects.add(new Base(100, 250, 300, 1));
-		objects.add(new Base(100, 300, 1000, 2));
-		objects.add(new Base(100, 1100, 100, 3));
-		objects.add(new Base(100, 1100, 800, 4));
-		objects.add(new Drone(80, rand.nextInt(this.width - 100), rand.nextInt(this.height - 100), rand.nextInt(359),
-				5 + rand.nextInt(10)));
-		objects.add(new Drone(80, rand.nextInt(this.width), rand.nextInt(height), rand.nextInt(359),
-				5 + rand.nextInt(10)));
+		objects.add(new Base(60, 250, 300, 1));
+		objects.add(new Base(60, 300, 1000, 2));
+		objects.add(new Base(60, 1100, 100, 3));
+		objects.add(new Base(60, 1100, 800, 4));
+		objects.add(new Drone(50, rand.nextInt(this.width - 100), rand.nextInt(this.height - 100), rand.nextInt(359),
+				2));
+		objects.add(new Drone(50, rand.nextInt(this.width), rand.nextInt(height), rand.nextInt(359),
+				2));
 		objects.add(new EnergyStation(rand.nextInt(200 - 50) + 50, rand.nextInt(this.width - 200),
 				rand.nextInt(this.height - 200)));
 		objects.add(new EnergyStation(rand.nextInt(200 - 50) + 50, rand.nextInt(this.width - 200),
