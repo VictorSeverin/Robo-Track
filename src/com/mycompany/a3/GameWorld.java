@@ -256,6 +256,25 @@ public class GameWorld extends Observable {
 		notifyObservers(this);
 	}
 
+	public void baseCollide(Robot robot, Base base) {
+		if (base.getSequenceNumber() == robot.getLastBaseReached() + 1) {
+			robot.setBase(robot.getLastBaseReached() + 1);
+			System.out.println("Reached base" + base.getSequenceNumber());
+			if (base.getSequenceNumber() == 4) {
+				if (robot instanceof PlayerRobot) {
+					System.out.println("Game Over! You won");
+
+				} else if (robot instanceof NonPlayerRobot) {
+					System.out.println("Game Over! You won");
+					robot.setSpeed(0);
+				}
+			}
+
+		}
+		setChanged();
+		notifyObservers(this);
+	}
+
 	public void tickClock(UITimer timer) {
 		this.clockTime++;
 		IIterator iter = objects.getIterator();
@@ -304,27 +323,9 @@ public class GameWorld extends Observable {
 		notifyObservers(this);
 	}
 
-	public void baseCollide(Robot robot, Base base) {
-		if (base.getSequenceNumber() == robot.getLastBaseReached() + 1) {
-			robot.setBase(robot.getLastBaseReached() + 1);
-			System.out.println("Reached base" + base.getSequenceNumber());
-			if (base.getSequenceNumber() == 4) {
-				if (robot instanceof PlayerRobot) {
-					System.out.println("Game Over! You won");
-
-				} else if (robot instanceof NonPlayerRobot) {
-					System.out.println("Game Over! You won");
-					robot.setSpeed(0);
-				}
-			}
-
-		}
-		setChanged();
-		notifyObservers(this);
-	}
-
 	public void init() {
-		PlayerRobot playerRobot = PlayerRobot.getPlayerRobot(80, 270, 80);
+
+		PlayerRobot playerRobot = PlayerRobot.getPlayerRobot(80, 50, 50);
 		objects.add(new Base(60, 250, 300, 1));
 		objects.add(new Base(60, 300, 1000, 2));
 		objects.add(new Base(60, 1100, 100, 3));
@@ -339,7 +340,7 @@ public class GameWorld extends Observable {
 		objects.add(new EnergyStation(rand.nextInt(200 - 50) + 50, rand.nextInt(this.width - 200),
 				rand.nextInt(this.height - 200)));
 		objects.add(playerRobot);
-		objects.add(new NonPlayerRobot(80, 30, 80, new NextBase()));
+		// objects.add(new NonPlayerRobot(80, 30, 80, new NextBase()));
 		// objects.add(new NonPlayerRobot(80, 150, 80, new NextBase()));
 		// objects.add(new NonPlayerRobot(80, 390, 80, new NextBase()));
 	}

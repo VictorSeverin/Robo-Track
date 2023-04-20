@@ -25,22 +25,19 @@ public abstract class MovableObject extends GameObject {
 		double newY = super.getLocationY() + deltaY;
 		super.setLocationX(newX);
 		super.setLocationY(newY);
-		int radius = (int) Math
-				.sqrt((this.getSize() / 2 * this.getSize() / 2) + ((this.getSize() / 2) * (this.getSize() / 2)));
-
-		if ((this.getLocationX() + radius) == width) {
+		if ((this.getLocationX() + this.getSize() / 2) >= width) {
+			this.setHeading(-this.getHeading());
+		}
+		if ((this.getLocationX() - this.getSize() / 2) <= 0) {
+			this.setHeading(-this.getHeading());
+		}
+		if ((this.getLocationY() + this.getSize() / 2) >= height - 100) {
 			this.setHeading(this.getHeading() + 180);
 		}
-		if (this.getLocationX() + radius == 0) {
+		if ((this.getLocationY() - this.getSize() / 2) <= 0) {
 			this.setHeading(this.getHeading() + 180);
 		}
-		if (this.getLocationY() + radius == height) {
-			this.setHeading(this.getHeading() + 180);
-		}
-		if (this.getLocationY() + radius == 0) {
-			this.setHeading(this.getHeading() + 180);
-		}
-
+		// System.out.println("From Movable__________ W: " + width + "H: " + height);
 	}
 
 	public void setSpeed(int speed) {

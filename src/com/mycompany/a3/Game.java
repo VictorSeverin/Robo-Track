@@ -14,18 +14,17 @@ import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.Label;
 import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.plaf.Border;
+import com.codename1.ui.spinner.Picker;
 import com.codename1.ui.util.UITimer;
 import com.mycompany.commands.About;
 import com.mycompany.commands.Accelerate;
 import com.mycompany.commands.Brake;
 import com.mycompany.commands.ChangeStrategy;
-import com.mycompany.commands.CollideBase;
-import com.mycompany.commands.CollideDrone;
-import com.mycompany.commands.CollideEs;
-import com.mycompany.commands.CollideNpr;
 import com.mycompany.commands.Exit;
 import com.mycompany.commands.Help;
 import com.mycompany.commands.LeftTurn;
+import com.mycompany.commands.Pause;
+import com.mycompany.commands.Position;
 import com.mycompany.commands.RightTurn;
 import com.mycompany.commands.Tick;
 import com.mycompany.commands.ToggleSound;
@@ -68,16 +67,14 @@ public class Game extends Form implements Runnable {
 		Brake brake = new Brake(gw);
 		About about = new About();
 		ChangeStrategy changeStrategy = new ChangeStrategy(gw);
-		CollideBase collideBase = new CollideBase(gw);
-		CollideDrone collideDrone = new CollideDrone(gw);
-		CollideEs collideEs = new CollideEs(gw);
-		CollideNpr collideNpr = new CollideNpr(gw);
 		Exit exit = new Exit(gw);
 		Help help = new Help(gw);
 		LeftTurn leftTurn = new LeftTurn(gw);
 		RightTurn rightTurn = new RightTurn(gw);
 		Tick tick = new Tick(gw, timer);
 		ToggleSound sound = new ToggleSound(gw);
+		Pause pause = new Pause(gw);
+		Position position = new Position(gw);
 
 		setLayout(new BorderLayout());
 		// Buttons
@@ -86,57 +83,48 @@ public class Game extends Form implements Runnable {
 		Button chgStrategyButton = new Button("Change Strategy");
 		Button brakeButton = new Button("Break");
 		Button righButton = new Button("Right");
-		Button cldNprButton = new Button("Collide with NPR");
-		Button cldBaseButton = new Button("Collide with Base");
-		Button cldEsButton = new Button("Collide with Energy Station");
-		Button cldDroneButton = new Button("Collide with Drone");
 		Button tickButtoon = new Button("Tick");
 		Button helpButton = new Button("Help");
+		Button pauseButton = new Button("Pause");
+		Button positionButton = new Button("position");
 		// key Bindings
 		this.addKeyListener('a', acc);
 		this.addKeyListener('b', brake);
 		this.addKeyListener('l', leftTurn);
 		this.addKeyListener('r', rightTurn);
-		this.addKeyListener('e', collideEs);
-		this.addKeyListener('g', collideDrone);
 		this.addKeyListener('t', tick);
+		this.addKeyListener('p', pause);
 
 		// Styles
 		accButton.getStyle().setBgTransparency(255);
 		leftButton.getStyle().setBgTransparency(255);
 		chgStrategyButton.getStyle().setBgTransparency(255);
 		righButton.getStyle().setBgTransparency(255);
-		cldNprButton.getStyle().setBgTransparency(255);
-		cldEsButton.getStyle().setBgTransparency(255);
-		cldDroneButton.getStyle().setBgTransparency(255);
 		tickButtoon.getStyle().setBgTransparency(255);
 		helpButton.getStyle().setBgTransparency(255);
 		brakeButton.getStyle().setBgTransparency(255);
-		cldBaseButton.getStyle().setBgTransparency(255);
+		pauseButton.getStyle().setBgTransparency(255);
+		positionButton.getStyle().setBgTransparency(255);
 		// bg COlor
 		accButton.getStyle().setBgColor(ColorUtil.BLUE);
 		leftButton.getStyle().setBgColor(ColorUtil.BLUE);
 		chgStrategyButton.getStyle().setBgColor(ColorUtil.BLUE);
 		righButton.getStyle().setBgColor(ColorUtil.BLUE);
-		cldNprButton.getStyle().setBgColor(ColorUtil.BLUE);
-		cldEsButton.getStyle().setBgColor(ColorUtil.BLUE);
-		cldDroneButton.getStyle().setBgColor(ColorUtil.BLUE);
 		tickButtoon.getStyle().setBgColor(ColorUtil.BLUE);
 		helpButton.getStyle().setBgColor(ColorUtil.BLUE);
 		brakeButton.getStyle().setBgColor(ColorUtil.BLUE);
-		cldBaseButton.getStyle().setBgColor(ColorUtil.BLUE);
+		pauseButton.getStyle().setBgColor(ColorUtil.BLUE);
+		positionButton.getStyle().setBgColor(ColorUtil.BLUE);
 		// padding
 		accButton.getStyle().setPadding(5, 5, 5, 5);
 		leftButton.getStyle().setPadding(5, 5, 5, 5);
 		chgStrategyButton.getStyle().setPadding(5, 5, 5, 5);
 		righButton.getStyle().setPadding(5, 5, 5, 5);
 		brakeButton.getStyle().setPadding(5, 5, 5, 5);
-		cldNprButton.getStyle().setPadding(5, 5, 3, 3);
-		cldEsButton.getStyle().setPadding(5, 5, 3, 3);
-		cldDroneButton.getStyle().setPadding(5, 5, 3, 3);
 		tickButtoon.getStyle().setPadding(5, 5, 3, 3);
 		helpButton.getStyle().setPadding(5, 5, 0, 0);
-		cldBaseButton.getStyle().setPadding(5, 5, 0, 0);
+		pauseButton.getStyle().setPadding(5, 5, 3, 3);
+		positionButton.getStyle().setPadding(5, 5, 3, 3);
 
 		// border
 		accButton.getStyle().setBorder(Border.createLineBorder(3, ColorUtil.BLACK));
@@ -144,23 +132,20 @@ public class Game extends Form implements Runnable {
 		chgStrategyButton.getStyle().setBorder(Border.createLineBorder(3, ColorUtil.BLACK));
 		righButton.getStyle().setBorder(Border.createLineBorder(3, ColorUtil.BLACK));
 		brakeButton.getStyle().setBorder(Border.createLineBorder(3, ColorUtil.BLACK));
-		cldNprButton.getStyle().setBorder(Border.createLineBorder(3, ColorUtil.BLACK));
-		cldEsButton.getStyle().setBorder(Border.createLineBorder(3, ColorUtil.BLACK));
-		cldDroneButton.getStyle().setBorder(Border.createLineBorder(3, ColorUtil.BLACK));
 		tickButtoon.getStyle().setBorder(Border.createLineBorder(3, ColorUtil.BLACK));
 		helpButton.getStyle().setBorder(Border.createLineBorder(3, ColorUtil.BLACK));
+		pauseButton.getStyle().setBorder(Border.createLineBorder(3, ColorUtil.BLACK));
+		positionButton.getStyle().setBorder(Border.createLineBorder(3, ColorUtil.BLACK));
 		// text color
 		accButton.getStyle().setFgColor(ColorUtil.WHITE);
 		leftButton.getStyle().setFgColor(ColorUtil.WHITE);
 		chgStrategyButton.getStyle().setFgColor(ColorUtil.WHITE);
 		righButton.getStyle().setFgColor(ColorUtil.WHITE);
 		brakeButton.getStyle().setFgColor(ColorUtil.WHITE);
-		cldNprButton.getStyle().setFgColor(ColorUtil.WHITE);
-		cldEsButton.getStyle().setFgColor(ColorUtil.WHITE);
-		cldDroneButton.getStyle().setFgColor(ColorUtil.WHITE);
 		tickButtoon.getStyle().setFgColor(ColorUtil.WHITE);
 		helpButton.getStyle().setFgColor(ColorUtil.WHITE);
-		cldBaseButton.getStyle().setFgColor(ColorUtil.WHITE);
+		pauseButton.getStyle().setFgColor(ColorUtil.WHITE);
+		positionButton.getStyle().setFgColor(ColorUtil.WHITE);
 
 		accButton.getStyle().setMarginTop(100);
 		brakeButton.getStyle().setMarginTop(100);
@@ -171,12 +156,10 @@ public class Game extends Form implements Runnable {
 		chgStrategyButton.addActionListener(changeStrategy);
 		brakeButton.addActionListener(brake);
 		righButton.addActionListener(rightTurn);
-		cldNprButton.addActionListener(collideNpr);
-		cldBaseButton.addActionListener(collideBase);
-		cldEsButton.addActionListener(collideEs);
-		cldDroneButton.addActionListener(collideDrone);
 		tickButtoon.addActionListener(tick);
 		helpButton.addActionListener(sound);
+		pauseButton.addActionListener(pause);
+		positionButton.addActionListener(position);
 		// Containers
 		Container wesContainer = new Container(new BoxLayout(2));
 		wesContainer.add(accButton);
@@ -188,11 +171,8 @@ public class Game extends Form implements Runnable {
 		eastContainer.add(righButton);
 
 		Container southContainer = new Container(new FlowLayout(Component.CENTER));
-		southContainer.add(cldNprButton);
-		southContainer.add(cldBaseButton);
-		southContainer.add(cldEsButton);
-		southContainer.add(cldDroneButton);
-		southContainer.add(tickButtoon);
+		southContainer.add(positionButton);
+		southContainer.add(pauseButton);
 
 		Container topContainer = new Container(new FlowLayout(Component.CENTER));
 		topContainer.add(sv);

@@ -34,7 +34,7 @@ public class Robot extends MovableObject implements iSteerable {
 	public Robot(int size, double locationX, double locationY, int speed) {
 		super(size, locationX, locationY, ColorUtil.BLUE, 0, speed);
 		this.maximumSpeed = 10;
-		this.energyLevel = 1000;
+		this.energyLevel = 10000;
 		this.damageLevel = 0;
 		this.energyConsumptionRate = 1;
 		this.lastBaseReached = 0;
@@ -52,13 +52,15 @@ public class Robot extends MovableObject implements iSteerable {
 
 	@Override
 	public void draw(Graphics g, Point p) {
-		g.setColor(ColorUtil.YELLOW);
-		g.fillRect((int) (p.getX() + this.getLocationX() + (this.getSize() / 2)),
-				(int) (p.getY() + this.getLocationY() + (this.getSize() / 2)), this.getSize(),
-				this.getSize());
-		g.setColor(ColorUtil.rgb(255, 0, 0));
-		g.drawArc((int) (p.getX() + this.getLocationX()) - (this.getSize() / 2), (int) (p.getY() +
-				this.getLocationY()) - (this.getSize() / 2), this.getSize(), this.getSize(), 0, 360);
+		// g.setColor(ColorUtil.YELLOW);
+		// g.fillRect((int) (p.getX() + this.getLocationX() - this.getSize() / 2),
+		// (int) (p.getY() + this.getLocationY()) - this.getSize() / 2, this.getSize(),
+		// this.getSize());
+		// g.setColor(ColorUtil.rgb(255, 0, 0));
+		// g.drawArc((int) (p.getX() + this.getLocationX()) - (this.getSize() / 2),
+		// (int) (p.getY() +
+		// this.getLocationY()) - (this.getSize() / 2), this.getSize(), this.getSize(),
+		// 0, 360);
 
 	}
 

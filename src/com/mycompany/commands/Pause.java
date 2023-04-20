@@ -3,17 +3,20 @@ package com.mycompany.commands;
 import com.codename1.ui.Command;
 import com.codename1.ui.events.ActionEvent;
 import com.mycompany.a3.GameWorld;
+import com.codename1.ui.Dialog;
 
-public class CollideBase extends Command {
+public class Pause extends Command {
     private GameWorld gw;
 
-    public CollideBase(GameWorld gw) {
-        super("Base Collide");
+    public Pause(GameWorld gw) {
+        super("Pause");
         this.gw = gw;
+
     }
 
     @Override
     public void actionPerformed(ActionEvent evt) {
-        gw.baseCollide();
+        // gw.displayAbout();
+        System.out.println("Pause Called");
     }
 }

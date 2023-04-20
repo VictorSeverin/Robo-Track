@@ -26,6 +26,7 @@ public class Sound {
     }
 
     public void play() {
+        System.out.println("Play called");
         m.setTime(0);
         m.play();
     }
