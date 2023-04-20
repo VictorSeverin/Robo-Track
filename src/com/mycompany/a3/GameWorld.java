@@ -1,14 +1,21 @@
 package com.mycompany.a3;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Observable;
 import java.util.Random;
+import java.util.Set;
+import java.util.Vector;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.TextField;
 import com.codename1.ui.util.UITimer;
 import com.mycompany.fixedObjects.Base;
 import com.mycompany.fixedObjects.EnergyStation;
+import com.mycompany.interfaces.ICollider;
 import com.mycompany.interfaces.IIterator;
 import com.mycompany.movableObjects.Drone;
 import com.mycompany.movableObjects.NonPlayerRobot;
@@ -305,6 +312,9 @@ public class GameWorld extends Observable {
 	public void tickClock(UITimer timer) {
 		this.clockTime++;
 		IIterator iter = objects.getIterator();
+		// Set<Map<ICollider, ICollider>> collidedPairs = new HashSet<>();
+		Map<ICollider, ICollider> gameObjectPair = new HashMap<>();
+		Vector<Map<ICollider, ICollider>> collidedPairs = new Vector<>();
 		while (iter.hasNext()) {
 			GameObject obj = iter.getNext();
 			if (obj instanceof MovableObject && !(obj instanceof NonPlayerRobot)) {
@@ -335,8 +345,23 @@ public class GameWorld extends Observable {
 				}
 
 			}
-
 		}
+		iter = objects.getIterator();
+		while (iter.hasNext()) {
+			ICollider objA = (ICollider) iter.getNext();
+			IIterator iter2 = objects.getIterator();
+			while (iter2.hasNext()) {
+				ICollider objB = (ICollider) iter2.getNext();
+				if (objB != objA && objA.collidesWith(objB)) {
+					gameObjectPair.put(objA, objB);
+					if (!collidedPairs.contains(gameObjectPair)) {
+						objA.handleCollision(objB);
+						collidedPairs.add(gameObjectPair);
+					}
+				}
+			}
+		}
+		collidedPairs.clear();
 		setChanged();
 		notifyObservers(this);
 	}
@@ -377,17 +402,19 @@ public class GameWorld extends Observable {
 		objects.add(new Base(60, 300, 1000, 2));
 		objects.add(new Base(60, 1100, 100, 3));
 		objects.add(new Base(60, 1100, 800, 4));
-		objects.add(new Drone(50, rand.nextInt(this.width - 100), rand.nextInt(this.height - 100), rand.nextInt(359),
-				2));
-		objects.add(new Drone(50, rand.nextInt(this.width), rand.nextInt(height), rand.nextInt(359),
-				2));
+		// objects.add(new Drone(50, rand.nextInt(this.width - 100),
+		// rand.nextInt(this.height - 100), rand.nextInt(359),
+		// 5));
+		// objects.add(new Drone(50, rand.nextInt(this.width), rand.nextInt(height),
+		// rand.nextInt(359),
+		// 5));
 		objects.add(new EnergyStation(rand.nextInt(200 - 50) + 50, rand.nextInt(this.width - 200),
 				rand.nextInt(this.height - 200)));
 		objects.add(new EnergyStation(rand.nextInt(200 - 50) + 50, rand.nextInt(this.width - 200),
 				rand.nextInt(this.height - 200)));
 		objects.add(playerRobot);
-		objects.add(new NonPlayerRobot(80, 30, 80, new ChaseRobot()));
-		objects.add(new NonPlayerRobot(80, 150, 80, new NextBase()));
-		objects.add(new NonPlayerRobot(80, 390, 80, new NextBase()));
+		// objects.add(new NonPlayerRobot(80, 30, 80, new ChaseRobot()));
+		// objects.add(new NonPlayerRobot(80, 150, 80, new NextBase()));
+		// objects.add(new NonPlayerRobot(80, 390, 80, new NextBase()));
 	}
 }

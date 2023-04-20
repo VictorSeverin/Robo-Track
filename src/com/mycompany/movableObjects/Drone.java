@@ -6,6 +6,7 @@ import com.codename1.charts.models.Point;
 import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.Graphics;
 import com.mycompany.a3.MovableObject;
+import com.mycompany.interfaces.ICollider;
 
 public class Drone extends MovableObject {
 	Random rand = new Random();
@@ -24,6 +25,10 @@ public class Drone extends MovableObject {
 	}
 
 	@Override
+	public void handleCollision(ICollider obj) {
+	}
+
+	@Override
 	public void draw(Graphics g, Point p) {
 		g.setColor(ColorUtil.BLUE);
 		int[] xCoordinates = {
@@ -39,21 +44,20 @@ public class Drone extends MovableObject {
 		int radius = (int) Math.sqrt((this.getSize() * this.getSize()) + ((this.getSize()) * (this.getSize())));
 		g.drawArc((int) (p.getX() + this.getLocationX()) - radius, (int) (p.getY() +
 				this.getLocationY()) - radius, radius * 2, radius * 2, 0, 360);
+		g.drawString(
+				Double.toString(Math.round(this.getLocationX())) + " "
+						+ Double.toString(Math.round(this.getLocationY())),
+				(int) p.getX() + (int) this.getLocationX() - 10,
+				(int) p.getY() + (int) this.getLocationY() - 20);
 
-		g.fillRect((int) (p.getX() + this.getLocationX()),
-				(int) (p.getY() + this.getLocationY()), 10,
-				10);
 	}
 
-	public void move(int height, int width, int elapsedTime) {
-		super.setHeading(this.getHeading() + 1);
-		if (this.getLocationX() > width || this.getLocationX() < 1 || this.getLocationY() > height
-				|| this.getLocationY() < 1) {
-			this.setHeading(this.getHeading() + 180);
-		}
+	public void move(int width, int height, int elapsedTime) {
+		super.setHeading(this.getHeading() + 0.5);
 		super.move(width, height, elapsedTime);
 		// System.out.println("X:" + this.getLocationX() + " Y: " + this.getLocationY()
 		// + "W: " + width + " H: " + height);
+
 	}
 
 	@Override

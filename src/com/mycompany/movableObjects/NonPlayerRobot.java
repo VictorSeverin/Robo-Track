@@ -32,13 +32,18 @@ public class NonPlayerRobot extends Robot {
                 .sqrt((this.getSize() / 2 * this.getSize() / 2) + ((this.getSize() / 2) * (this.getSize() / 2)));
         g.drawArc((int) (p.getX() + this.getLocationX()) - radius, (int) (p.getY() +
                 this.getLocationY()) - radius, radius * 2, radius * 2, 0, 360);
+        g.setColor(ColorUtil.BLACK);
 
     }
 
     public void move(GameWorld gw, NonPlayerRobot npr, int width, int height, int elapsedTime) {
+        if (this.getEnergyLevel() == 0) {
+            this.setEnergyLevel(1000);
+        }
         invokeStrategy(gw, npr, elapsedTime);
         super.setHeading(this.getSteeringDirection());
         super.move(width, height, elapsedTime);
+
     }
 
     public String getStrategy() {

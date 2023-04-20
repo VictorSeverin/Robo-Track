@@ -4,6 +4,7 @@ import com.codename1.charts.models.Point;
 import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.Graphics;
 import com.mycompany.a3.FixedObject;
+import com.mycompany.interfaces.ICollider;
 
 public class EnergyStation extends FixedObject {
 
@@ -18,6 +19,10 @@ public class EnergyStation extends FixedObject {
 	public EnergyStation(int size, double locationX, double locationY) {
 		super(size, locationX, locationY, ColorUtil.GREEN);
 		this.capacity = size / 2;
+	}
+
+	@Override
+	public void handleCollision(ICollider obj) {
 	}
 
 	@Override

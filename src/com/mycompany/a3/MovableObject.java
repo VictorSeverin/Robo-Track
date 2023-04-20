@@ -21,9 +21,25 @@ public abstract class MovableObject extends GameObject {
 		// double dist = this.getSpeed() * (elapsedTime / 1000);
 		double deltaX = Math.cos(Math.toRadians(90 - this.getHeading())) * speed;
 		double deltaY = Math.sin(Math.toRadians(90 - this.getHeading())) * speed;
+		double newX = super.getLocationX() + deltaX;
+		double newY = super.getLocationY() + deltaY;
+		super.setLocationX(newX);
+		super.setLocationY(newY);
+		int radius = (int) Math
+				.sqrt((this.getSize() / 2 * this.getSize() / 2) + ((this.getSize() / 2) * (this.getSize() / 2)));
 
-		super.setLocationX(super.getLocationX() + deltaX);
-		super.setLocationY(super.getLocationY() + deltaY);
+		if ((this.getLocationX() + radius) == width) {
+			this.setHeading(this.getHeading() + 180);
+		}
+		if (this.getLocationX() + radius == 0) {
+			this.setHeading(this.getHeading() + 180);
+		}
+		if (this.getLocationY() + radius == height) {
+			this.setHeading(this.getHeading() + 180);
+		}
+		if (this.getLocationY() + radius == 0) {
+			this.setHeading(this.getHeading() + 180);
+		}
 
 	}
 

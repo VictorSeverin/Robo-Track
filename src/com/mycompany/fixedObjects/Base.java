@@ -6,6 +6,7 @@ import com.codename1.charts.models.Point;
 import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.Graphics;
 import com.mycompany.a3.FixedObject;
+import com.mycompany.interfaces.ICollider;
 
 public class Base extends FixedObject {
 	private int sequenceNumber;
@@ -26,6 +27,10 @@ public class Base extends FixedObject {
 	 **/
 	public int getSequenceNumber() {
 		return sequenceNumber;
+	}
+
+	@Override
+	public void handleCollision(ICollider obj) {
 	}
 
 	@Override
