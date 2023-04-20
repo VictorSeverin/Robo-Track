@@ -19,6 +19,7 @@ public class Robot extends MovableObject implements iSteerable {
 	private int damageLevel;
 	private int lastBaseReached;
 	private int maxDamageLevel;
+	private int maxEnergyLevel;
 	public int width;
 	public int height;
 
@@ -33,12 +34,13 @@ public class Robot extends MovableObject implements iSteerable {
 	public Robot(int size, double locationX, double locationY, int speed) {
 		super(size, locationX, locationY, ColorUtil.BLUE, 0, speed);
 		this.maximumSpeed = 10;
-		this.energyLevel = 10000;
+		this.energyLevel = 1000;
 		this.damageLevel = 0;
 		this.energyConsumptionRate = 1;
-		this.lastBaseReached = 1;
+		this.lastBaseReached = 0;
 		this.steeringDirection = 0;
 		this.maxDamageLevel = 50;
+		this.maxEnergyLevel = 1000;
 	}
 
 	public void move(int width, int height, int elapsedTime) {
@@ -81,6 +83,10 @@ public class Robot extends MovableObject implements iSteerable {
 
 	public int getSteeringDirection() {
 		return steeringDirection;
+	}
+
+	public int getMaxEnergyLevel() {
+		return maxEnergyLevel;
 	}
 
 	public int getMaxDamageLevel() {

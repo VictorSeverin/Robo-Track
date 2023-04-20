@@ -30,10 +30,6 @@ public class Base extends FixedObject {
 	}
 
 	@Override
-	public void handleCollision(ICollider obj) {
-	}
-
-	@Override
 	public void draw(Graphics g, Point p) {
 		g.setColor(ColorUtil.CYAN);
 		int[] xCoordinates = {

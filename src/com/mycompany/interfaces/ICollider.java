@@ -1,9 +1,10 @@
 package com.mycompany.interfaces;
 
 import com.mycompany.a3.GameObject;
+import com.mycompany.a3.GameWorld;
 
 public interface ICollider {
-	void handleCollision(ICollider otherObject);
+	public void handleCollision(ICollider otherObject, GameWorld gw);
 
-	boolean collidesWith(ICollider otherObject);
+	public boolean collidesWith(ICollider otherObject);
 }

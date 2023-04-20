@@ -18,7 +18,6 @@ public class PlayerRobot extends Robot {
 
     private PlayerRobot(int size, double locationX, double locationY) {
         super(size, locationX, locationY, 0);
-
     }
 
     public void move(int width, int height, int elapsedTime) {

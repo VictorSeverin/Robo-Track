@@ -22,10 +22,6 @@ public class EnergyStation extends FixedObject {
 	}
 
 	@Override
-	public void handleCollision(ICollider obj) {
-	}
-
-	@Override
 	public void draw(Graphics g, Point p) {
 		g.setColor(ColorUtil.GREEN);
 		g.fillArc((int) (p.getX() + this.getLocationX()) - (this.getSize() / 2), (int) (p.getY() +
@@ -62,4 +58,5 @@ public class EnergyStation extends FixedObject {
 				+ this.getColor() + "] size=" + this.getSize() + " capacity="
 				+ this.getCapacity();
 	}
+
 }

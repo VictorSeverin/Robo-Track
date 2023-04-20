@@ -1,5 +1,6 @@
 package com.mycompany.a3;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Observable;
@@ -10,7 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.codename1.charts.util.ColorUtil;
+import com.codename1.media.Media;
+import com.codename1.media.MediaManager;
 import com.codename1.ui.Dialog;
+import com.codename1.ui.Display;
 import com.codename1.ui.TextField;
 import com.codename1.ui.util.UITimer;
 import com.mycompany.fixedObjects.Base;
@@ -32,6 +36,12 @@ public class GameWorld extends Observable {
 	private boolean sound;
 	private int height;
 	private int width;
+	private Sound prWithDroneSound;
+	private Sound prWithBaseSound;
+	private Sound prWithEsSound;
+	private Sound prWithNprSound;
+	private Sound gameSound;
+	private Sound alarm;
 	public Random rand = new Random();
 
 	public GameWorld() {
@@ -47,6 +57,11 @@ public class GameWorld extends Observable {
 
 	public void setWidth(int width) {
 		this.width = width;
+	}
+
+	public void createSounds() {
+		prWithBaseSound = new Sound("yeet.wav");
+		alarm = new Sound("alarm.wav");
 	}
 
 	public void changeStrategy() {
@@ -130,6 +145,8 @@ public class GameWorld extends Observable {
 	}
 
 	public void brake() {
+		prWithBaseSound.play();
+		alarm.play();
 		System.out.println("Breaking");
 		IIterator iter = objects.getIterator();
 		while (iter.hasNext()) {
@@ -155,10 +172,12 @@ public class GameWorld extends Observable {
 			GameObject obj = iter.getNext();
 			if (obj instanceof PlayerRobot) {
 				PlayerRobot robot = (PlayerRobot) obj;
-				if (robot.getSteeringDirection() - 1 < -40) { // check if steering left will lead to less than -40
-					robot.turn(-40);
-				} else { // otherwise decrease steering direction by 5
-					robot.turn(robot.getSteeringDirection() - 1);
+				if (robot.getSpeed() > 0) {
+					if (robot.getSteeringDirection() - 1 < -40) { // check if steering left will lead to less than -40
+						robot.turn(-40);
+					} else { // otherwise decrease steering direction by 5
+						robot.turn(robot.getSteeringDirection() - 1);
+					}
 				}
 				System.out.println("Steering Direction: " + robot.getSteeringDirection());
 			}
@@ -176,134 +195,62 @@ public class GameWorld extends Observable {
 			GameObject obj = iter.getNext();
 			if (obj instanceof PlayerRobot) {
 				PlayerRobot robot = (PlayerRobot) obj;
-				if (robot.getSteeringDirection() + 1 > 40) { // check if steering right will lead to more than 40
-					// degrees
-					robot.turn(40);
-				} else { // otherwise decrease steering direction by 5
-					robot.turn(robot.getSteeringDirection() + 1);
-				}
-			}
-		}
-	}
-
-	public void robotCollision() {
-		// pretend it collided with another robot. Increases damage level and fades the
-		// color. If damage level causes
-		// robot to not be able to move: end game, player loses a life
-		System.out.println("Robot Collision");
-		IIterator iter = objects.getIterator();
-		while (iter.hasNext()) {
-			GameObject obj = iter.getNext();
-			if (obj instanceof PlayerRobot) {
-				PlayerRobot pr = (PlayerRobot) obj;
-				if (pr.getDamageLevel() + 5 > pr.getMaxDamageLevel()) {
-					this.remainingLives -= 1;
-					System.out.println("The player took max damage level.Game Over");
-					if (this.remainingLives < 0) {
-						System.out.println("Game Over, you failed!");
-						exitGame();
-					} else {
-						double oldLocationX = pr.getLocationX();
-						double oldLocationY = pr.getLocationY();
-						int oldSize = pr.getSize();
-						objects.remove(pr);
-						pr = PlayerRobot.getPlayerRobot(oldSize, oldLocationX, oldLocationY);
-						objects.add(pr);
+				if (robot.getSpeed() > 0) {
+					if (robot.getSteeringDirection() + 1 > 40) { // check if steering right will lead to more than 40
+						// degrees
+						robot.turn(40);
+					} else { // otherwise decrease steering direction by 5
+						robot.turn(robot.getSteeringDirection() + 1);
 					}
-
-				} else {
-					pr.setDamageLevel(pr.getDamageLevel() + 5);
-					pr.setColor(pr.getColor() + 30); // Make Color Brighter
-					pr.setMaximumSpeed(pr.getMaximumSpeed() - 5);
 				}
-			}
-
-			if (obj instanceof NonPlayerRobot) {
-				NonPlayerRobot npr = (NonPlayerRobot) obj;
-				if (npr.getDamageLevel() + 5 > npr.getMaxDamageLevel()) {
-					npr.setDamageLevel(0);
-				} else {
-					npr.setDamageLevel(npr.getDamageLevel() + 5);
-				}
-
-			}
-		}
-		nprInfo();
-		setChanged();
-		notifyObservers(this);
-	}
-
-	public void nprInfo() {
-		IIterator iter = objects.getIterator();
-		NonPlayerRobot npr = null;
-		while (iter.hasNext()) {
-			GameObject obj = iter.getNext();
-			if (obj instanceof NonPlayerRobot) {
-				npr = (NonPlayerRobot) obj;
-				System.out.println(npr);
 			}
 		}
 	}
 
-	public void droneColission() {
-		System.out.println("Collided with Drone");
-		IIterator iter = objects.getIterator();
-		while (iter.hasNext()) {
-			GameObject obj = iter.getNext();
-			if (obj instanceof PlayerRobot) {
-				PlayerRobot pr = (PlayerRobot) obj;
-				if (pr.getDamageLevel() + 2 > pr.getMaxDamageLevel()) {
-					this.remainingLives -= 1;
-					System.out.println("The player took max damage level.Game Over");
-					if (this.remainingLives < 0) {
-						System.out.println("Game Over, you failed!");
-						exitGame();
-					} else {
-						double oldLocationX = pr.getLocationX();
-						double oldLocationY = pr.getLocationY();
-						int oldSize = pr.getSize();
-						objects.remove(pr);
-						pr = PlayerRobot.getPlayerRobot(oldSize, oldLocationX, oldLocationY);
-						objects.add(pr);
-					}
-
-				} else {
-					pr.setDamageLevel(pr.getDamageLevel() + 2);
-					pr.setColor(pr.getColor() + 30); // Make Color Brighter
-					pr.setMaximumSpeed(pr.getMaximumSpeed() - 5);
-				}
-			}
-		}
-		setChanged();
-		notifyObservers(this);
-	}
-
-	public void esCollision() {
-
-		System.out.println("Collided with Energy Station");
-		IIterator iter = objects.getIterator();
-		PlayerRobot pr = null;
-		EnergyStation es = null;
-		ArrayList<EnergyStation> esStations = new ArrayList<EnergyStation>();
-		while (iter.hasNext()) {
-			GameObject obj = iter.getNext();
-			if (obj instanceof PlayerRobot) {
-				pr = (PlayerRobot) obj;
-			} else if (obj instanceof EnergyStation) {
-				esStations.add((EnergyStation) obj);
-			}
-		}
-		// Chooose random es for the robot to collide with
-		es = esStations.get(rand.nextInt(esStations.size()));
-		if (pr.getEnergyLevel() + es.getCapacity() > 100) {
-			pr.setEnergyLevel(100);
+	public void robotCollision(PlayerRobot pr, NonPlayerRobot npr) {
+		if (pr.getDamageLevel() + 5 > pr.getMaxDamageLevel()) {
+			pr.setDamageLevel(pr.getMaxDamageLevel());
 		} else {
-			pr.setEnergyLevel(pr.getEnergyLevel() + es.getCapacity()); // recharghe energy level
+			pr.setDamageLevel(pr.getDamageLevel() + 5);
+			pr.setColor(pr.getColor() + 30); // Make Color Brighter
+			pr.setMaximumSpeed(pr.getMaximumSpeed() - 5);
+		}
+
+		if (npr.getDamageLevel() + 5 > npr.getMaxDamageLevel()) {
+			npr.setDamageLevel(npr.getMaxDamageLevel());
+		} else {
+			npr.setDamageLevel(npr.getDamageLevel() + 5);
+			npr.setMaximumSpeed(npr.getMaximumSpeed() - 5);
+		}
+
+		setChanged();
+		notifyObservers(this);
+	}
+
+	public void droneColission(Robot robot) {
+		if (robot.getDamageLevel() + 5 > robot.getMaxDamageLevel()) {
+			robot.setDamageLevel(robot.getMaxDamageLevel());
+		} else {
+			robot.setDamageLevel(robot.getDamageLevel() + 2);
+			robot.setColor(robot.getColor() + 30); // Make Color Brighter
+			robot.setMaximumSpeed(robot.getMaximumSpeed() - 5);
+		}
+
+		setChanged();
+		notifyObservers(this);
+	}
+
+	public void esCollision(EnergyStation es, Robot robot) {
+		if (robot.getEnergyLevel() + es.getCapacity() > 100) {
+			robot.setEnergyLevel(robot.getMaxEnergyLevel());
+		} else {
+			robot.setEnergyLevel(robot.getEnergyLevel() + es.getCapacity()); // recharghe energy level
 		}
 		es.drain(); // set energy station capacity to 0;
 		es.setColor(es.getColor() + 30); // faint color
-		objects.add(new EnergyStation(rand.nextInt(50), rand.nextDouble(), rand.nextDouble()));
-		pr.setMaximumSpeed(50); // set maximum speed back to normal
+		objects.add(new EnergyStation(rand.nextInt(200 - 50) + 50, rand.nextInt(this.width - 200),
+				rand.nextInt(this.height - 200)));
+		robot.setMaximumSpeed(robot.getMaximumSpeed()); // set maximum speed back to normal
 
 		setChanged();
 		notifyObservers(this);
@@ -312,9 +259,6 @@ public class GameWorld extends Observable {
 	public void tickClock(UITimer timer) {
 		this.clockTime++;
 		IIterator iter = objects.getIterator();
-		// Set<Map<ICollider, ICollider>> collidedPairs = new HashSet<>();
-		Map<ICollider, ICollider> gameObjectPair = new HashMap<>();
-		Vector<Map<ICollider, ICollider>> collidedPairs = new Vector<>();
 		while (iter.hasNext()) {
 			GameObject obj = iter.getNext();
 			if (obj instanceof MovableObject && !(obj instanceof NonPlayerRobot)) {
@@ -324,7 +268,6 @@ public class GameWorld extends Observable {
 			if (obj instanceof NonPlayerRobot) {
 				NonPlayerRobot npr = (NonPlayerRobot) obj;
 				npr.move(this, npr, width, height, 20);
-				// npr.invokeStrategy(this, npr, 20);
 			}
 			if (obj instanceof PlayerRobot) {
 				PlayerRobot pr = (PlayerRobot) obj;
@@ -353,44 +296,28 @@ public class GameWorld extends Observable {
 			while (iter2.hasNext()) {
 				ICollider objB = (ICollider) iter2.getNext();
 				if (objB != objA && objA.collidesWith(objB)) {
-					gameObjectPair.put(objA, objB);
-					if (!collidedPairs.contains(gameObjectPair)) {
-						objA.handleCollision(objB);
-						collidedPairs.add(gameObjectPair);
-					}
+					objA.handleCollision(objB, this);
 				}
 			}
 		}
-		collidedPairs.clear();
 		setChanged();
 		notifyObservers(this);
 	}
 
-	// TODO get base number though dialog
-	public void baseCollide() {
-		int baseNumber = 0;
-		Command cOk = new Command("Ok");
-		Command cCancel = new Command("Cancel");
-		Command[] cmds = new Command[] { cOk, cCancel };
-		TextField myTF = new TextField();
-		Command c = Dialog.show("Enter Base Number (1-4)", myTF, cmds);
-		if (c == cOk) { // check if ok or cancel
-			baseNumber = Integer.parseInt(myTF.getText());
-		}
-		IIterator iter = objects.getIterator();
-		while (iter.hasNext()) {
-			GameObject obj = iter.getNext();
-			if (obj instanceof Robot) {
-				Robot robot = (Robot) obj;
-				if (robot.getLastBaseReached() + 1 == baseNumber) { // check if base# is one more than the last base
-					// reached
-					robot.setBase(baseNumber);
-					System.out.println("Last base reached: " + robot.getLastBaseReached());
-				}
-				if (robot.getLastBaseReached() == 4) {
-					System.out.println("Game Over, you win! Total time: " + this.clockTime);
+	public void baseCollide(Robot robot, Base base) {
+		if (base.getSequenceNumber() == robot.getLastBaseReached() + 1) {
+			robot.setBase(robot.getLastBaseReached() + 1);
+			System.out.println("Reached base" + base.getSequenceNumber());
+			if (base.getSequenceNumber() == 4) {
+				if (robot instanceof PlayerRobot) {
+					System.out.println("Game Over! You won");
+
+				} else if (robot instanceof NonPlayerRobot) {
+					System.out.println("Game Over! You won");
+					robot.setSpeed(0);
 				}
 			}
+
 		}
 		setChanged();
 		notifyObservers(this);
@@ -405,15 +332,14 @@ public class GameWorld extends Observable {
 		// objects.add(new Drone(50, rand.nextInt(this.width - 100),
 		// rand.nextInt(this.height - 100), rand.nextInt(359),
 		// 5));
-		// objects.add(new Drone(50, rand.nextInt(this.width), rand.nextInt(height),
-		// rand.nextInt(359),
-		// 5));
+		objects.add(new Drone(50, rand.nextInt(this.width), rand.nextInt(height),
+				rand.nextInt(359), 5));
 		objects.add(new EnergyStation(rand.nextInt(200 - 50) + 50, rand.nextInt(this.width - 200),
 				rand.nextInt(this.height - 200)));
 		objects.add(new EnergyStation(rand.nextInt(200 - 50) + 50, rand.nextInt(this.width - 200),
 				rand.nextInt(this.height - 200)));
 		objects.add(playerRobot);
-		// objects.add(new NonPlayerRobot(80, 30, 80, new ChaseRobot()));
+		objects.add(new NonPlayerRobot(80, 30, 80, new NextBase()));
 		// objects.add(new NonPlayerRobot(80, 150, 80, new NextBase()));
 		// objects.add(new NonPlayerRobot(80, 390, 80, new NextBase()));
 	}

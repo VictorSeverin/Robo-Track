@@ -25,10 +25,6 @@ public class Drone extends MovableObject {
 	}
 
 	@Override
-	public void handleCollision(ICollider obj) {
-	}
-
-	@Override
 	public void draw(Graphics g, Point p) {
 		g.setColor(ColorUtil.BLUE);
 		int[] xCoordinates = {

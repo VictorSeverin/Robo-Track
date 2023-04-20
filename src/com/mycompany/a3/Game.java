@@ -63,7 +63,6 @@ public class Game extends Form implements Runnable {
 		sv = new ScoreView();
 		gw.addObserver(mv);
 		gw.addObserver(sv);
-		timer.schedule(20, true, this);
 
 		Accelerate acc = new Accelerate(gw);
 		Brake brake = new Brake(gw);
@@ -228,6 +227,9 @@ public class Game extends Form implements Runnable {
 		gw.setWidth(mv.getWidth());
 		this.show();
 		gw.init();
+		gw.createSounds();
+		this.revalidate();
+		timer.schedule(20, true, this);
 	}
 
 }
