@@ -20,12 +20,12 @@ public abstract class FixedObject extends GameObject implements ISelectable {
 		this.isSelected = b;
 	}
 
-	@Override
-	void setLocationX(double x) {
+	public void setLocationX(int location) {
+		super.setLocationX(location);
 	}
 
-	@Override
-	void setLocationY(double y) {
+	public void setLocationY(int location) {
+		super.setLocationY(location);
 	}
 
 }

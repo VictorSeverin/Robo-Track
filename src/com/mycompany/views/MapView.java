@@ -45,14 +45,20 @@ public class MapView extends Container implements Observer {
         Point pCmpRelPrnt = new Point(getX(), getY());
         IIterator iter = gw.getObjects().getIterator();
         if (gw.isPaused()) {
-
             while (iter.hasNext()) {
                 GameObject obj = iter.getNext();
                 if (obj instanceof FixedObject) {
                     FixedObject fixedObj = (FixedObject) obj;
+                    if (fixedObj.isSelected() && gw.getPositionClicked()) {
+                        fixedObj.setLocationX(x);
+                        fixedObj.setLocationY(y);
+                        gw.setPosition(false);
+                        fixedObj.setSelected(false);
+                    }
                     if (fixedObj.contains(pPtrRelPrnt, pCmpRelPrnt)) {
                         System.out.println("selected");
                         fixedObj.setSelected(true);
+                        // Point newLoc = new Point(x,y);
                     } else {
                         fixedObj.setSelected(false);
                     }

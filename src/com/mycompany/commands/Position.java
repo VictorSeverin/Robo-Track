@@ -16,7 +16,10 @@ public class Position extends Command {
 
     @Override
     public void actionPerformed(ActionEvent evt) {
-        // gw.displayAbout();
-        System.out.println("Position Called");
+        if (gw.getPositionClicked()) {
+            gw.setPosition(false);
+        } else {
+            gw.setPosition(true);
+        }
     }
 }

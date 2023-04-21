@@ -49,7 +49,20 @@ public class Game extends Form implements Runnable {
 	private GameWorld gw;
 	private MapView mv;
 	private ScoreView sv;
-	UITimer timer = new UITimer(this);
+	private Accelerate acc;
+	private Brake brake;
+	private About about;
+	private ChangeStrategy changeStrategy;
+	private Exit exit;
+	private Help help;
+	private LeftTurn leftTurn;
+	private RightTurn rightTurn;
+	private Tick tick;
+	private ToggleSound sound;
+	private Pause pause;
+	private Position position;
+	private UITimer timer;
+	private Button pauseButton;
 
 	@Override
 	public void run() {
@@ -62,19 +75,19 @@ public class Game extends Form implements Runnable {
 		sv = new ScoreView();
 		gw.addObserver(mv);
 		gw.addObserver(sv);
-
-		Accelerate acc = new Accelerate(gw);
-		Brake brake = new Brake(gw);
-		About about = new About();
-		ChangeStrategy changeStrategy = new ChangeStrategy(gw);
-		Exit exit = new Exit(gw);
-		Help help = new Help(gw);
-		LeftTurn leftTurn = new LeftTurn(gw);
-		RightTurn rightTurn = new RightTurn(gw);
-		Tick tick = new Tick(gw, timer);
-		ToggleSound sound = new ToggleSound(gw);
-		Pause pause = new Pause(gw, timer, this);
-		Position position = new Position(gw);
+		timer = new UITimer(this);
+		acc = new Accelerate(gw);
+		brake = new Brake(gw);
+		about = new About();
+		changeStrategy = new ChangeStrategy(gw);
+		exit = new Exit(gw);
+		help = new Help(gw);
+		leftTurn = new LeftTurn(gw);
+		rightTurn = new RightTurn(gw);
+		tick = new Tick(gw, timer);
+		sound = new ToggleSound(gw);
+		pause = new Pause(gw, timer, this);
+		position = new Position(gw);
 
 		setLayout(new BorderLayout());
 		// Buttons
@@ -85,7 +98,7 @@ public class Game extends Form implements Runnable {
 		Button righButton = new Button("Right");
 		Button tickButtoon = new Button("Tick");
 		Button helpButton = new Button("Help");
-		Button pauseButton = new Button("Pause");
+		pauseButton = new Button("Pause");
 		Button positionButton = new Button("Position");
 		// key Bindings
 		this.addKeyListener('a', acc);
@@ -210,6 +223,14 @@ public class Game extends Form implements Runnable {
 		gw.createSounds();
 		this.revalidate();
 		timer.schedule(20, true, this);
+	}
+
+	public void pauseGame() {
+		if (gw.isPaused()) {
+			pauseButton.setText("Play");
+		} else {
+			pauseButton.setText("Pause");
+		}
 	}
 
 }

@@ -11,17 +11,15 @@ public class Sound {
 
     public Sound(String fileName) {
         if (Display.getInstance().getCurrent() == null) {
-            System.out.println("create sound");
+            System.out.println("Error: Create sound objects after calling show()!");
+            System.exit(0);
         }
-        while (m == null) {
-
-            try {
-                InputStream is = Display.getInstance().getResourceAsStream(
-                        getClass(), "/" + fileName);
-                m = MediaManager.createMedia(is, "audio/wav");
-            } catch (Exception err) {
-                err.printStackTrace();
-            }
+        try {
+            InputStream is = Display.getInstance().getResourceAsStream(getClass(),
+                    "/" + fileName);
+            m = MediaManager.createMedia(is, "audio/wav");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -60,13 +60,13 @@ public class Base extends FixedObject {
 				((int) p.getY() + (int) this.getLocationY()) + (this.getSize() / 2),
 				((int) p.getY() + (int) this.getLocationY()) - (this.getSize() / 2) };
 		if (this.isSelected()) {
-			g.fillPolygon(xCoordinates, yCoordinates, 3);
+			g.drawPolygon(xCoordinates, yCoordinates, 3);
 			g.setColor(ColorUtil.BLACK);
 			g.drawString(Integer.toString(this.getSequenceNumber()),
 					(int) p.getX() + (int) this.getLocationX() - 10,
 					(int) p.getY() + (int) this.getLocationY() - 20);
 		} else {
-			g.drawPolygon(xCoordinates, yCoordinates, 3);
+			g.fillPolygon(xCoordinates, yCoordinates, 3);
 			g.setColor(ColorUtil.BLACK);
 			g.drawString(Integer.toString(this.getSequenceNumber()),
 					(int) p.getX() + (int) this.getLocationX() - 10,

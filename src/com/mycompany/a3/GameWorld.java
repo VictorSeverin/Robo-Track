@@ -42,6 +42,9 @@ public class GameWorld extends Observable {
 	private Sound prWithNprSound;
 	private Sound gameSound;
 	private Sound alarm;
+	private BGSound bSound;
+	private boolean bPause;
+	private boolean setPosition;
 	private boolean pauseGame;
 	public Random rand = new Random();
 
@@ -51,6 +54,7 @@ public class GameWorld extends Observable {
 		this.remainingLives = 3;
 		this.sound = false;
 		this.pauseGame = false;
+		this.setPosition = false;
 	}
 
 	public void setHeight(int height) {
@@ -61,9 +65,22 @@ public class GameWorld extends Observable {
 		this.width = width;
 	}
 
+	public void setPosition(boolean b) {
+		this.setPosition = b;
+	}
+
+	public boolean getPositionClicked() {
+		return this.setPosition;
+	}
+
 	public void createSounds() {
-		prWithBaseSound = new Sound("yeet.wav");
+		// prWithBaseSound = new Sound("yeet.wav");
 		alarm = new Sound("alarm.wav");
+		bSound = new BGSound("bgMusic.wav");
+		prWithBaseSound = new Sound("baseHit.wav");
+		prWithDroneSound = new Sound("plane.wav");
+		prWithEsSound = new Sound("electricity.wav");
+		prWithNprSound = new Sound("robotCrash");
 	}
 
 	public void changeStrategy() {
@@ -164,7 +181,7 @@ public class GameWorld extends Observable {
 	}
 
 	public void brake() {
-		prWithBaseSound.play();
+
 		alarm.play();
 		System.out.println("Breaking");
 		IIterator iter = objects.getIterator();
@@ -227,6 +244,7 @@ public class GameWorld extends Observable {
 	}
 
 	public void robotCollision(PlayerRobot pr, NonPlayerRobot npr) {
+		prWithNprSound.play();
 		if (pr.getDamageLevel() + 5 > pr.getMaxDamageLevel()) {
 			pr.setDamageLevel(pr.getMaxDamageLevel());
 		} else {
@@ -247,6 +265,7 @@ public class GameWorld extends Observable {
 	}
 
 	public void droneColission(Robot robot) {
+		prWithDroneSound.play();
 		if (robot.getDamageLevel() + 5 > robot.getMaxDamageLevel()) {
 			robot.setDamageLevel(robot.getMaxDamageLevel());
 		} else {
@@ -260,6 +279,7 @@ public class GameWorld extends Observable {
 	}
 
 	public void esCollision(EnergyStation es, Robot robot) {
+		prWithEsSound.play();
 		if (es.getCapacity() > 0) {
 			if (robot.getEnergyLevel() + es.getCapacity() > 100) {
 				robot.setEnergyLevel(robot.getMaxEnergyLevel());
@@ -278,6 +298,8 @@ public class GameWorld extends Observable {
 	}
 
 	public void baseCollide(Robot robot, Base base) {
+		prWithBaseSound.play();
+		prWithBaseSound.play();
 		if (base.getSequenceNumber() == robot.getLastBaseReached() + 1) {
 			robot.setBase(robot.getLastBaseReached() + 1);
 			System.out.println("Reached base" + base.getSequenceNumber());
@@ -362,6 +384,6 @@ public class GameWorld extends Observable {
 		objects.add(playerRobot);
 		objects.add(new NonPlayerRobot(80, 30, 80, new NextBase()));
 		objects.add(new NonPlayerRobot(80, 270, 80, new NextBase()));
-		objects.add(new NonPlayerRobot(80, 150, 80, new ChaseRobot()));
+		objects.add(new NonPlayerRobot(80, 150, 80, new NextBase()));
 	}
 }
