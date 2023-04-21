@@ -73,7 +73,7 @@ public class Game extends Form implements Runnable {
 		RightTurn rightTurn = new RightTurn(gw);
 		Tick tick = new Tick(gw, timer);
 		ToggleSound sound = new ToggleSound(gw);
-		Pause pause = new Pause(gw);
+		Pause pause = new Pause(gw, timer, this);
 		Position position = new Position(gw);
 
 		setLayout(new BorderLayout());
@@ -86,7 +86,7 @@ public class Game extends Form implements Runnable {
 		Button tickButtoon = new Button("Tick");
 		Button helpButton = new Button("Help");
 		Button pauseButton = new Button("Pause");
-		Button positionButton = new Button("position");
+		Button positionButton = new Button("Position");
 		// key Bindings
 		this.addKeyListener('a', acc);
 		this.addKeyListener('b', brake);

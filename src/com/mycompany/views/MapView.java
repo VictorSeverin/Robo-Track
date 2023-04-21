@@ -4,14 +4,16 @@ import java.util.Observer;
 import java.util.Observable;
 import com.codename1.ui.plaf.Border;
 
-import com.codename1.charts.models.Point;
+import com.codename1.ui.geom.Point;
 import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.Container;
 import com.codename1.ui.Graphics;
 import com.codename1.ui.geom.Dimension;
+import com.mycompany.a3.FixedObject;
 import com.mycompany.a3.GameObject;
 import com.mycompany.a3.GameWorld;
 import com.mycompany.interfaces.IIterator;
+import com.mycompany.interfaces.ISelectable;
 
 public class MapView extends Container implements Observer {
     GameWorld gw = new GameWorld();
@@ -34,5 +36,29 @@ public class MapView extends Container implements Observer {
             GameObject obj = iter.getNext();
             obj.draw(g, p);
         }
+    }
+
+    public void pointerPressed(int x, int y) {
+        x = x - getAbsoluteX();
+        y = y - getAbsoluteY();
+        Point pPtrRelPrnt = new Point(x, y);
+        Point pCmpRelPrnt = new Point(getX(), getY());
+        IIterator iter = gw.getObjects().getIterator();
+        if (gw.isPaused()) {
+
+            while (iter.hasNext()) {
+                GameObject obj = iter.getNext();
+                if (obj instanceof FixedObject) {
+                    FixedObject fixedObj = (FixedObject) obj;
+                    if (fixedObj.contains(pPtrRelPrnt, pCmpRelPrnt)) {
+                        System.out.println("selected");
+                        fixedObj.setSelected(true);
+                    } else {
+                        fixedObj.setSelected(false);
+                    }
+                }
+            }
+        }
+        repaint();
     }
 }

@@ -2,7 +2,7 @@ package com.mycompany.movableObjects;
 
 import java.util.Random;
 
-import com.codename1.charts.models.Point;
+import com.codename1.ui.geom.Point;
 import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.Graphics;
 import com.mycompany.a3.MovableObject;
@@ -10,6 +10,8 @@ import com.mycompany.interfaces.ICollider;
 
 public class Drone extends MovableObject {
 	Random rand = new Random();
+	private int width;
+	private int height;
 
 	/**
 	 * @param size      - the size of the object
@@ -22,35 +24,30 @@ public class Drone extends MovableObject {
 	 **/
 	public Drone(int size, double locationX, double locationY, int heading, int speed) {
 		super(size, locationX, locationY, ColorUtil.BLUE, heading, speed);
+
 	}
 
 	@Override
 	public void draw(Graphics g, Point p) {
 		g.setColor(ColorUtil.BLUE);
 		int[] xCoordinates = {
-				(int) p.getX() + (int) this.getLocationX() - (this.getSize()),
+				(int) p.getX() + (int) this.getLocationX() - (this.getSize() / 2),
 				((int) p.getX() + (int) this.getLocationX()),
-				((int) p.getX() + (int) this.getLocationX()) + (this.getSize()) };
+				((int) p.getX() + (int) this.getLocationX()) + (this.getSize() / 2) };
 		int[] yCoordinates = {
-				((int) p.getY() + (int) this.getLocationY()) - (this.getSize()),
-				((int) p.getY() + (int) this.getLocationY()) + (this.getSize()),
-				((int) p.getY() + (int) this.getLocationY()) - (this.getSize()) };
-		g.drawPolygon(xCoordinates, yCoordinates, 3);
-		g.setColor(ColorUtil.rgb(255, 0, 0));
-		int radius = (int) Math.sqrt((this.getSize() * this.getSize()) + ((this.getSize()) * (this.getSize())));
-		g.drawArc((int) (p.getX() + this.getLocationX()) - radius, (int) (p.getY() +
-				this.getLocationY()) - radius, radius * 2, radius * 2, 0, 360);
-		g.drawString(
-				Double.toString(Math.round(this.getLocationX())) + " "
-						+ Double.toString(Math.round(this.getLocationY())),
-				(int) p.getX() + (int) this.getLocationX() - 10,
-				(int) p.getY() + (int) this.getLocationY() - 20);
+				((int) p.getY() + (int) this.getLocationY()) - (this.getSize() / 2),
+				((int) p.getY() + (int) this.getLocationY()) + (this.getSize() / 2),
+				((int) p.getY() + (int) this.getLocationY()) - (this.getSize() / 2) };
+
+		g.fillPolygon(xCoordinates, yCoordinates, 3);
 
 	}
 
 	public void move(int width, int height, int elapsedTime) {
 		super.setHeading(this.getHeading() + 0.5);
 		super.move(width, height, elapsedTime);
+		this.width = width;
+		this.height = height;
 		// System.out.println("X:" + this.getLocationX() + " Y: " + this.getLocationY()
 		// + "W: " + width + " H: " + height);
 

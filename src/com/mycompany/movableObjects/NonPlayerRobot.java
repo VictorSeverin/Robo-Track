@@ -1,6 +1,6 @@
 package com.mycompany.movableObjects;
 
-import com.codename1.charts.models.Point;
+import com.codename1.ui.geom.Point;
 import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.Graphics;
 import com.codename1.util.MathUtil;
@@ -19,7 +19,6 @@ public class NonPlayerRobot extends Robot {
     public NonPlayerRobot(int size, double locationX, double locationY, IStrategy initialStrategy) {
         super(size, locationX, locationY, 3);
         this.currIStrategy = initialStrategy;
-        System.out.println(this.getEnergyLevel() + " " + this.getEnergyConsumptionRate());
     }
 
     @Override
@@ -27,12 +26,6 @@ public class NonPlayerRobot extends Robot {
         g.setColor(ColorUtil.BLACK);
         g.drawRect((int) (p.getX() + this.getLocationX() - (this.getSize() / 2)),
                 (int) (p.getY() + this.getLocationY() - (this.getSize() / 2)), this.getSize(), this.getSize());
-        g.setColor(ColorUtil.rgb(255, 0, 0));
-        int radius = (int) Math
-                .sqrt((this.getSize() / 2 * this.getSize() / 2) + ((this.getSize() / 2) * (this.getSize() / 2)));
-        g.drawArc((int) (p.getX() + this.getLocationX()) - radius, (int) (p.getY() +
-                this.getLocationY()) - radius, radius * 2, radius * 2, 0, 360);
-        g.setColor(ColorUtil.BLACK);
 
     }
 

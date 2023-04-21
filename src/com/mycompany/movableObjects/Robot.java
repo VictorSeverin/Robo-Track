@@ -1,6 +1,6 @@
 package com.mycompany.movableObjects;
 
-import com.codename1.charts.models.Point;
+import com.codename1.ui.geom.Point;
 import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.Graphics;
 import com.mycompany.a3.GameObject;

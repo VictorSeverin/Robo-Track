@@ -1,6 +1,6 @@
 package com.mycompany.movableObjects;
 
-import com.codename1.charts.models.Point;
+import com.codename1.ui.geom.Point;
 import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.Graphics;
 import com.mycompany.a3.Game;
@@ -29,21 +29,16 @@ public class PlayerRobot extends Robot {
     @Override
     public void draw(Graphics g, Point p) {
         g.setColor(ColorUtil.rgb(255, 0, 0));
-        g.drawRect((int) (p.getX() + this.getLocationX() - (this.getSize() / 2)),
+
+        g.fillRect((int) (p.getX() + this.getLocationX() - (this.getSize() / 2)),
                 (int) (p.getY() + this.getLocationY() - (this.getSize() / 2)),
                 this.getSize(),
                 this.getSize());
-        g.setColor(ColorUtil.rgb(255, 0, 0));
         // int radius = (int) Math
         // .sqrt((this.getSize() / 2 * this.getSize() / 2) + ((this.getSize() / 2) *
         // (this.getSize() / 2)));
         // g.drawArc((int) (p.getX() + this.getLocationX()) - radius, (int) (p.getY() +
         // this.getLocationY()) - radius, radius * 2, radius * 2, 0, 360);
-        g.drawString(
-                Double.toString(Math.round(this.getLocationX())) + " "
-                        + Double.toString(Math.round(this.getLocationY())),
-                (int) p.getX() + (int) this.getLocationX() - 10,
-                (int) p.getY() + (int) this.getLocationY() - 20);
     }
 
     public static PlayerRobot getPlayerRobot(int size, double locationX, double locationY) {

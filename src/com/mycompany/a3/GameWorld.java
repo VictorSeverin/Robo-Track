@@ -42,6 +42,7 @@ public class GameWorld extends Observable {
 	private Sound prWithNprSound;
 	private Sound gameSound;
 	private Sound alarm;
+	private boolean pauseGame;
 	public Random rand = new Random();
 
 	public GameWorld() {
@@ -49,6 +50,7 @@ public class GameWorld extends Observable {
 		this.clockTime = 0;
 		this.remainingLives = 3;
 		this.sound = false;
+		this.pauseGame = false;
 	}
 
 	public void setHeight(int height) {
@@ -78,7 +80,6 @@ public class GameWorld extends Observable {
 					npr.setStrategy(new ChaseRobot());
 					npr.invokeStrategy(this, npr, 10);
 				}
-				System.out.println(npr);
 			}
 		}
 	}
@@ -123,6 +124,24 @@ public class GameWorld extends Observable {
 
 	public void exitGame() {
 		System.exit(0);
+	}
+
+	public boolean isPaused() {
+		return pauseGame;
+	}
+
+	public void setPause(boolean flag) {
+		this.pauseGame = flag;
+	}
+
+	public void pauseGame(UITimer timer, Game game) {
+		if (isPaused() == false) {
+			setPause(true);
+			timer.cancel();
+		} else {
+			setPause(false);
+			timer.schedule(20, true, game);
+		}
 	}
 
 	// TODO adjust acceleration according to energy level and damage
@@ -241,16 +260,18 @@ public class GameWorld extends Observable {
 	}
 
 	public void esCollision(EnergyStation es, Robot robot) {
-		if (robot.getEnergyLevel() + es.getCapacity() > 100) {
-			robot.setEnergyLevel(robot.getMaxEnergyLevel());
-		} else {
-			robot.setEnergyLevel(robot.getEnergyLevel() + es.getCapacity()); // recharghe energy level
+		if (es.getCapacity() > 0) {
+			if (robot.getEnergyLevel() + es.getCapacity() > 100) {
+				robot.setEnergyLevel(robot.getMaxEnergyLevel());
+			} else {
+				robot.setEnergyLevel(robot.getEnergyLevel() + es.getCapacity()); // recharghe energy level
+			}
+			es.drain(); // set energy station capacity to 0;
+			es.setColor(es.getColor() + 30); // faint color
+			objects.add(new EnergyStation(rand.nextInt(200 - 50) + 50, rand.nextInt(this.width - 200),
+					rand.nextInt(this.height - 200), width, height));
+			robot.setMaximumSpeed(robot.getMaximumSpeed()); // set maximum speed back to normal
 		}
-		es.drain(); // set energy station capacity to 0;
-		es.setColor(es.getColor() + 30); // faint color
-		objects.add(new EnergyStation(rand.nextInt(200 - 50) + 50, rand.nextInt(this.width - 200),
-				rand.nextInt(this.height - 200)));
-		robot.setMaximumSpeed(robot.getMaximumSpeed()); // set maximum speed back to normal
 
 		setChanged();
 		notifyObservers(this);
@@ -325,23 +346,22 @@ public class GameWorld extends Observable {
 
 	public void init() {
 
-		PlayerRobot playerRobot = PlayerRobot.getPlayerRobot(80, 50, 50);
-		objects.add(new Base(60, 250, 300, 1));
-		objects.add(new Base(60, 300, 1000, 2));
-		objects.add(new Base(60, 1100, 100, 3));
-		objects.add(new Base(60, 1100, 800, 4));
-		// objects.add(new Drone(50, rand.nextInt(this.width - 100),
-		// rand.nextInt(this.height - 100), rand.nextInt(359),
-		// 5));
-		objects.add(new Drone(50, rand.nextInt(this.width), rand.nextInt(height),
+		PlayerRobot playerRobot = PlayerRobot.getPlayerRobot(80, 390, 80);
+		objects.add(new Base(100, 250, 300, 1, width, height));
+		objects.add(new Base(100, 300, 1000, 2, width, height));
+		objects.add(new Base(100, 1100, 100, 3, width, height));
+		objects.add(new Base(100, 1100, 800, 4, width, height));
+		objects.add(new Drone(80, rand.nextInt(this.width - 100) + 100,
+				rand.nextInt(this.height - 200) + 200, rand.nextInt(359), 5));
+		objects.add(new Drone(80, rand.nextInt(this.width - 200) + 100, rand.nextInt(height - 200) + 200,
 				rand.nextInt(359), 5));
-		objects.add(new EnergyStation(rand.nextInt(200 - 50) + 50, rand.nextInt(this.width - 200),
-				rand.nextInt(this.height - 200)));
-		objects.add(new EnergyStation(rand.nextInt(200 - 50) + 50, rand.nextInt(this.width - 200),
-				rand.nextInt(this.height - 200)));
+		objects.add(new EnergyStation(rand.nextInt(150 - 50) + 50, rand.nextInt(this.width - 200) + 200,
+				rand.nextInt(this.height - 200) + 200, width, height));
+		objects.add(new EnergyStation(rand.nextInt(150 - 50) + 50, rand.nextInt(this.width - 200) + 200,
+				rand.nextInt(this.height - 200) + 200, width, height));
 		objects.add(playerRobot);
-		// objects.add(new NonPlayerRobot(80, 30, 80, new NextBase()));
-		// objects.add(new NonPlayerRobot(80, 150, 80, new NextBase()));
-		// objects.add(new NonPlayerRobot(80, 390, 80, new NextBase()));
+		objects.add(new NonPlayerRobot(80, 30, 80, new NextBase()));
+		objects.add(new NonPlayerRobot(80, 270, 80, new NextBase()));
+		objects.add(new NonPlayerRobot(80, 150, 80, new ChaseRobot()));
 	}
 }

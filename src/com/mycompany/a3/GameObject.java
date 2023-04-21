@@ -7,6 +7,7 @@ import com.mycompany.fixedObjects.Base;
 import com.mycompany.fixedObjects.EnergyStation;
 import com.mycompany.interfaces.ICollider;
 import com.mycompany.interfaces.IDrawable;
+import com.mycompany.interfaces.ISelectable;
 import com.mycompany.movableObjects.Drone;
 import com.mycompany.movableObjects.NonPlayerRobot;
 import com.mycompany.movableObjects.PlayerRobot;
@@ -44,15 +45,14 @@ public abstract class GameObject implements IDrawable, ICollider {
 		if (distBetweenCentersSqr <= radiiSqr) {
 			if (!collidingWith.contains(obj)) {
 				collidingWith.add(otherObject);
-				System.out.println("added");
 				result = true;
 			}
-			if (distBetweenCentersSqr > radiiSqr) {
-				if (collidingWith.contains(otherObject)) {
-					collidingWith.remove(otherObject);
-				}
+		} else if (distBetweenCentersSqr >= radiiSqr) {
+			if (collidingWith.contains(otherObject)) {
+				collidingWith.remove(otherObject);
 			}
 		}
+
 		// System.out.println("X:" + otherCenterX + " Y:" + otherCenterY);
 		return result;
 	}

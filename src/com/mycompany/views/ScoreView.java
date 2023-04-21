@@ -18,7 +18,7 @@ public class ScoreView extends Container implements Observer {
     private Label soundLabel;
 
     public ScoreView() {
-        timeLabel = new Label("Time: 000");
+        timeLabel = new Label("Time: 00000");
         livesLabel = new Label("Lives left: 000");
         lastBaseLabel = new Label("Labst Base Reached: 000");
         energyLevelLabel = new Label("Energy Level: 100");

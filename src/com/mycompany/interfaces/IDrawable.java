@@ -1,6 +1,6 @@
 package com.mycompany.interfaces;
 
-import com.codename1.charts.models.Point;
+import com.codename1.ui.geom.Point;
 import com.codename1.ui.Graphics;
 
 public interface IDrawable {
