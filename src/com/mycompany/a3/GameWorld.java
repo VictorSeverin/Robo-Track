@@ -40,13 +40,13 @@ public class GameWorld extends Observable {
 	private Sound prWithBaseSound;
 	private Sound prWithEsSound;
 	private Sound prWithNprSound;
-	private Sound gameSound;
-	private Sound alarm;
+	private Sound robotExp;
 	private BGSound bSound;
-	private boolean bPause;
 	private boolean setPosition;
 	private boolean pauseGame;
 	public Random rand = new Random();
+	private UITimer timer;
+	Game game;
 
 	public GameWorld() {
 		this.objects = new GameCollection();
@@ -74,13 +74,63 @@ public class GameWorld extends Observable {
 	}
 
 	public void createSounds() {
-		// prWithBaseSound = new Sound("yeet.wav");
-		alarm = new Sound("alarm.wav");
-		bSound = new BGSound("bgMusic.wav");
+		bSound = new BGSound("bgMusic.wav", this);
 		prWithBaseSound = new Sound("baseHit.wav");
 		prWithDroneSound = new Sound("plane.wav");
 		prWithEsSound = new Sound("electricity.wav");
-		prWithNprSound = new Sound("robotCrash");
+		prWithNprSound = new Sound("robotCrash.wav");
+		robotExp = new Sound("explosion.wav");
+		if (getSoundBool()) {
+			bSound.run();
+		}
+	}
+
+	public GameCollection getObjects() {
+		return objects;
+	}
+
+	public int getTime() {
+		return clockTime;
+	}
+
+	public int getLivesLeft() {
+		return remainingLives;
+	}
+
+	public void toggleSound() {
+		if (this.sound) {
+			this.sound = false;
+			bSound.pause();
+		} else {
+			this.sound = true;
+			bSound.play();
+		}
+		setChanged();
+		notifyObservers(this);
+	}
+
+	public String getSound() {
+		if (this.sound == true) {
+			return "ON";
+		} else {
+			return "OFF";
+		}
+	}
+
+	public boolean getSoundBool() {
+		return this.sound;
+	}
+
+	public void exitGame() {
+		System.exit(0);
+	}
+
+	public boolean isPaused() {
+		return pauseGame;
+	}
+
+	public void setPause(boolean flag) {
+		this.pauseGame = flag;
 	}
 
 	public void changeStrategy() {
@@ -99,6 +149,8 @@ public class GameWorld extends Observable {
 				}
 			}
 		}
+		setChanged();
+		notifyObservers(this);
 	}
 
 	public PlayerRobot getRobot() {
@@ -113,44 +165,6 @@ public class GameWorld extends Observable {
 		return pr;
 	}
 
-	public GameCollection getObjects() {
-		return objects;
-	}
-
-	public int getTime() {
-		return clockTime;
-	}
-
-	public int getLivesLeft() {
-		return remainingLives;
-	}
-
-	public void toggleSound() {
-		this.sound = !sound;
-		setChanged();
-		notifyObservers(this);
-	}
-
-	public String getSound() {
-		if (this.sound == true) {
-			return "ON";
-		} else {
-			return "OFF";
-		}
-	}
-
-	public void exitGame() {
-		System.exit(0);
-	}
-
-	public boolean isPaused() {
-		return pauseGame;
-	}
-
-	public void setPause(boolean flag) {
-		this.pauseGame = flag;
-	}
-
 	public void pauseGame(UITimer timer, Game game) {
 		if (isPaused() == false) {
 			setPause(true);
@@ -159,6 +173,9 @@ public class GameWorld extends Observable {
 			setPause(false);
 			timer.schedule(20, true, game);
 		}
+		bSound.play();
+		setChanged();
+		notifyObservers(this);
 	}
 
 	// TODO adjust acceleration according to energy level and damage
@@ -181,8 +198,6 @@ public class GameWorld extends Observable {
 	}
 
 	public void brake() {
-
-		alarm.play();
 		System.out.println("Breaking");
 		IIterator iter = objects.getIterator();
 		while (iter.hasNext()) {
@@ -215,7 +230,6 @@ public class GameWorld extends Observable {
 						robot.turn(robot.getSteeringDirection() - 1);
 					}
 				}
-				System.out.println("Steering Direction: " + robot.getSteeringDirection());
 			}
 		}
 		setChanged();
@@ -244,13 +258,16 @@ public class GameWorld extends Observable {
 	}
 
 	public void robotCollision(PlayerRobot pr, NonPlayerRobot npr) {
-		prWithNprSound.play();
+		prWithNprSound.play(this);
 		if (pr.getDamageLevel() + 5 > pr.getMaxDamageLevel()) {
 			pr.setDamageLevel(pr.getMaxDamageLevel());
 		} else {
+			pr.setColor(pr.getRed(), pr.getGreen() + 20, pr.getBlue() + 20);
 			pr.setDamageLevel(pr.getDamageLevel() + 5);
-			pr.setColor(pr.getColor() + 30); // Make Color Brighter
-			pr.setMaximumSpeed(pr.getMaximumSpeed() - 5);
+			if (pr.getMaximumSpeed() > 2) {
+				pr.setSpeed(pr.getSpeed() - 1);
+				pr.setMaximumSpeed(pr.getMaximumSpeed() - 2);
+			}
 		}
 
 		if (npr.getDamageLevel() + 5 > npr.getMaxDamageLevel()) {
@@ -258,6 +275,9 @@ public class GameWorld extends Observable {
 		} else {
 			npr.setDamageLevel(npr.getDamageLevel() + 5);
 			npr.setMaximumSpeed(npr.getMaximumSpeed() - 5);
+			if (npr.getSpeed() > 1) {
+				npr.setSpeed(npr.getSpeed() - 1);
+			}
 		}
 
 		setChanged();
@@ -265,13 +285,16 @@ public class GameWorld extends Observable {
 	}
 
 	public void droneColission(Robot robot) {
-		prWithDroneSound.play();
-		if (robot.getDamageLevel() + 5 > robot.getMaxDamageLevel()) {
+		prWithDroneSound.play(this);
+		if (robot.getDamageLevel() + 2 > robot.getMaxDamageLevel()) {
 			robot.setDamageLevel(robot.getMaxDamageLevel());
 		} else {
+			robot.setColor(robot.getRed(), robot.getGreen() + 20, robot.getBlue() + 20);
+			robot.setSpeed(robot.getSpeed() - 1);
 			robot.setDamageLevel(robot.getDamageLevel() + 2);
-			robot.setColor(robot.getColor() + 30); // Make Color Brighter
-			robot.setMaximumSpeed(robot.getMaximumSpeed() - 5);
+			if (robot.getMaximumSpeed() > 2) {
+				robot.setMaximumSpeed(robot.getMaximumSpeed() - 2);
+			}
 		}
 
 		setChanged();
@@ -279,15 +302,24 @@ public class GameWorld extends Observable {
 	}
 
 	public void esCollision(EnergyStation es, Robot robot) {
-		prWithEsSound.play();
 		if (es.getCapacity() > 0) {
+			prWithEsSound.play(this);
 			if (robot.getEnergyLevel() + es.getCapacity() > 100) {
 				robot.setEnergyLevel(robot.getMaxEnergyLevel());
+				if (robot instanceof PlayerRobot) {
+					robot.setColor(255, 0, 0);
+				}
 			} else {
 				robot.setEnergyLevel(robot.getEnergyLevel() + es.getCapacity()); // recharghe energy level
+				if (robot instanceof PlayerRobot) {
+					robot.setColor(robot.getRed(), robot.getGreen() - 30, robot.getBlue() - 20);
+				}
+			}
+			robot.setMaximumSpeed(10);
+			if (robot.getSpeed() < 3) {
+				robot.setSpeed(3);
 			}
 			es.drain(); // set energy station capacity to 0;
-			es.setColor(es.getColor() + 30); // faint color
 			objects.add(new EnergyStation(rand.nextInt(200 - 50) + 50, rand.nextInt(this.width - 200),
 					rand.nextInt(this.height - 200), width, height));
 			robot.setMaximumSpeed(robot.getMaximumSpeed()); // set maximum speed back to normal
@@ -298,18 +330,17 @@ public class GameWorld extends Observable {
 	}
 
 	public void baseCollide(Robot robot, Base base) {
-		prWithBaseSound.play();
-		prWithBaseSound.play();
+		prWithBaseSound.play(this);
 		if (base.getSequenceNumber() == robot.getLastBaseReached() + 1) {
 			robot.setBase(robot.getLastBaseReached() + 1);
-			System.out.println("Reached base" + base.getSequenceNumber());
 			if (base.getSequenceNumber() == 4) {
 				if (robot instanceof PlayerRobot) {
 					System.out.println("Game Over! You won");
+					pauseGame(this.timer, this.game);
 
 				} else if (robot instanceof NonPlayerRobot) {
-					System.out.println("Game Over! You won");
-					robot.setSpeed(0);
+					System.out.println("Game Over! NPR won");
+					pauseGame(this.timer, this.game);
 				}
 			}
 
@@ -334,23 +365,25 @@ public class GameWorld extends Observable {
 			if (obj instanceof PlayerRobot) {
 				PlayerRobot pr = (PlayerRobot) obj;
 				if (pr.getEnergyLevel() <= 0) {
-					System.out.println("Game over, you ran out of energy! Line319");
-					if (this.remainingLives - 1 < 0) {
-						System.out.println("Game over, you ran out of lives! Line 321");
-						timer.cancel();
-						// exitGame();
-					}
+					System.out.println("Game over, Player Robot ran out of energy!");
+					robotExp.play(this);
 					this.remainingLives--;
-					double oldLocationX = pr.getLocationX();
-					double oldLocationY = pr.getLocationY();
-					int oldSize = pr.getSize();
-					objects.remove(pr);
-					pr = PlayerRobot.getPlayerRobot(oldSize, oldLocationX, oldLocationY);
-					objects.add(pr);
+					pr.respawn();
+				} else if (pr.getDamageLevel() >= pr.getMaxDamageLevel()) {
+					robotExp.play(this);
+					System.out.println("Player Robot took Max Damage Level");
+					this.remainingLives--;
+					pr.respawn();
+				} else if (this.remainingLives <= 0) {
+					robotExp.play(this);
+					System.out.println("Game over, Player Robot ran out of lives!");
+					timer.cancel();
+					// exitGame();
 				}
-
 			}
+
 		}
+
 		iter = objects.getIterator();
 		while (iter.hasNext()) {
 			ICollider objA = (ICollider) iter.getNext();
@@ -363,27 +396,25 @@ public class GameWorld extends Observable {
 			}
 		}
 		setChanged();
+
 		notifyObservers(this);
 	}
 
-	public void init() {
-
-		PlayerRobot playerRobot = PlayerRobot.getPlayerRobot(80, 390, 80);
+	public void init(UITimer timer, Game game) {
+		this.timer = timer;
+		this.game = game;
+		PlayerRobot playerRobot = PlayerRobot.getPlayerRobot(80, 510, 80);
 		objects.add(new Base(100, 250, 300, 1, width, height));
 		objects.add(new Base(100, 300, 1000, 2, width, height));
 		objects.add(new Base(100, 1100, 100, 3, width, height));
 		objects.add(new Base(100, 1100, 800, 4, width, height));
-		objects.add(new Drone(80, rand.nextInt(this.width - 100) + 100,
-				rand.nextInt(this.height - 200) + 200, rand.nextInt(359), 5));
-		objects.add(new Drone(80, rand.nextInt(this.width - 200) + 100, rand.nextInt(height - 200) + 200,
+		objects.add(new Drone(80, rand.nextInt(this.width - 200) + 200, rand.nextInt(this.height - 200) + 200,
 				rand.nextInt(359), 5));
+		objects.add(
+				new Drone(80, rand.nextInt(this.width - 200) + 200, rand.nextInt(height - 200), rand.nextInt(359), 5));
 		objects.add(new EnergyStation(rand.nextInt(150 - 50) + 50, rand.nextInt(this.width - 200) + 200,
-				rand.nextInt(this.height - 200) + 200, width, height));
-		objects.add(new EnergyStation(rand.nextInt(150 - 50) + 50, rand.nextInt(this.width - 200) + 200,
-				rand.nextInt(this.height - 200) + 200, width, height));
+				rand.nextInt(this.height - 200), width, height));
 		objects.add(playerRobot);
-		objects.add(new NonPlayerRobot(80, 30, 80, new NextBase()));
-		objects.add(new NonPlayerRobot(80, 270, 80, new NextBase()));
-		objects.add(new NonPlayerRobot(80, 150, 80, new NextBase()));
+		objects.add(new NonPlayerRobot(80, 80, 80, new NextBase()));
 	}
 }

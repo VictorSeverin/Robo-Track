@@ -5,15 +5,15 @@ import com.codename1.ui.events.ActionEvent;
 import com.mycompany.a3.GameWorld;
 
 public class Accelerate extends Command {
-    private GameWorld gw;
+	private GameWorld gw;
 
-    public Accelerate(GameWorld gw) {
-        super("Accelerate");
-        this.gw = gw;
-    }
+	public Accelerate(GameWorld gw) {
+		super("Accelerate");
+		this.gw = gw;
+	}
 
-    @Override
-    public void actionPerformed(ActionEvent evt) {
-        gw.accelerate();
-    }
+	@Override
+	public void actionPerformed(ActionEvent evt) {
+		gw.accelerate();
+	}
 }

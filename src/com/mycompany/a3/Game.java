@@ -63,6 +63,14 @@ public class Game extends Form implements Runnable {
 	private Position position;
 	private UITimer timer;
 	private Button pauseButton;
+	private Button accButton;
+	private Button leftButton;
+	private Button chgStrategyButton;
+	private Button brakeButton;
+	private Button righButton;
+	private Button tickButtoon;
+	private Button helpButton;
+	private Button positionButton;
 
 	@Override
 	public void run() {
@@ -91,15 +99,15 @@ public class Game extends Form implements Runnable {
 
 		setLayout(new BorderLayout());
 		// Buttons
-		Button accButton = new Button("Accelerate");
-		Button leftButton = new Button("Left");
-		Button chgStrategyButton = new Button("Change Strategy");
-		Button brakeButton = new Button("Break");
-		Button righButton = new Button("Right");
-		Button tickButtoon = new Button("Tick");
-		Button helpButton = new Button("Help");
+		accButton = new Button("Accelerate");
+		leftButton = new Button("Left");
+		chgStrategyButton = new Button("Change Strategy");
+		brakeButton = new Button("Break");
+		righButton = new Button("Right");
+		tickButtoon = new Button("Tick");
+		helpButton = new Button("Help");
 		pauseButton = new Button("Pause");
-		Button positionButton = new Button("Position");
+		positionButton = new Button("Position");
 		// key Bindings
 		this.addKeyListener('a', acc);
 		this.addKeyListener('b', brake);
@@ -166,11 +174,11 @@ public class Game extends Form implements Runnable {
 		// Event Listeners
 		accButton.addActionListener(acc);
 		leftButton.addActionListener(leftTurn);
+		righButton.addActionListener(rightTurn);
 		chgStrategyButton.addActionListener(changeStrategy);
 		brakeButton.addActionListener(brake);
-		righButton.addActionListener(rightTurn);
 		tickButtoon.addActionListener(tick);
-		helpButton.addActionListener(sound);
+		helpButton.addActionListener(help);
 		pauseButton.addActionListener(pause);
 		positionButton.addActionListener(position);
 		// Containers
@@ -219,7 +227,7 @@ public class Game extends Form implements Runnable {
 		gw.setHeight(mv.getHeight());
 		gw.setWidth(mv.getWidth());
 		this.show();
-		gw.init();
+		gw.init(timer, this);
 		gw.createSounds();
 		this.revalidate();
 		timer.schedule(20, true, this);
@@ -228,8 +236,22 @@ public class Game extends Form implements Runnable {
 	public void pauseGame() {
 		if (gw.isPaused()) {
 			pauseButton.setText("Play");
+			accButton.setEnabled(false);
+			leftButton.setEnabled(false);
+			chgStrategyButton.setEnabled(false);
+			brakeButton.setEnabled(false);
+			righButton.setEnabled(false);
+			tickButtoon.setEnabled(false);
+			helpButton.setEnabled(false);
 		} else {
 			pauseButton.setText("Pause");
+			accButton.setEnabled(true);
+			leftButton.setEnabled(true);
+			chgStrategyButton.setEnabled(true);
+			brakeButton.setEnabled(true);
+			righButton.setEnabled(true);
+			tickButtoon.setEnabled(true);
+			helpButton.setEnabled(true);
 		}
 	}
 

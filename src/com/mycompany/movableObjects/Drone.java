@@ -23,13 +23,13 @@ public class Drone extends MovableObject {
 	 * 
 	 **/
 	public Drone(int size, double locationX, double locationY, int heading, int speed) {
-		super(size, locationX, locationY, ColorUtil.BLUE, heading, speed);
+		super(size, locationX, locationY, heading, speed, 25, 2, 232);
 
 	}
 
 	@Override
 	public void draw(Graphics g, Point p) {
-		g.setColor(ColorUtil.BLUE);
+		g.setColor(ColorUtil.rgb(this.getRed(), this.getGreen(), this.getBlue()));
 		int[] xCoordinates = {
 				(int) p.getX() + (int) this.getLocationX() - (this.getSize() / 2),
 				((int) p.getX() + (int) this.getLocationX()),
@@ -39,7 +39,7 @@ public class Drone extends MovableObject {
 				((int) p.getY() + (int) this.getLocationY()) + (this.getSize() / 2),
 				((int) p.getY() + (int) this.getLocationY()) - (this.getSize() / 2) };
 
-		g.fillPolygon(xCoordinates, yCoordinates, 3);
+		g.drawPolygon(xCoordinates, yCoordinates, 3);
 
 	}
 
@@ -51,10 +51,6 @@ public class Drone extends MovableObject {
 		// System.out.println("X:" + this.getLocationX() + " Y: " + this.getLocationY()
 		// + "W: " + width + " H: " + height);
 
-	}
-
-	@Override
-	public void setColor(int color) {
 	}
 
 	@Override

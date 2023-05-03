@@ -3,6 +3,7 @@ package com.mycompany.a3;
 import java.lang.Math;
 
 import com.codename1.charts.models.Point;
+import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.Graphics;
 import com.codename1.ui.BrowserWindow.EvalRequest;
 
@@ -10,8 +11,9 @@ public abstract class MovableObject extends GameObject {
 	private double heading;
 	private int speed;
 
-	public MovableObject(int size, double locationX, double locationY, int color, int heading, int speed) {
-		super(size, locationX, locationY, color);
+	public MovableObject(int size, double locationX, double locationY, int heading, int speed, int red, int green,
+			int blue) {
+		super(size, locationX, locationY, red, green, blue);
 		this.heading = heading;
 		this.speed = speed;
 		// System.out.println(this.getClass() + " " + this.getHeading());
@@ -32,10 +34,10 @@ public abstract class MovableObject extends GameObject {
 			this.setHeading(-this.getHeading());
 		}
 		if ((this.getLocationY() + this.getSize() / 2) >= height - 100) {
-			this.setHeading(this.getHeading() + 180);
+			this.setHeading(180);
 		}
 		if ((this.getLocationY() - this.getSize() / 2) <= 0) {
-			this.setHeading(this.getHeading() + 180);
+			this.setHeading(0);
 		}
 		// System.out.println("From Movable__________ W: " + width + "H: " + height);
 	}

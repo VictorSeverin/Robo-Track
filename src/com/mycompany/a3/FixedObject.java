@@ -8,8 +8,8 @@ import com.mycompany.interfaces.ISelectable;
 public abstract class FixedObject extends GameObject implements ISelectable {
 	private boolean isSelected = false;
 
-	public FixedObject(int size, double locationX, double locationY, int color) {
-		super(size, locationX, locationY, color);
+	public FixedObject(int size, double locationX, double locationY, int red, int green, int blue) {
+		super(size, locationX, locationY, red, green, blue);
 	}
 
 	public boolean isSelected() {

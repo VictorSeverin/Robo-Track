@@ -56,7 +56,6 @@ public class MapView extends Container implements Observer {
                         fixedObj.setSelected(false);
                     }
                     if (fixedObj.contains(pPtrRelPrnt, pCmpRelPrnt)) {
-                        System.out.println("selected");
                         fixedObj.setSelected(true);
                         // Point newLoc = new Point(x,y);
                     } else {

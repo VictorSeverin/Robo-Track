@@ -8,21 +8,20 @@ import com.mycompany.a3.GameWorld;
 import com.codename1.ui.Dialog;
 
 public class Pause extends Command {
-    public UITimer timer;
-    public GameWorld gw;
-    public Game game;
+	public UITimer timer;
+	public GameWorld gw;
+	public Game game;
 
-    public Pause(GameWorld gw, UITimer timer, Game game) {
-        super("Pause");
-        this.timer = timer;
-        this.gw = gw;
-        this.game = game;
-    }
+	public Pause(GameWorld gw, UITimer timer, Game game) {
+		super("Pause");
+		this.timer = timer;
+		this.gw = gw;
+		this.game = game;
+	}
 
-    @Override
-    public void actionPerformed(ActionEvent evt) {
-        gw.pauseGame(timer, game);
-        game.pauseGame();
-        System.out.println("Pause Called");
-    }
+	@Override
+	public void actionPerformed(ActionEvent evt) {
+		gw.pauseGame(timer, game);
+		game.pauseGame();
+	}
 }

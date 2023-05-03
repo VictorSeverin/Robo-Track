@@ -19,7 +19,7 @@ public class EnergyStation extends FixedObject {
 	 * @param color     - color of the object
 	 **/
 	public EnergyStation(int size, double locationX, double locationY, int width, int height) {
-		super(size, locationX, locationY, ColorUtil.GREEN);
+		super(size, locationX, locationY, 39, 245, 12);
 		this.capacity = size / 2;
 		this.width = width;
 		this.height = height;
@@ -42,20 +42,19 @@ public class EnergyStation extends FixedObject {
 
 	@Override
 	public void draw(Graphics g, Point p) {
+		g.setColor(ColorUtil.rgb(this.getRed(), this.getGreen(), this.getBlue()));
 		if (this.isSelected()) {
-			g.setColor(ColorUtil.GREEN);
-			g.drawArc((int) (p.getX() + this.getLocationX()) - (this.getSize() / 2), (int) (p.getY() +
-					this.getLocationY()) - (this.getSize() / 2), this.getSize(), this.getSize(), 0, 360);
-			g.drawString(Integer.toString(this.getCapacity()),
-					(int) p.getX() + (int) this.getLocationX() - 10,
+			g.drawArc((int) (p.getX() + this.getLocationX()) - (this.getSize() / 2),
+					(int) (p.getY() + this.getLocationY()) - (this.getSize() / 2), this.getSize(), this.getSize(), 0,
+					360);
+			g.drawString(Integer.toString(this.getCapacity()), (int) p.getX() + (int) this.getLocationX() - 10,
 					(int) p.getY() + (int) this.getLocationY() - 10);
 		} else {
-			g.setColor(ColorUtil.GREEN);
-			g.fillArc((int) (p.getX() + this.getLocationX()) - (this.getSize() / 2), (int) (p.getY() +
-					this.getLocationY()) - (this.getSize() / 2), this.getSize(), this.getSize(), 0, 360);
+			g.fillArc((int) (p.getX() + this.getLocationX()) - (this.getSize() / 2),
+					(int) (p.getY() + this.getLocationY()) - (this.getSize() / 2), this.getSize(), this.getSize(), 0,
+					360);
 			g.setColor(ColorUtil.rgb(255, 0, 0));
-			g.drawString(Integer.toString(this.getCapacity()),
-					(int) p.getX() + (int) this.getLocationX() - 10,
+			g.drawString(Integer.toString(this.getCapacity()), (int) p.getX() + (int) this.getLocationX() - 10,
 					(int) p.getY() + (int) this.getLocationY() - 10);
 		}
 	}
@@ -66,14 +65,15 @@ public class EnergyStation extends FixedObject {
 
 	public void drain() {
 		this.capacity = 0;
+		this.setColor(30, 145, 17);
+		this.setSize(50);
 	}
 
 	@Override
 	public String toString() {
 		return "loc=" + Math.round(this.getLocationX() * 10.0) / 10.0 + ","
-				+ Math.round(this.getLocationY() * 10.0) / 10.0 + " color=["
-				+ this.getColor() + "] size=" + this.getSize() + " capacity="
-				+ this.getCapacity();
+				+ Math.round(this.getLocationY() * 10.0) / 10.0 + " color=[" + this.getColor() + "] size="
+				+ this.getSize() + " capacity=" + this.getCapacity();
 	}
 
 }

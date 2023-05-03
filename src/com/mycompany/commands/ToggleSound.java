@@ -6,15 +6,15 @@ import com.mycompany.a3.GameWorld;
 import com.codename1.ui.CheckBox;
 
 public class ToggleSound extends Command {
-    private GameWorld gw;
+	private GameWorld gw;
 
-    public ToggleSound(GameWorld gw) {
-        super("Sound");
-        this.gw = gw;
-    }
+	public ToggleSound(GameWorld gw) {
+		super("Sound");
+		this.gw = gw;
+	}
 
-    @Override
-    public void actionPerformed(ActionEvent evt) {
-        gw.toggleSound();
-    }
+	@Override
+	public void actionPerformed(ActionEvent evt) {
+		gw.toggleSound();
+	}
 }

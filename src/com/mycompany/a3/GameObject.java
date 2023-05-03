@@ -7,7 +7,6 @@ import com.mycompany.fixedObjects.Base;
 import com.mycompany.fixedObjects.EnergyStation;
 import com.mycompany.interfaces.ICollider;
 import com.mycompany.interfaces.IDrawable;
-import com.mycompany.interfaces.ISelectable;
 import com.mycompany.movableObjects.Drone;
 import com.mycompany.movableObjects.NonPlayerRobot;
 import com.mycompany.movableObjects.PlayerRobot;
@@ -20,11 +19,11 @@ public abstract class GameObject implements IDrawable, ICollider {
 	private int color;
 	ArrayList<GameObject> collidingWith = new ArrayList<GameObject>();
 
-	GameObject(int size, double locationX, double locationY, int color) {
+	GameObject(int size, double locationX, double locationY, int red, int green, int blue) {
 		this.size = size;
 		this.locationX = locationX;
 		this.locationY = locationY;
-		this.color = color;
+		this.color = ColorUtil.rgb(red, green, blue);
 	}
 
 	public boolean collidesWith(ICollider obj) {
@@ -53,7 +52,6 @@ public abstract class GameObject implements IDrawable, ICollider {
 			}
 		}
 
-		// System.out.println("X:" + otherCenterX + " Y:" + otherCenterY);
 		return result;
 	}
 
@@ -121,11 +119,38 @@ public abstract class GameObject implements IDrawable, ICollider {
 		return size;
 	}
 
-	public int getColor() {
-		return color;
+	public void setSize(int size) {
+		this.size = size;
 	}
 
-	public void setColor(int color) {
-		this.color = color;
+	public int[] getColor() {
+		int[] colorComponents = new int[3];
+		colorComponents[0] = ColorUtil.red(color);
+		colorComponents[1] = ColorUtil.green(color);
+		colorComponents[2] = ColorUtil.blue(color);
+		return colorComponents;
+	}
+
+	public int getRed() {
+		return ColorUtil.red(color);
+	}
+
+	public int getGreen() {
+		return ColorUtil.green(color);
+	}
+
+	public int getBlue() {
+		return ColorUtil.blue(color);
+	}
+
+	public void makeBrighter(float factor) {
+		int r = (int) (this.getRed() * (1 + factor));
+		int g = (int) (this.getGreen() * (1 + factor));
+		int b = (int) (this.getBlue() * (1 + factor));
+		this.color = ColorUtil.rgb(r, g, b);
+	}
+
+	public void setColor(int red, int green, int blue) {
+		this.color = ColorUtil.rgb(red, green, blue);
 	}
 }

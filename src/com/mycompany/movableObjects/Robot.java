@@ -31,15 +31,15 @@ public class Robot extends MovableObject implements iSteerable {
 	 * @param speed     - speed of the object
 	 * 
 	 **/
-	public Robot(int size, double locationX, double locationY, int speed) {
-		super(size, locationX, locationY, ColorUtil.BLUE, 0, speed);
+	public Robot(int size, double locationX, double locationY, int speed, int red, int green, int blue) {
+		super(size, locationX, locationY, 0, speed, red, green, blue);
 		this.maximumSpeed = 10;
 		this.energyLevel = 10000;
 		this.damageLevel = 0;
 		this.energyConsumptionRate = 1;
 		this.lastBaseReached = 0;
 		this.steeringDirection = 0;
-		this.maxDamageLevel = 50;
+		this.maxDamageLevel = 70;
 		this.maxEnergyLevel = 1000;
 	}
 
@@ -52,15 +52,6 @@ public class Robot extends MovableObject implements iSteerable {
 
 	@Override
 	public void draw(Graphics g, Point p) {
-		// g.setColor(ColorUtil.YELLOW);
-		// g.fillRect((int) (p.getX() + this.getLocationX() - this.getSize() / 2),
-		// (int) (p.getY() + this.getLocationY()) - this.getSize() / 2, this.getSize(),
-		// this.getSize());
-		// g.setColor(ColorUtil.rgb(255, 0, 0));
-		// g.drawArc((int) (p.getX() + this.getLocationX()) - (this.getSize() / 2),
-		// (int) (p.getY() +
-		// this.getLocationY()) - (this.getSize() / 2), this.getSize(), this.getSize(),
-		// 0, 360);
 
 	}
 
@@ -130,11 +121,10 @@ public class Robot extends MovableObject implements iSteerable {
 	@Override
 	public String toString() {
 		return "loc=" + Math.round(this.getLocationX() * 10.0) / 10.0 + ","
-				+ Math.round(this.getLocationY() * 10.0) / 10.0 + " color=["
-				+ this.getColor() + "] heading=" + this.getHeading() + " speed=" + this.getSpeed() + " size="
-				+ this.getSize() + " maxSpeed=" + this.getMaximumSpeed() + " steeringDirection="
-				+ this.getSteeringDirection()
-				+ " energyLevel=" + this.getEnergyLevel() + " damageLevel= " + this.getDamageLevel();
+				+ Math.round(this.getLocationY() * 10.0) / 10.0 + " color=[" + this.getColor() + "] heading="
+				+ this.getHeading() + " speed=" + this.getSpeed() + " size=" + this.getSize() + " maxSpeed="
+				+ this.getMaximumSpeed() + " steeringDirection=" + this.getSteeringDirection() + " energyLevel="
+				+ this.getEnergyLevel() + " damageLevel= " + this.getDamageLevel();
 	}
 
 }
