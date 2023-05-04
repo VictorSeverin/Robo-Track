@@ -51,7 +51,7 @@ public class Robot extends MovableObject implements iSteerable {
 	}
 
 	@Override
-	public void draw(Graphics g, Point p) {
+	public void draw(Graphics g, Point p, Point pCmpRelScrn) {
 
 	}
 

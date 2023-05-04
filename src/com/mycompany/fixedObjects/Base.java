@@ -48,7 +48,7 @@ public class Base extends FixedObject {
 	}
 
 	@Override
-	public void draw(Graphics g, Point p) {
+	public void draw(Graphics g, Point p, Point pCmpRelScrn) {
 		g.setColor(ColorUtil.rgb(this.getRed(), this.getGreen(), this.getBlue()));
 		int[] xCoordinates = { (int) p.getX() + (int) this.getLocationX() - (this.getSize() / 2),
 				((int) p.getX() + (int) this.getLocationX()),

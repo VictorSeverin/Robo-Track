@@ -403,18 +403,21 @@ public class GameWorld extends Observable {
 	public void init(UITimer timer, Game game) {
 		this.timer = timer;
 		this.game = game;
-		PlayerRobot playerRobot = PlayerRobot.getPlayerRobot(80, 510, 80);
-		objects.add(new Base(100, 250, 300, 1, width, height));
-		objects.add(new Base(100, 300, 1000, 2, width, height));
-		objects.add(new Base(100, 1100, 100, 3, width, height));
-		objects.add(new Base(100, 1100, 800, 4, width, height));
-		objects.add(new Drone(80, rand.nextInt(this.width - 200) + 200, rand.nextInt(this.height - 200) + 200,
-				rand.nextInt(359), 5));
+		PlayerRobot playerRobot = PlayerRobot.getPlayerRobot(80, 50, 50);
+		// objects.add(new Base(100, 250, 300, 1, width, height));
+		// objects.add(new Base(100, 300, 1000, 2, width, height));
+		// objects.add(new Base(100, 1100, 100, 3, width, height));
+		// objects.add(new Base(100, 1100, 800, 4, width, height));
+		// objects.add(new Drone(80, rand.nextInt(this.width - 200) + 200,
+		// rand.nextInt(this.height - 200) + 200,
+		// rand.nextInt(359), 5));
 		objects.add(
-				new Drone(80, rand.nextInt(this.width - 200) + 200, rand.nextInt(height - 200), rand.nextInt(359), 5));
-		objects.add(new EnergyStation(rand.nextInt(150 - 50) + 50, rand.nextInt(this.width - 200) + 200,
-				rand.nextInt(this.height - 200), width, height));
+				new Drone(40, rand.nextInt(this.width - 200) + 200, rand.nextInt(height - 200), rand.nextInt(359),
+						5));
+		// objects.add(new EnergyStation(rand.nextInt(150 - 50) + 50,
+		// rand.nextInt(this.width - 200) + 200,
+		// rand.nextInt(this.height - 200), width, height));
 		objects.add(playerRobot);
-		objects.add(new NonPlayerRobot(80, 80, 80, new NextBase()));
+		// objects.add(new NonPlayerRobot(80, 80, 80, new NextBase()));
 	}
 }

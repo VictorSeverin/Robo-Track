@@ -41,7 +41,7 @@ public class EnergyStation extends FixedObject {
 	}
 
 	@Override
-	public void draw(Graphics g, Point p) {
+	public void draw(Graphics g, Point p, Point pCmpRelScrn) {
 		g.setColor(ColorUtil.rgb(this.getRed(), this.getGreen(), this.getBlue()));
 		if (this.isSelected()) {
 			g.drawArc((int) (p.getX() + this.getLocationX()) - (this.getSize() / 2),

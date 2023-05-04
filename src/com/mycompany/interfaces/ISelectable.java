@@ -10,6 +10,6 @@ public interface ISelectable {
 
 	public boolean contains(Point pRel, Point pComp);
 
-	public void draw(Graphics g, Point p);
+	public void draw(Graphics g, Point p, Point pCmpRelScrn);
 
 }

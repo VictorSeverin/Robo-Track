@@ -22,7 +22,7 @@ public class NonPlayerRobot extends Robot {
 	}
 
 	@Override
-	public void draw(Graphics g, Point p) {
+	public void draw(Graphics g, Point p, Point pCmpRelScrn) {
 		g.setColor(ColorUtil.rgb(this.getRed(), this.getGreen(), this.getBlue()));
 		g.drawRect((int) (p.getX() + this.getLocationX() - (this.getSize() / 2)),
 				(int) (p.getY() + this.getLocationY() - (this.getSize() / 2)), this.getSize(), this.getSize());
