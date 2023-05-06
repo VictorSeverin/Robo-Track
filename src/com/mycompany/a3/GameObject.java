@@ -1,5 +1,7 @@
 package com.mycompany.a3;
 
+import com.codename1.ui.Transform;
+
 import java.util.ArrayList;
 
 import com.codename1.charts.util.ColorUtil;
@@ -18,21 +20,55 @@ public abstract class GameObject implements IDrawable, ICollider {
 	private double locationY;
 	private int color;
 	ArrayList<GameObject> collidingWith = new ArrayList<GameObject>();
+	private Transform myRotation, myTranslation, myScale;
 
 	GameObject(int size, double locationX, double locationY, int red, int green, int blue) {
 		this.size = size;
 		this.locationX = locationX;
 		this.locationY = locationY;
 		this.color = ColorUtil.rgb(red, green, blue);
+		myRotation = Transform.makeIdentity();
+		myTranslation = Transform.makeIdentity();
+		myScale = Transform.makeIdentity();
+	}
+
+	public void rotate(float degrees) {
+		myRotation.rotate((float) Math.toRadians(degrees), 0, 0);
+	}
+
+	public void translate(float tx, float ty) {
+		myTranslation.translate(tx, ty);
+	}
+
+	public void scale(float sx, float sy) {
+		myScale.scale(sx, sy);
+	}
+
+	public void resetTransform() {
+		myRotation.setIdentity();
+		myTranslation.setIdentity();
+		myScale.setIdentity();
+	}
+
+	public Transform getTranslate() {
+		return myTranslation;
+	}
+
+	public Transform getScale() {
+		return myScale;
+	}
+
+	public Transform getRotation() {
+		return myRotation;
 	}
 
 	public boolean collidesWith(ICollider obj) {
 		boolean result = false;
 		GameObject otherObject = (GameObject) obj;
-		double thisCenterX = this.getLocationX() + (this.getSize() / 2); // find centers
-		double thisCenterY = this.getLocationY() + (this.getSize() / 2);
-		double otherCenterX = (otherObject.getLocationX()) + (otherObject.getSize() / 2);
-		double otherCenterY = (otherObject.getLocationY()) + (otherObject.getSize() / 2);
+		double thisCenterX = this.getTranslate().getTranslateX() + (this.getSize() / 2); // find centers
+		double thisCenterY = this.getTranslate().getTranslateY() + (this.getSize() / 2);
+		double otherCenterX = (otherObject.getTranslate().getTranslateX()) + (otherObject.getSize() / 2);
+		double otherCenterY = (otherObject.getTranslate().getTranslateY()) + (otherObject.getSize() / 2);
 		// find dist between centers (use square, to avoid taking roots)
 		double dx = thisCenterX - otherCenterX;
 		double dy = thisCenterY - otherCenterY;

@@ -5,6 +5,7 @@ import java.util.Random;
 import com.codename1.ui.geom.Point;
 import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.Graphics;
+import com.codename1.ui.Transform;
 import com.mycompany.a3.FixedObject;
 import com.mycompany.interfaces.ICollider;
 
@@ -12,6 +13,7 @@ public class Base extends FixedObject {
 	private int sequenceNumber;
 	private int width;
 	private int height;
+	private Point top, bottomLeft, bottomRight;
 
 	/**
 	 * @param size      - the size of the object
@@ -24,6 +26,11 @@ public class Base extends FixedObject {
 		this.sequenceNumber = sequenceNumber;
 		this.width = width;
 		this.height = height;
+		top = new Point(0, size / 2);
+		bottomLeft = new Point(-size / 2, -size / 2);
+		bottomRight = new Point(size / 2, -size / 2);
+		translate((float) locationX, (float) locationY);
+
 	}
 
 	/**
@@ -48,25 +55,33 @@ public class Base extends FixedObject {
 	}
 
 	@Override
-	public void draw(Graphics g, Point p, Point pCmpRelScrn) {
+	public void draw(Graphics g, Point pCmpRelPrnt, Point pCmpRelScrn) {
 		g.setColor(ColorUtil.rgb(this.getRed(), this.getGreen(), this.getBlue()));
-		int[] xCoordinates = { (int) p.getX() + (int) this.getLocationX() - (this.getSize() / 2),
-				((int) p.getX() + (int) this.getLocationX()),
-				((int) p.getX() + (int) this.getLocationX()) + (this.getSize() / 2) };
-		int[] yCoordinates = { ((int) p.getY() + (int) this.getLocationY()) - (this.getSize() / 2),
-				((int) p.getY() + (int) this.getLocationY()) + (this.getSize() / 2),
-				((int) p.getY() + (int) this.getLocationY()) - (this.getSize() / 2) };
-		if (this.isSelected()) {
-			g.drawPolygon(xCoordinates, yCoordinates, 3);
-			g.setColor(ColorUtil.BLACK);
-			g.drawString(Integer.toString(this.getSequenceNumber()), (int) p.getX() + (int) this.getLocationX() - 10,
-					(int) p.getY() + (int) this.getLocationY() - 20);
-		} else {
-			g.fillPolygon(xCoordinates, yCoordinates, 3);
-			g.setColor(ColorUtil.BLACK);
-			g.drawString(Integer.toString(this.getSequenceNumber()), (int) p.getX() + (int) this.getLocationX() - 10,
-					(int) p.getY() + (int) this.getLocationY() - 20);
-		}
+		Transform gXform = Transform.makeIdentity();
+		g.getTransform(gXform);
+		Transform copy = gXform.copy();
+		gXform.translate(pCmpRelScrn.getX(), pCmpRelScrn.getY());
+		gXform.translate(getTranslate().getTranslateX(),
+				getTranslate().getTranslateY());
+		gXform.concatenate(getRotation());
+		gXform.scale(getScale().getScaleX(), getScale().getScaleY());
+		gXform.translate(-pCmpRelScrn.getX(), -pCmpRelScrn.getY());
+		g.setTransform(gXform);
+		g.drawLine(pCmpRelPrnt.getX() + top.getX(), pCmpRelPrnt.getY() + top.getY(),
+				pCmpRelPrnt.getX() + bottomLeft.getX(),
+				pCmpRelPrnt.getY() + bottomLeft.getY());
+		g.drawLine(pCmpRelPrnt.getX() + bottomLeft.getX(),
+				pCmpRelPrnt.getY() + bottomLeft.getY(),
+				pCmpRelPrnt.getX() + bottomRight.getX(),
+				pCmpRelPrnt.getY() + bottomRight.getY());
+		g.drawLine(pCmpRelPrnt.getX() + bottomRight.getX(),
+				pCmpRelPrnt.getY() + bottomRight.getY(),
+				pCmpRelPrnt.getX() + top.getX(),
+				pCmpRelPrnt.getY() + top.getY());
+		// g.setColor(ColorUtil.BLACK);
+		// g.drawString(Integer.toString(this.getSequenceNumber()), pCmpRelPrnt.getX(),
+		// pCmpRelPrnt.getY());
+		g.setTransform(copy);
 	}
 
 	@Override

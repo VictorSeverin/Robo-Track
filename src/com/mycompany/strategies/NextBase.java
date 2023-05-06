@@ -24,8 +24,8 @@ public class NextBase implements IStrategy {
 			if (obj instanceof Base) {
 				base = (Base) obj;
 				if (base.getSequenceNumber() == npr.getLastBaseReached() + 1) {
-					double a = base.getLocationX() - npr.getLocationX();
-					double b = base.getLocationY() - npr.getLocationY();
+					double a = base.getTranslate().getTranslateX() - npr.getTranslate().getTranslateX();
+					double b = base.getTranslate().getTranslateY() - npr.getTranslate().getTranslateY();
 					double idealHeading = 90 - MathUtil.atan2(b, a);
 					npr.setSteeringDirection((int) Math.floor(Math.toDegrees(idealHeading)));
 				}

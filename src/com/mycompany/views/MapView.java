@@ -144,12 +144,12 @@ public class MapView extends Container implements Observer {
         if (scale < 1.0) {
             // Zooming Out: two fingers come closer together (on actual device), right mouse
             // click + drag towards the top left corner of screen (on simulator)
-            zoom(-0.05f);
+            zoom(-0.01f);
         } else if (scale > 1.0) {
             // Zooming In: two fingers go away from each other (on actual device), right
             // mouse
             // click + drag away from the top left corner of screen (on simulator)
-            zoom(0.05f);
+            zoom(0.01f);
         }
         return true;
     }

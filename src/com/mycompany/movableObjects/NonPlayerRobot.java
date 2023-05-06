@@ -3,6 +3,7 @@ package com.mycompany.movableObjects;
 import com.codename1.ui.geom.Point;
 import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.Graphics;
+import com.codename1.ui.Transform;
 import com.codename1.util.MathUtil;
 import com.mycompany.a3.GameCollection;
 import com.mycompany.a3.GameObject;
@@ -15,17 +16,34 @@ public class NonPlayerRobot extends Robot {
 	private int width;
 	private int height;
 	private IStrategy currIStrategy;
+	private Point topLeft, topRight, bottomLeft, bottomRight;
 
 	public NonPlayerRobot(int size, double locationX, double locationY, IStrategy initialStrategy) {
-		super(size, locationX, locationY, 3, 0, 0, 0);
+		super(size, locationX, locationY, 1, 0, 0, 0);
 		this.currIStrategy = initialStrategy;
+		topLeft = new Point(-size / 2, size / 2);
+		topRight = new Point(size / 2, size / 2);
+		bottomLeft = new Point(-size / 2, -size / 2);
+		bottomRight = new Point(size / 2, -size / 2);
+		translate(100, 100);
 	}
 
 	@Override
 	public void draw(Graphics g, Point p, Point pCmpRelScrn) {
 		g.setColor(ColorUtil.rgb(this.getRed(), this.getGreen(), this.getBlue()));
-		g.drawRect((int) (p.getX() + this.getLocationX() - (this.getSize() / 2)),
-				(int) (p.getY() + this.getLocationY() - (this.getSize() / 2)), this.getSize(), this.getSize());
+		Transform gXform = Transform.makeIdentity();
+		g.getTransform(gXform);
+		Transform copy = gXform.copy();
+		gXform.translate(pCmpRelScrn.getX(), pCmpRelScrn.getY());
+		gXform.translate(getTranslate().getTranslateX(),
+				getTranslate().getTranslateY());
+		gXform.concatenate(getRotation());
+		gXform.scale(getScale().getScaleX(), getScale().getScaleY());
+		gXform.translate(-pCmpRelScrn.getX(), -pCmpRelScrn.getY());
+		g.setTransform(gXform);
+		g.fillRect(p.getX(),
+				p.getY(), this.getSize(), this.getSize());
+		g.setTransform(copy);
 
 	}
 
@@ -35,7 +53,10 @@ public class NonPlayerRobot extends Robot {
 		}
 		invokeStrategy(gw, npr, elapsedTime);
 		super.setHeading(this.getSteeringDirection());
-		super.move(width, height, elapsedTime);
+		float deltaX = (float) Math.cos(Math.toRadians(90 - this.getHeading())) * this.getSpeed();
+		float deltaY = (float) Math.sin(Math.toRadians(90 - this.getHeading())) * this.getSpeed();
+		translate(deltaX, deltaY);
+		// super.move(width, height, elapsedTime);
 
 	}
 

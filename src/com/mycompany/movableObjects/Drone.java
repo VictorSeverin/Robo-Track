@@ -14,7 +14,6 @@ public class Drone extends MovableObject {
 	private int width;
 	private int height;
 	private Point top, bottomLeft, bottomRight;
-	private Transform myRotation, myTranslation, myScale;
 
 	/**
 	 * @param size      - the size of the object
@@ -30,27 +29,8 @@ public class Drone extends MovableObject {
 		top = new Point(0, size / 2);
 		bottomLeft = new Point(-size / 2, -size / 2);
 		bottomRight = new Point(size / 2, -size / 2);
-		myRotation = Transform.makeIdentity();
-		myTranslation = Transform.makeIdentity();
-		myScale = Transform.makeIdentity();
-	}
-
-	public void rotate(float degrees) {
-		myRotation.rotate((float) Math.toRadians(degrees), 0, 0);
-	}
-
-	public void translate(float tx, float ty) {
-		myTranslation.translate(tx, ty);
-	}
-
-	public void scale(float sx, float sy) {
-		myScale.scale(sx, sy);
-	}
-
-	public void resetTransform() {
-		myRotation.setIdentity();
-		myTranslation.setIdentity();
-		myScale.setIdentity();
+		// translate((float) locationX, (float) locationY);
+		translate(50, 50);
 	}
 
 	@Override
@@ -58,11 +38,12 @@ public class Drone extends MovableObject {
 		g.setColor(ColorUtil.rgb(this.getRed(), this.getGreen(), this.getBlue()));
 		Transform gXform = Transform.makeIdentity();
 		g.getTransform(gXform);
+		Transform copy = gXform.copy();
 		gXform.translate(pCmpRelScrn.getX(), pCmpRelScrn.getY());
-		gXform.translate(myTranslation.getTranslateX(),
-				myTranslation.getTranslateY());
-		gXform.concatenate(myRotation);
-		gXform.scale(myScale.getScaleX(), myScale.getScaleY());
+		gXform.translate(getTranslate().getTranslateX(),
+				getTranslate().getTranslateY());
+		gXform.concatenate(getRotation());
+		gXform.scale(getScale().getScaleX(), getScale().getScaleY());
 		gXform.translate(-pCmpRelScrn.getX(), -pCmpRelScrn.getY());
 		g.setTransform(gXform);
 		g.drawLine(pCmpRelPrnt.getX() + top.getX(), pCmpRelPrnt.getY() + top.getY(),
@@ -76,16 +57,18 @@ public class Drone extends MovableObject {
 				pCmpRelPrnt.getY() + bottomRight.getY(),
 				pCmpRelPrnt.getX() + top.getX(),
 				pCmpRelPrnt.getY() + top.getY());
+		g.setTransform(copy);
 
 	}
 
 	public void move(int width, int height, int elapsedTime) {
 		super.setHeading(this.getHeading() + 0.5);
-		super.move(width, height, elapsedTime);
+		// super.move(width, height, elapsedTime);
+		float deltaX = (float) Math.cos(Math.toRadians(90 - this.getHeading())) * (float) this.getSpeed();
+		float deltaY = (float) Math.sin(Math.toRadians(90 - this.getHeading())) * (float) this.getSpeed();
+		this.translate(deltaX, deltaY);
 		this.width = width;
 		this.height = height;
-		// System.out.println("X:" + this.getLocationX() + " Y: " + this.getLocationY()
-		// + "W: " + width + " H: " + height);
 
 	}
 

@@ -25,8 +25,8 @@ public class ChaseRobot implements IStrategy {
 				pr = (PlayerRobot) obj;
 			}
 		}
-		double a = pr.getLocationX() - npr.getLocationX();
-		double b = pr.getLocationY() - npr.getLocationY();
+		double a = pr.getTranslate().getTranslateX() - npr.getTranslate().getTranslateX();
+		double b = pr.getTranslate().getTranslateY() - npr.getTranslate().getTranslateY();
 		double idealHeading = 90 - MathUtil.atan2(b, a);
 		npr.setSteeringDirection((int) Math.floor(Math.toDegrees(idealHeading)));
 

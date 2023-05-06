@@ -17,7 +17,6 @@ public class PlayerRobot extends Robot {
 	public int height;
 	public GameWorld gw;
 	private Point topLeft, topRight, bottomLeft, bottomRight;
-	private Transform myRotation, myTranslation, myScale;
 
 	private PlayerRobot(int size, double locationX, double locationY) {
 		super(size, locationX, locationY, 0, 255, 0, 0);
@@ -25,34 +24,20 @@ public class PlayerRobot extends Robot {
 		topRight = new Point(size / 2, size / 2);
 		bottomLeft = new Point(-size / 2, -size / 2);
 		bottomRight = new Point(size / 2, -size / 2);
-		myRotation = Transform.makeIdentity();
-		myTranslation = Transform.makeIdentity();
-		myScale = Transform.makeIdentity();
-	}
-
-	public void rotate(float degrees) {
-		myRotation.rotate((float) Math.toRadians(degrees), 0, 0);
-	}
-
-	public void translate(float tx, float ty) {
-		myTranslation.translate(tx, ty);
-	}
-
-	public void scale(float sx, float sy) {
-		myScale.scale(sx, sy);
-	}
-
-	public void resetTransform() {
-		myRotation.setIdentity();
-		myTranslation.setIdentity();
-		myScale.setIdentity();
+		translate((float) locationX, (float) locationY);
 	}
 
 	public void move(int width, int height, int elapsedTime) {
-
 		super.setHeading(this.getHeading() + this.getSteeringDirection());
-		super.move(width, height, elapsedTime);
+		this.rotate((float) this.getHeading());
+		if (this.getEnergyLevel() > 0 && this.getDamageLevel() < this.getMaxDamageLevel() && this.getSpeed() > 0) {
+			this.setEnergyLevel(this.getEnergyLevel() - this.getEnergyConsumptionRate());
+			float dx = (float) Math.cos(Math.toRadians(90 - (float) getHeading())) * this.getSpeed();
+			float dy = (float) Math.sin(Math.toRadians(90 - (float) getHeading())) * this.getSpeed();
 
+			// apply the displacement vector to the robot's position
+			translate(dx, dy);
+		}
 	}
 
 	public void respawn() {
@@ -67,15 +52,18 @@ public class PlayerRobot extends Robot {
 		g.setColor(ColorUtil.rgb(this.getRed(), this.getGreen(), this.getBlue()));
 		Transform gXform = Transform.makeIdentity();
 		g.getTransform(gXform);
+		Transform copy = gXform.copy();
 		gXform.translate(pCmpRelScrn.getX(), pCmpRelScrn.getY());
-		gXform.translate(myTranslation.getTranslateX(),
-				myTranslation.getTranslateY());
-		gXform.concatenate(myRotation);
-		gXform.scale(myScale.getScaleX(), myScale.getScaleY());
+		gXform.translate(getTranslate().getTranslateX(),
+				getTranslate().getTranslateY());
+		gXform.concatenate(getRotation());
+		gXform.scale(getScale().getScaleX(), getScale().getScaleY());
 		gXform.translate(-pCmpRelScrn.getX(), -pCmpRelScrn.getY());
 		g.setTransform(gXform);
 		g.fillRect(p.getX(),
 				p.getY(), this.getSize(), this.getSize());
+		g.setTransform(copy);
+
 	}
 
 	public static PlayerRobot getPlayerRobot(int size, double locationX, double locationY) {

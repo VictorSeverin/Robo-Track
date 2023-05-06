@@ -186,10 +186,10 @@ public class GameWorld extends Observable {
 			GameObject obj = iter.getNext();
 			if (obj instanceof PlayerRobot) {
 				PlayerRobot robot = (PlayerRobot) obj;
-				if (robot.getSpeed() + 3 > robot.getMaximumSpeed()) {
+				if (robot.getSpeed() + 1 > robot.getMaximumSpeed()) {
 					robot.setSpeed(robot.getMaximumSpeed());
 				} else { // otherwise increment speed by 5
-					robot.setSpeed(robot.getSpeed() + 3);
+					robot.setSpeed(robot.getSpeed() + 1);
 				}
 			}
 		}
@@ -209,6 +209,7 @@ public class GameWorld extends Observable {
 				} else {
 					robot.setSpeed(robot.getSpeed() - 5);
 				}
+
 			}
 		}
 		setChanged();
@@ -227,7 +228,7 @@ public class GameWorld extends Observable {
 					if (robot.getSteeringDirection() - 1 < -40) { // check if steering left will lead to less than -40
 						robot.turn(-40);
 					} else { // otherwise decrease steering direction by 5
-						robot.turn(robot.getSteeringDirection() - 1);
+						robot.turn(robot.getSteeringDirection() + 1);
 					}
 				}
 			}
@@ -250,7 +251,7 @@ public class GameWorld extends Observable {
 						// degrees
 						robot.turn(40);
 					} else { // otherwise decrease steering direction by 5
-						robot.turn(robot.getSteeringDirection() + 1);
+						robot.turn(robot.getSteeringDirection() - 1);
 					}
 				}
 			}
@@ -403,21 +404,24 @@ public class GameWorld extends Observable {
 	public void init(UITimer timer, Game game) {
 		this.timer = timer;
 		this.game = game;
-		PlayerRobot playerRobot = PlayerRobot.getPlayerRobot(80, 50, 50);
-		// objects.add(new Base(100, 250, 300, 1, width, height));
-		// objects.add(new Base(100, 300, 1000, 2, width, height));
-		// objects.add(new Base(100, 1100, 100, 3, width, height));
-		// objects.add(new Base(100, 1100, 800, 4, width, height));
-		// objects.add(new Drone(80, rand.nextInt(this.width - 200) + 200,
-		// rand.nextInt(this.height - 200) + 200,
-		// rand.nextInt(359), 5));
-		objects.add(
-				new Drone(40, rand.nextInt(this.width - 200) + 200, rand.nextInt(height - 200), rand.nextInt(359),
-						5));
-		// objects.add(new EnergyStation(rand.nextInt(150 - 50) + 50,
-		// rand.nextInt(this.width - 200) + 200,
-		// rand.nextInt(this.height - 200), width, height));
+		PlayerRobot playerRobot = PlayerRobot.getPlayerRobot(30, 50, 50);
+		Base baseOne = new Base(20, 150, 70, 1, width, height);
+		Base baseTwo = new Base(20, 30, 300, 2, width, height);
+		Base baseThree = new Base(20, 200, 240, 3, width, height);
+		Base baseFour = new Base(20, 400, 70, 4, width, height);
 		objects.add(playerRobot);
-		// objects.add(new NonPlayerRobot(80, 80, 80, new NextBase()));
+		objects.add(baseOne);
+		objects.add(baseTwo);
+		objects.add(baseThree);
+		objects.add(baseFour);
+		objects.add(new Drone(30, rand.nextInt(this.width - 200) + 200,
+				rand.nextInt(this.height - 200) + 200, rand.nextInt(359), 1));
+		// objects.add(
+		// new Drone(20, rand.nextInt(this.width - 200) + 200, rand.nextInt(height -
+		// 200), rand.nextInt(359),
+		// 5));
+		objects.add(new EnergyStation(rand.nextInt(50 - 20) + 20, rand.nextInt(300),
+				rand.nextInt(300), width, height));
+		objects.add(new NonPlayerRobot(30, 80, 80, new NextBase()));
 	}
 }
