@@ -11,12 +11,15 @@ import com.mycompany.fixedObjects.EnergyStation;
 import com.mycompany.interfaces.IColection;
 import com.mycompany.interfaces.ICollider;
 
+import subObjects.Wheel;
+
 public class PlayerRobot extends Robot {
 	private static PlayerRobot playerRobot;
 	public int width;
 	public int height;
 	public GameWorld gw;
 	private Point topLeft, topRight, bottomLeft, bottomRight;
+	Wheel[] wheels = new Wheel[2];
 
 	private PlayerRobot(int size, double locationX, double locationY) {
 		super(size, locationX, locationY, 0, 255, 0, 0);
@@ -25,6 +28,12 @@ public class PlayerRobot extends Robot {
 		bottomLeft = new Point(-size / 2, -size / 2);
 		bottomRight = new Point(size / 2, -size / 2);
 		translate((float) locationX, (float) locationY);
+		Wheel w1 = new Wheel();
+		w1.translate(-7, -7);
+		Wheel w2 = new Wheel();
+		w2.translate(22, -7);
+		wheels[0] = w1;
+		wheels[1] = w2;
 	}
 
 	public void move(int width, int height, int elapsedTime) {
@@ -59,8 +68,12 @@ public class PlayerRobot extends Robot {
 		gXform.scale(getScale().getScaleX(), getScale().getScaleY());
 		gXform.translate(-pCmpRelScrn.getX(), -pCmpRelScrn.getY());
 		g.setTransform(gXform);
-		g.fillRect(p.getX(),
+		g.drawRect(p.getX(),
 				p.getY(), this.getSize(), this.getSize());
+		for (Wheel wheel : wheels) {
+			wheel.draw(g, p, pCmpRelScrn);
+		}
+
 		g.setTransform(copy);
 
 	}
