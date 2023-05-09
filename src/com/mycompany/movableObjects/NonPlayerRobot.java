@@ -12,11 +12,14 @@ import com.mycompany.fixedObjects.Base;
 import com.mycompany.interfaces.IIterator;
 import com.mycompany.interfaces.IStrategy;
 
+import subObjects.Wheel;
+
 public class NonPlayerRobot extends Robot {
 	private int width;
 	private int height;
 	private IStrategy currIStrategy;
 	private Point topLeft, topRight, bottomLeft, bottomRight;
+	Wheel[] wheels = new Wheel[4];
 
 	public NonPlayerRobot(int size, double locationX, double locationY, IStrategy initialStrategy) {
 		super(size, locationX, locationY, 1, 0, 0, 0);
@@ -26,6 +29,18 @@ public class NonPlayerRobot extends Robot {
 		bottomLeft = new Point(-size / 2, -size / 2);
 		bottomRight = new Point(size / 2, -size / 2);
 		translate(100, 100);
+		Wheel w1 = new Wheel(ColorUtil.rgb(255, 0, 0));
+		w1.translate(-5, -6);
+		Wheel w2 = new Wheel(ColorUtil.rgb(255, 0, 0));
+		w2.translate(16, -6);
+		Wheel w3 = new Wheel(ColorUtil.rgb(255, 0, 0));
+		w3.translate(-5, 18);
+		Wheel w4 = new Wheel(ColorUtil.rgb(255, 0, 0));
+		w4.translate(16, 18);
+		wheels[0] = w1;
+		wheels[1] = w2;
+		wheels[2] = w3;
+		wheels[3] = w4;
 	}
 
 	@Override
@@ -42,7 +57,10 @@ public class NonPlayerRobot extends Robot {
 		gXform.translate(-pCmpRelScrn.getX(), -pCmpRelScrn.getY());
 		g.setTransform(gXform);
 		g.fillRect(p.getX(),
-				p.getY(), this.getSize(), this.getSize());
+				p.getY(), this.getSize() - 10, this.getSize());
+		for (Wheel wheel : wheels) {
+			wheel.draw(g, p, pCmpRelScrn);
+		}
 		g.setTransform(copy);
 
 	}

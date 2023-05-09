@@ -9,11 +9,14 @@ import com.codename1.ui.Transform;
 import com.mycompany.a3.FixedObject;
 import com.mycompany.interfaces.ICollider;
 
+import subObjects.BaseHead;
+
 public class Base extends FixedObject {
 	private int sequenceNumber;
 	private int width;
 	private int height;
 	private Point top, bottomLeft, bottomRight;
+	BaseHead baseHead;
 
 	/**
 	 * @param size      - the size of the object
@@ -30,7 +33,8 @@ public class Base extends FixedObject {
 		bottomLeft = new Point(-size / 2, -size / 2);
 		bottomRight = new Point(size / 2, -size / 2);
 		translate((float) locationX, (float) locationY);
-
+		baseHead = new BaseHead(top, bottomLeft, bottomRight);
+		baseHead.translate((float) size / 2, size + 10);
 	}
 
 	/**
@@ -67,20 +71,9 @@ public class Base extends FixedObject {
 		gXform.scale(getScale().getScaleX(), getScale().getScaleY());
 		gXform.translate(-pCmpRelScrn.getX(), -pCmpRelScrn.getY());
 		g.setTransform(gXform);
-		g.drawLine(pCmpRelPrnt.getX() + top.getX(), pCmpRelPrnt.getY() + top.getY(),
-				pCmpRelPrnt.getX() + bottomLeft.getX(),
-				pCmpRelPrnt.getY() + bottomLeft.getY());
-		g.drawLine(pCmpRelPrnt.getX() + bottomLeft.getX(),
-				pCmpRelPrnt.getY() + bottomLeft.getY(),
-				pCmpRelPrnt.getX() + bottomRight.getX(),
-				pCmpRelPrnt.getY() + bottomRight.getY());
-		g.drawLine(pCmpRelPrnt.getX() + bottomRight.getX(),
-				pCmpRelPrnt.getY() + bottomRight.getY(),
-				pCmpRelPrnt.getX() + top.getX(),
-				pCmpRelPrnt.getY() + top.getY());
-		// g.setColor(ColorUtil.BLACK);
-		// g.drawString(Integer.toString(this.getSequenceNumber()), pCmpRelPrnt.getX(),
-		// pCmpRelPrnt.getY());
+		g.fillRect(pCmpRelPrnt.getX(),
+				pCmpRelPrnt.getY(), this.getSize(), this.getSize());
+		baseHead.draw(g, pCmpRelPrnt, pCmpRelScrn);
 		g.setTransform(copy);
 	}
 

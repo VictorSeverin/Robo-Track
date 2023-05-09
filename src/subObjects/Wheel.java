@@ -1,47 +1,21 @@
 package subObjects;
 
+import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.Graphics;
 import com.codename1.ui.Transform;
 import com.codename1.ui.geom.Point;
+import com.mycompany.a3.SubObject;
 
-public class Wheel {
+public class Wheel extends SubObject {
     private Point center;
     private int myColor;
-    private Transform myTranslation;
-    private Transform myRotation;
-    private Transform myScale;
 
-    public Wheel() {
-        myTranslation = Transform.makeIdentity();
-        myRotation = Transform.makeIdentity();
-        myScale = Transform.makeIdentity();
-    }
-
-    public void rotate(float degrees) {
-        myRotation.rotate((float) Math.toRadians(degrees), 0, 0);
-    }
-
-    public void translate(float tx, float ty) {
-        myTranslation.translate(tx, ty);
-    }
-
-    public void scale(float sx, float sy) {
-        myScale.scale(sx, sy);
-    }
-
-    public Transform getTranslate() {
-        return myTranslation;
-    }
-
-    public Transform getScale() {
-        return myScale;
-    }
-
-    public Transform getRotation() {
-        return myRotation;
+    public Wheel(int color) {
+        this.myColor = color;
     }
 
     public void draw(Graphics g, Point pCmpRelPrnt, Point pCmpRelScrn) {
+        g.setColor(myColor);
         Transform gXform = Transform.makeIdentity();
         g.getTransform(gXform);
         Transform copy = gXform.copy();
@@ -53,8 +27,8 @@ public class Wheel {
         gXform.translate(-pCmpRelScrn.getX(), -pCmpRelScrn.getY());
         g.setTransform(gXform);
         // draw the lines as before
-        g.drawArc(pCmpRelPrnt.getX(),
-                pCmpRelPrnt.getY(), 15, 15, 0, 360);
+        g.fillArc(pCmpRelPrnt.getX(),
+                pCmpRelPrnt.getY(), 10, 13, 0, 360);
         g.setTransform(copy);
     }
 }

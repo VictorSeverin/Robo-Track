@@ -19,7 +19,7 @@ public class PlayerRobot extends Robot {
 	public int height;
 	public GameWorld gw;
 	private Point topLeft, topRight, bottomLeft, bottomRight;
-	Wheel[] wheels = new Wheel[2];
+	Wheel[] wheels = new Wheel[4];
 
 	private PlayerRobot(int size, double locationX, double locationY) {
 		super(size, locationX, locationY, 0, 255, 0, 0);
@@ -28,12 +28,18 @@ public class PlayerRobot extends Robot {
 		bottomLeft = new Point(-size / 2, -size / 2);
 		bottomRight = new Point(size / 2, -size / 2);
 		translate((float) locationX, (float) locationY);
-		Wheel w1 = new Wheel();
-		w1.translate(-7, -7);
-		Wheel w2 = new Wheel();
-		w2.translate(22, -7);
+		Wheel w1 = new Wheel(ColorUtil.BLACK);
+		w1.translate(-5, -6);
+		Wheel w2 = new Wheel(ColorUtil.BLACK);
+		w2.translate(17, -6);
+		Wheel w3 = new Wheel(ColorUtil.BLACK);
+		w3.translate(-5, 18);
+		Wheel w4 = new Wheel(ColorUtil.BLACK);
+		w4.translate(17, 18);
 		wheels[0] = w1;
 		wheels[1] = w2;
+		wheels[2] = w3;
+		wheels[3] = w4;
 	}
 
 	public void move(int width, int height, int elapsedTime) {
@@ -68,8 +74,8 @@ public class PlayerRobot extends Robot {
 		gXform.scale(getScale().getScaleX(), getScale().getScaleY());
 		gXform.translate(-pCmpRelScrn.getX(), -pCmpRelScrn.getY());
 		g.setTransform(gXform);
-		g.drawRect(p.getX(),
-				p.getY(), this.getSize(), this.getSize());
+		g.fillRect(p.getX(),
+				p.getY(), this.getSize() - 10, this.getSize());
 		for (Wheel wheel : wheels) {
 			wheel.draw(g, p, pCmpRelScrn);
 		}
