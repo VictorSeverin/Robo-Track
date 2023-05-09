@@ -28,8 +28,7 @@ public class PlayerRobot extends Robot {
 	}
 
 	public void move(int width, int height, int elapsedTime) {
-		super.setHeading(this.getHeading() + this.getSteeringDirection());
-		this.rotate((float) this.getHeading());
+		// super.setHeading(this.getHeading() + this.getSteeringDirection());
 		if (this.getEnergyLevel() > 0 && this.getDamageLevel() < this.getMaxDamageLevel() && this.getSpeed() > 0) {
 			this.setEnergyLevel(this.getEnergyLevel() - this.getEnergyConsumptionRate());
 			float dx = (float) Math.cos(Math.toRadians(90 - (float) getHeading())) * this.getSpeed();

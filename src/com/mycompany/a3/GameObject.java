@@ -179,6 +179,10 @@ public abstract class GameObject implements IDrawable, ICollider {
 		return ColorUtil.blue(color);
 	}
 
+	public void setRotate(double degrees) {
+		this.myRotation.setRotation((float) degrees, 0, 0);
+	}
+
 	public void makeBrighter(float factor) {
 		int r = (int) (this.getRed() * (1 + factor));
 		int g = (int) (this.getGreen() * (1 + factor));

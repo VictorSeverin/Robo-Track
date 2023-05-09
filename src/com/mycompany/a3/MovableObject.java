@@ -46,6 +46,7 @@ public abstract class MovableObject extends GameObject {
 
 	public void setHeading(double heading) {
 		this.heading = heading;
+		// setRotate(heading);
 	}
 
 	public double getHeading() {
