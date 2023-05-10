@@ -420,7 +420,7 @@ public class GameWorld extends Observable {
 		// new Drone(20, rand.nextInt(this.width - 200) + 200, rand.nextInt(height -
 		// 200), rand.nextInt(359),
 		// 5));
-		objects.add(new EnergyStation(rand.nextInt(50 - 20) + 20, rand.nextInt(300),
+		objects.add(new EnergyStation(30, rand.nextInt(300),
 				rand.nextInt(300), width, height));
 		objects.add(new NonPlayerRobot(30, 80, 80, new NextBase()));
 	}
