@@ -225,11 +225,7 @@ public class GameWorld extends Observable {
 			if (obj instanceof PlayerRobot) {
 				PlayerRobot robot = (PlayerRobot) obj;
 				if (robot.getSpeed() > 0) {
-					if (robot.getSteeringDirection() - 1 < -40) { // check if steering left will lead to less than -40
-						robot.turn(-40);
-					} else { // otherwise decrease steering direction by 5
-						robot.turn(robot.getSteeringDirection() + 1);
-					}
+					robot.turn(robot.getSteeringDirection() - 15);
 				}
 			}
 		}
@@ -247,12 +243,7 @@ public class GameWorld extends Observable {
 			if (obj instanceof PlayerRobot) {
 				PlayerRobot robot = (PlayerRobot) obj;
 				if (robot.getSpeed() > 0) {
-					if (robot.getSteeringDirection() + 1 > 40) { // check if steering right will lead to more than 40
-						// degrees
-						robot.turn(40);
-					} else { // otherwise decrease steering direction by 5
-						robot.turn(robot.getSteeringDirection() - 1);
-					}
+					robot.turn(robot.getSteeringDirection() + 15);
 				}
 			}
 		}
@@ -293,8 +284,8 @@ public class GameWorld extends Observable {
 			robot.setColor(robot.getRed(), robot.getGreen() + 20, robot.getBlue() + 20);
 			robot.setSpeed(robot.getSpeed() - 1);
 			robot.setDamageLevel(robot.getDamageLevel() + 2);
-			if (robot.getMaximumSpeed() > 2) {
-				robot.setMaximumSpeed(robot.getMaximumSpeed() - 2);
+			if (robot.getMaximumSpeed() > 1) {
+				robot.setMaximumSpeed(robot.getMaximumSpeed() - 0.5);
 			}
 		}
 
@@ -317,7 +308,7 @@ public class GameWorld extends Observable {
 				}
 			}
 			robot.setMaximumSpeed(10);
-			if (robot.getSpeed() < 3) {
+			if (robot.getSpeed() + 1 > +3) {
 				robot.setSpeed(3);
 			}
 			es.drain(); // set energy station capacity to 0;

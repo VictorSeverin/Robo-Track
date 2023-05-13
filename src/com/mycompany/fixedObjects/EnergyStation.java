@@ -56,10 +56,14 @@ public class EnergyStation extends FixedObject {
 		gXform.translate(-pCmpRelScrn.getX(), -pCmpRelScrn.getY());
 		g.setTransform(gXform);
 		if (this.isSelected()) {
+			g.drawArc(pCmpRelPrnt.getX(),
+					pCmpRelPrnt.getY(), this.getSize(), this.getSize(), 0,
+					360);
 			// g.drawString(Integer.toString(this.getCapacity()), pCmpRelPrnt.getX(),
 			// pCmpRelPrnt.getY());
 		} else {
-			g.drawRect(pCmpRelPrnt.getX(), pCmpRelPrnt.getY(), this.getSize(), this.getSize() / 2);
+			g.fillArc(pCmpRelPrnt.getX(), pCmpRelPrnt.getY(), this.getSize(), this.getSize(), 0,
+					360);
 			// g.setColor(ColorUtil.rgb(255, 0, 0));
 			// g.drawString(Integer.toString(this.getCapacity()), pCmpRelPrnt.getX(),
 			// pCmpRelPrnt.getY());

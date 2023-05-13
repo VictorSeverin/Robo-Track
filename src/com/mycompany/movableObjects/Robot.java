@@ -13,7 +13,7 @@ import com.mycompany.interfaces.iSteerable;
 
 public class Robot extends MovableObject implements iSteerable {
 	private int steeringDirection;
-	private int maximumSpeed;
+	private double maximumSpeed;
 	private int energyLevel;
 	private int energyConsumptionRate;
 	private int damageLevel;
@@ -22,6 +22,7 @@ public class Robot extends MovableObject implements iSteerable {
 	private int maxEnergyLevel;
 	public int width;
 	public int height;
+	private int maxSteeringAngle = 40;
 
 	/**
 	 * @param size      - the size of the object
@@ -59,10 +60,16 @@ public class Robot extends MovableObject implements iSteerable {
 	 * @param degrees - number of degrees to turn left/right
 	 */
 	public void turn(int degrees) {
-		this.setSteeringDirection(this.getSteeringDirection() + degrees);
+		if (degrees > maxSteeringAngle) {
+			degrees = maxSteeringAngle;
+		} else if (degrees <= -maxSteeringAngle) {
+			degrees = -maxSteeringAngle;
+		}
+		this.setHeading(this.getHeading() + degrees);
+		this.setHeading(this.getHeading() % 360);
 	}
 
-	public void setMaximumSpeed(int speed) {
+	public void setMaximumSpeed(double speed) {
 		this.maximumSpeed = speed;
 	}
 
@@ -86,7 +93,7 @@ public class Robot extends MovableObject implements iSteerable {
 		return maxDamageLevel;
 	}
 
-	public int getMaximumSpeed() {
+	public double getMaximumSpeed() {
 		return this.maximumSpeed;
 	}
 

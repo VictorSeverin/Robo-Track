@@ -71,8 +71,8 @@ public class NonPlayerRobot extends Robot {
 		}
 		invokeStrategy(gw, npr, elapsedTime);
 		super.setHeading(this.getSteeringDirection());
-		float deltaX = (float) Math.cos(Math.toRadians(90 - this.getHeading())) * this.getSpeed();
-		float deltaY = (float) Math.sin(Math.toRadians(90 - this.getHeading())) * this.getSpeed();
+		float deltaX = (float) Math.cos(Math.toRadians(90 - this.getHeading())) * (float) this.getSpeed();
+		float deltaY = (float) Math.sin(Math.toRadians(90 - this.getHeading())) * (float) this.getSpeed();
 		translate(deltaX, deltaY);
 		// super.move(width, height, elapsedTime);
 

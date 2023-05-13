@@ -9,7 +9,7 @@ import com.codename1.ui.BrowserWindow.EvalRequest;
 
 public abstract class MovableObject extends GameObject {
 	private double heading;
-	private int speed;
+	private double speed;
 
 	public MovableObject(int size, double locationX, double locationY, int heading, int speed, int red, int green,
 			int blue) {
@@ -40,7 +40,7 @@ public abstract class MovableObject extends GameObject {
 		// System.out.println("From Movable__________ W: " + width + "H: " + height);
 	}
 
-	public void setSpeed(int speed) {
+	public void setSpeed(double speed) {
 		this.speed = speed;
 	}
 
@@ -53,7 +53,7 @@ public abstract class MovableObject extends GameObject {
 		return this.heading;
 	}
 
-	public int getSpeed() {
+	public double getSpeed() {
 		return this.speed;
 	}
 

@@ -16,7 +16,7 @@ public class BGSound implements Runnable {
 			System.out.println("Error: Create sound objects after calling show()!");
 			System.exit(0);
 		}
-		while (m == null) { // ADD THIS
+		while (m == null) {
 			try {
 				InputStream is = Display.getInstance().getResourceAsStream(getClass(), "/" + fileName);
 				m = MediaManager.createMediaAsync(is, "audio/wav", this::play).get(5000);
